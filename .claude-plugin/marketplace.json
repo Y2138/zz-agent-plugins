@@ -1,7 +1,7 @@
 {
-  "name": "zzy-local",
+  "name": "zz-plugins",
   "owner": {
-    "name": "zzy"
+    "name": "zz"
   },
   "metadata": {
     "description": "Local Claude Code marketplace for agent-workspace shared plugins."
@@ -11,7 +11,7 @@
       "name": "specz",
       "source": {
         "source": "url",
-        "path": "https://github.com/Y2138/zz-plugins.git"
+        "path": "https://github.com/Y2138/zz-agent-plugins.git"
       },
       "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and versioned spec bundles.",
       "category": "productivity",

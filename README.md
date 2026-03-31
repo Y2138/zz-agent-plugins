@@ -45,7 +45,7 @@ python3 scripts/validate-plugins.py
 
 Codex should install this marketplace by merging it into existing marketplace files instead of replacing them.
 
-Use [codex-plugin-add.md](/Users/staff/Documents/agent-workspace/plugins/codex-plugin-add.md) as the instruction document for a Codex agent.
+Use [codex-plugin-add.md](./codex-plugin-add.md) as the instruction document for a Codex agent.
 
 The agent should read this repository marketplace:
 

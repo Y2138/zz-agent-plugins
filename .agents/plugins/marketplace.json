@@ -1,14 +1,14 @@
 {
-  "name": "qiu-flow",
+  "name": "zz-plugins",
   "interface": {
-    "displayName": "Qiu Flow Plugins"
+    "displayName": "Zz Plugins"
   },
   "plugins": [
     {
       "name": "specz",
       "source": {
-        "source": "local",
-        "path": "./specz"
+        "source": "url",
+        "path": "https://github.com/Y2138/zz-agent-plugins.git"
       },
       "policy": {
         "installation": "AVAILABLE",
