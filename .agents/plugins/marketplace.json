@@ -1,0 +1,20 @@
+{
+  "name": "qiu-flow",
+  "interface": {
+    "displayName": "Qiu Flow Plugins"
+  },
+  "plugins": [
+    {
+      "name": "specz",
+      "source": {
+        "source": "local",
+        "path": "./specz"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
