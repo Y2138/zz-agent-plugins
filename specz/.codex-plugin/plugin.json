@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and versioned spec bundles.",
   "author": {
-    "name": "zzy",
+    "name": "zane",
     "url": "https://github.com/Y2138"
   },
   "homepage": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
@@ -20,7 +20,7 @@
     "displayName": "Specz",
     "shortDescription": "Run a spec-driven workflow with execution and verification skills.",
     "longDescription": "Specz helps agents execute document-driven tasks with explicit add, exec, verify, and auto-run workflows backed by bounded repair loops.",
-    "developerName": "zzy",
+    "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
       "Read",

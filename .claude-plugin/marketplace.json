@@ -1,7 +1,7 @@
 {
   "name": "zz-agent-plugins",
   "owner": {
-    "name": "zz"
+    "name": "zz-agent-plugins"
   },
   "metadata": {
     "description": "Local Claude Code marketplace for zz-agent-plugins."
@@ -16,6 +16,18 @@
         "specz",
         "workflow",
         "verification",
+        "agent"
+      ]
+    },
+    {
+      "name": "media-prompt",
+      "source": "./media-prompt",
+      "description": "Media prompt plugin for generating and handling media-related prompts and content.",
+      "category": "productivity",
+      "keywords": [
+        "media",
+        "prompt",
+        "content",
         "agent"
       ]
     }

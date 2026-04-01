@@ -1,110 +1,44 @@
-# Plugins Workspace
+# zz-agent-plugins
 
-This repository root is the single source of truth for local plugins that must work in both Codex and Claude Code.
+双端兼容的插件仓库，支持 Codex 和 Claude Code。
 
-## Layout
+## 仓库结构
 
-```text
+```
 zz-agent-plugins/
-  .agents/plugins/marketplace.json
-  .claude-plugin/marketplace.json
-  scripts/
-    sync-marketplaces.py
-    validate-plugins.py
-  <plugin-name>/
-    .codex-plugin/plugin.json
-    .claude-plugin/plugin.json
-    skills/
+├── .agents/plugins/marketplace.json    # Codex 插件市场入口
+├── .claude-plugin/marketplace.json     # Claude Code 插件市场入口
+├── specz/                              # Specz 插件目录
+├── codex-plugin-add.md                 # Codex 安装说明
+└── README.md                           # 本文件
 ```
 
-## Rules
+## 插件说明
 
-- Add every plugin under `<plugin-name>/` at the repository root.
-- Keep both `<plugin-name>/.codex-plugin/plugin.json` and `<plugin-name>/.claude-plugin/plugin.json`.
-- Treat the plugin manifests as the editable metadata source for `name`, `version`, `description`, `keywords`, and `skills`.
-- Do not hand-edit `.agents/plugins/marketplace.json` or `.claude-plugin/marketplace.json`. They are generated files.
-- Regenerate the marketplace files after changing plugin metadata or adding/removing a plugin.
+- **specz**: 文档驱动的规范工作流插件，包含规划、执行、验证和自动运行技能
+- **media-prompt**: 媒体提示插件，用于生成和处理媒体相关的提示和内容
 
-## Installation
-
-Assume this repository is cloned to:
-
-```bash
-~/code/zz-agent-plugins
-```
-
-Run the generators first:
-
-```bash
-cd ~/code/zz-agent-plugins
-python3 scripts/sync-marketplaces.py
-python3 scripts/validate-plugins.py
-```
+## 安装方法
 
 ### Codex
 
-Codex should install this marketplace by merging it into existing marketplace files instead of replacing them.
-
-Use [codex-plugin-add.md](./codex-plugin-add.md) as the instruction document for a Codex agent.
-
-The agent should read this repository marketplace:
-
-```text
-~/code/zz-agent-plugins/.agents/plugins/marketplace.json
-```
-
-and merge its plugin entries into:
-
-- `~/.agents/plugins/marketplace.json` for user-level installation
-- `<repo_root>/.agents/plugins/marketplace.json` for repository-level installation when needed
-
-This keeps existing Codex plugins intact and only adds or updates this repository's plugin entries.
+1. 复制 `specz` 目录到项目根目录
+2. 复制 `.agents/plugins/marketplace.json` 到项目的 `.agents/plugins/` 目录
+3. 参考 `codex-plugin-add.md` 获取详细安装步骤
 
 ### Claude Code
 
-Claude Code should also add this marketplace without replacing existing plugin sources.
-
-Use the Claude Code marketplace add flow:
-
-```bash
-/plugin marketplace add ~/code/zz-agent-plugins/.claude-plugin/marketplace.json
+```
+/plugin marketplace add https://github.com/Y2138/zz-agent-plugins/tree/main/specz
 ```
 
-This adds the marketplace as another source, so existing Claude Code plugins are not overwritten.
+## 核心特性
 
-### Update Flow
+- **双平台支持**: 同时兼容 Codex 和 Claude Code
+- **项目级别安装**: 支持在项目中独立使用
+- **结构化工作流**: 提供规范的规划、执行、验证流程
+- **版本化规范包**: 支持版本化的规范文档管理
 
-When pulling new changes from this repository:
+## 许可证
 
-```bash
-cd ~/code/zz-agent-plugins
-git pull
-python3 scripts/sync-marketplaces.py
-python3 scripts/validate-plugins.py
-```
-
-## Workflow
-
-From the repository root:
-
-```bash
-python3 scripts/sync-marketplaces.py
-python3 scripts/validate-plugins.py
-```
-
-`sync-marketplaces.py` scans direct plugin folders at the repository root, validates Codex/Claude manifest parity, and writes:
-
-- `.agents/plugins/marketplace.json`
-- `.claude-plugin/marketplace.json`
-
-`validate-plugins.py` checks:
-
-- every plugin has both manifests
-- key metadata is consistent across both manifests
-- marketplace entries resolve to real plugin folders
-- every plugin folder appears in both marketplaces
-
-## Standalone Repo
-
-This directory is intended to be maintained as its own repository. The plugin marketplaces live inside the repository itself, so the whole directory can be cloned and installed without relying on any parent workspace structure.
-# zz-agent-plugins
+MIT

@@ -1,0 +1,36 @@
+{
+  "name": "media-prompt",
+  "version": "0.1.0",
+  "description": "Media prompt plugin for generating and handling media-related prompts and content.",
+  "author": {
+    "name": "zane",
+    "url": "https://github.com/Y2138"
+  },
+  "homepage": "https://github.com/Y2138/zz-agent-plugins/tree/main/media-prompt",
+  "repository": "https://github.com/Y2138/zz-agent-plugins",
+  "license": "MIT",
+  "keywords": [
+    "media",
+    "prompt",
+    "content",
+    "agent"
+  ],
+  "interface": {
+    "displayName": "Media Prompt",
+    "shortDescription": "Generate and handle media-related prompts and content.",
+    "longDescription": "Media Prompt plugin helps agents create and manage media-related prompts, including image descriptions, video concepts, and other multimedia content.",
+    "developerName": "zane",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/media-prompt",
+    "defaultPrompt": [
+      "Use media-prompt to generate image descriptions.",
+      "Create media prompts for video concepts.",
+      "Handle media-related content generation."
+    ],
+    "brandColor": "#3B82F6"
+  }
+}
