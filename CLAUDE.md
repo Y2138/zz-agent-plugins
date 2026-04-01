@@ -41,8 +41,6 @@
 
 ## 仓库职责
 
-当当前工作目录为 `/Users/staff/Documents/agent-workspace/plugins` 时，本目录作为独立插件仓使用：
-
 - 维护 Codex / Claude Code 双端插件 manifest
 - 维护本仓库内的 marketplace 入口文件
 - 维护插件安装说明与维护流程文档

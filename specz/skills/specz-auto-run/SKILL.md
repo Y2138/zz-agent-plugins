@@ -1,5 +1,5 @@
 ---
-name: "auto-run"
+name: "specz-auto-run"
 description: "Orchestration Specz skill. It chains the exec and verify skills through separate agent contexts, repairs the bundle after failed verification, and stops after a bounded number of rounds."
 ---
 
@@ -41,8 +41,8 @@ description: "Orchestration Specz skill. It chains the exec and verify skills th
 ## 2. Run the Loop
 
 1. Start round 1.
-2. Run the `exec` skill in executor context.
-3. Run the `verify` skill in verifier context.
+2. Run the `specz-exec` skill in executor context.
+3. Run the `specz-verify` skill in verifier context.
 4. If verification passes, stop with success.
 5. If verification fails, require the verifier to update `tasks.md`, `checklist.md`, and `test-cases.md`.
 6. Return the repaired bundle to the executor for the next round.

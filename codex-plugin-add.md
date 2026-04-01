@@ -25,6 +25,7 @@ Target marketplaces to update:
 - Preserve unrelated top-level metadata when possible.
 - Preserve existing plugin order, and append new plugin entries to the end.
 - Keep the merged result valid JSON.
+- Keep repository plugin paths relative to the source marketplace root, for example `./specz`.
 
 ## Merge Scope
 

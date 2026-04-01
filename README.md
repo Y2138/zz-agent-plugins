@@ -1,11 +1,11 @@
 # Plugins Workspace
 
-`plugins/` is the single source of truth for local plugins that must work in both Codex and Claude Code.
+This repository root is the single source of truth for local plugins that must work in both Codex and Claude Code.
 
 ## Layout
 
 ```text
-plugins/
+zz-agent-plugins/
   .agents/plugins/marketplace.json
   .claude-plugin/marketplace.json
   scripts/
@@ -19,8 +19,8 @@ plugins/
 
 ## Rules
 
-- Add every plugin under `plugins/<plugin-name>/`.
-- Keep both `plugins/<plugin-name>/.codex-plugin/plugin.json` and `plugins/<plugin-name>/.claude-plugin/plugin.json`.
+- Add every plugin under `<plugin-name>/` at the repository root.
+- Keep both `<plugin-name>/.codex-plugin/plugin.json` and `<plugin-name>/.claude-plugin/plugin.json`.
 - Treat the plugin manifests as the editable metadata source for `name`, `version`, `description`, `keywords`, and `skills`.
 - Do not hand-edit `.agents/plugins/marketplace.json` or `.claude-plugin/marketplace.json`. They are generated files.
 - Regenerate the marketplace files after changing plugin metadata or adding/removing a plugin.
@@ -30,13 +30,13 @@ plugins/
 Assume this repository is cloned to:
 
 ```bash
-~/code/plugins
+~/code/zz-agent-plugins
 ```
 
 Run the generators first:
 
 ```bash
-cd ~/code/plugins
+cd ~/code/zz-agent-plugins
 python3 scripts/sync-marketplaces.py
 python3 scripts/validate-plugins.py
 ```
@@ -50,7 +50,7 @@ Use [codex-plugin-add.md](./codex-plugin-add.md) as the instruction document for
 The agent should read this repository marketplace:
 
 ```text
-~/code/plugins/.agents/plugins/marketplace.json
+~/code/zz-agent-plugins/.agents/plugins/marketplace.json
 ```
 
 and merge its plugin entries into:
@@ -67,7 +67,7 @@ Claude Code should also add this marketplace without replacing existing plugin s
 Use the Claude Code marketplace add flow:
 
 ```bash
-/plugin marketplace add ~/code/plugins/.claude-plugin/marketplace.json
+/plugin marketplace add ~/code/zz-agent-plugins/.claude-plugin/marketplace.json
 ```
 
 This adds the marketplace as another source, so existing Claude Code plugins are not overwritten.
@@ -77,7 +77,7 @@ This adds the marketplace as another source, so existing Claude Code plugins are
 When pulling new changes from this repository:
 
 ```bash
-cd ~/code/plugins
+cd ~/code/zz-agent-plugins
 git pull
 python3 scripts/sync-marketplaces.py
 python3 scripts/validate-plugins.py
@@ -92,7 +92,7 @@ python3 scripts/sync-marketplaces.py
 python3 scripts/validate-plugins.py
 ```
 
-`sync-marketplaces.py` scans direct plugin folders inside `plugins/`, validates Codex/Claude manifest parity, and writes:
+`sync-marketplaces.py` scans direct plugin folders at the repository root, validates Codex/Claude manifest parity, and writes:
 
 - `.agents/plugins/marketplace.json`
 - `.claude-plugin/marketplace.json`

@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and versioned spec bundles.",
   "author": {
-    "name": "zzy"
+    "name": "zzy",
+    "url": "https://github.com/Y2138"
   },
+  "homepage": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
+  "repository": "https://github.com/Y2138/zz-agent-plugins",
   "license": "MIT",
   "keywords": [
     "specz",
@@ -12,5 +15,23 @@
     "verification",
     "agent"
   ],
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Specz",
+    "shortDescription": "Run a spec-driven workflow with execution and verification skills.",
+    "longDescription": "Specz helps agents execute document-driven tasks with explicit add, exec, verify, and auto-run workflows backed by bounded repair loops.",
+    "developerName": "zzy",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
+    "defaultPrompt": [
+      "Use specz to add a new spec bundle for this task.",
+      "Run the specz execution flow for the current change.",
+      "Verify this implementation with the specz verifier."
+    ],
+    "brandColor": "#2563EB"
+  }
 }

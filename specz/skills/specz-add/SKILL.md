@@ -1,5 +1,5 @@
 ---
-name: "add"
+name: "specz-add"
 description: "Planning-stage Specz skill. It creates or updates the active spec bundle and defines the authoritative spec.md before deriving tasks.md, checklist.md, and test-cases.md."
 ---
 
@@ -28,7 +28,7 @@ description: "Planning-stage Specz skill. It creates or updates the active spec 
 
 # Purpose
 
-`add` is the planning-stage Specz skill. It converts a PRD, feature request, or change idea into one synchronized spec bundle that later execution and verification stages must follow.
+`specz-add` is the planning-stage Specz skill. It converts a PRD, feature request, or change idea into one synchronized spec bundle that later execution and verification stages must follow.
 
 This skill defines the relationship between the four bundle documents:
 
@@ -132,8 +132,8 @@ Template:
 
 When the bundle is ready, stop at the planning boundary and direct the workflow to:
 
-- `exec` for task implementation
-- `verify` for testing and final verification
-- `auto-run` when the user wants a bounded executor/verifier loop
+- `specz-exec` for task implementation
+- `specz-verify` for testing and final verification
+- `specz-auto-run` when the user wants a bounded executor/verifier loop
 
-Do not implement product code inside the `add` skill.
+Do not implement product code inside the `specz-add` skill.

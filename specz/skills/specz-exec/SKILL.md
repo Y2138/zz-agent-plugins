@@ -1,5 +1,5 @@
 ---
-name: "exec"
+name: "specz-exec"
 description: "Execution-stage Specz skill. It implements tasks from the active bundle without changing scope or self-certifying final acceptance."
 ---
 
@@ -56,4 +56,4 @@ description: "Execution-stage Specz skill. It implements tasks from the active b
 
 # Exit Condition
 
-When implementation is complete, hand the bundle to the `verify` skill or the `auto-run` skill for independent validation.
+When implementation is complete, hand the bundle to the `specz-verify` skill or the `specz-auto-run` skill for independent validation.

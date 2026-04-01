@@ -1,5 +1,5 @@
 ---
-name: "verify"
+name: "specz-verify"
 description: "Verification-stage Specz skill. It independently validates the active bundle, distrusts executor self-reporting, and writes back repair tasks when the implementation is incomplete."
 ---
 
@@ -71,4 +71,4 @@ The spec is complete only when:
 - checklist outcomes are verified
 - the implemented behavior matches the spec requirements
 
-If verification fails, return the workflow to the `exec` skill or the `auto-run` skill with the repaired bundle.
+If verification fails, return the workflow to the `specz-exec` skill or the `specz-auto-run` skill with the repaired bundle.

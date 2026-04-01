@@ -1,20 +1,31 @@
 {
-  "name": "zz-plugins",
+  "name": "zz-agent-plugins",
+  "description": "A dual-platform local plugin marketplace for Codex and Claude Code, focused on reusable agent workflows and productivity tooling.",
   "interface": {
-    "displayName": "Zz Plugins"
+    "displayName": "ZZ Agent Plugins Marketplace",
+    "shortDescription": "Dual-platform marketplace for reusable Codex and Claude Code plugins.",
+    "longDescription": "This marketplace distributes local plugins from the zz-agent-plugins repository. Each plugin is maintained with matching Codex and Claude Code manifests so the same workflow can be installed consistently across both platforms."
   },
   "plugins": [
     {
       "name": "specz",
+      "displayName": "Specz",
+      "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and versioned spec bundles.",
       "source": {
-        "source": "url",
-        "url": "https://github.com/Y2138/zz-agent-plugins.git"
+        "source": "local",
+        "path": "./specz"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "Productivity"
+      "category": "Productivity",
+      "keywords": [
+        "specz",
+        "workflow",
+        "verification",
+        "agent"
+      ]
     }
   ]
 }

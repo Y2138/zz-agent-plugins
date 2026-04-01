@@ -7,10 +7,21 @@ import sys
 from pathlib import Path
 
 
-PLUGIN_ROOT = Path(__file__).resolve().parents[1]
-CODEX_MARKETPLACE_PATH = PLUGIN_ROOT / ".agents" / "plugins" / "marketplace.json"
-CLAUDE_MARKETPLACE_PATH = PLUGIN_ROOT / ".claude-plugin" / "marketplace.json"
-MANIFEST_KEYS = ("name", "version", "description", "keywords", "skills")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+CODEX_MARKETPLACE_PATH = REPO_ROOT / ".agents" / "plugins" / "marketplace.json"
+CLAUDE_MARKETPLACE_PATH = REPO_ROOT / ".claude-plugin" / "marketplace.json"
+MANIFEST_PARITY_KEYS = (
+    "name",
+    "version",
+    "description",
+    "author",
+    "homepage",
+    "repository",
+    "license",
+    "keywords",
+    "skills",
+    "interface",
+)
 
 
 def load_json(path: Path) -> dict:
@@ -23,16 +34,28 @@ def load_json(path: Path) -> dict:
 
 
 def iter_plugin_dirs() -> list[Path]:
-    return [
-        path
-        for path in sorted(PLUGIN_ROOT.iterdir())
-        if path.is_dir() and not path.name.startswith(".") and path.name != "scripts"
-    ]
+    plugin_dirs: list[Path] = []
+    for path in sorted(REPO_ROOT.iterdir()):
+        if not path.is_dir():
+            continue
+        if path.name.startswith("."):
+            continue
+        if path.name == "scripts":
+            continue
+        if (path / ".codex-plugin" / "plugin.json").is_file() or (path / ".claude-plugin" / "plugin.json").is_file():
+            plugin_dirs.append(path)
+    return plugin_dirs
 
 
 def validate_manifest_pair(plugin_dir: Path) -> None:
     codex_manifest_path = plugin_dir / ".codex-plugin" / "plugin.json"
     claude_manifest_path = plugin_dir / ".claude-plugin" / "plugin.json"
+
+    if not codex_manifest_path.is_file():
+        raise SystemExit(f"Missing Codex manifest: {codex_manifest_path}")
+    if not claude_manifest_path.is_file():
+        raise SystemExit(f"Missing Claude manifest: {claude_manifest_path}")
+
     codex_manifest = load_json(codex_manifest_path)
     claude_manifest = load_json(claude_manifest_path)
 
@@ -42,59 +65,78 @@ def validate_manifest_pair(plugin_dir: Path) -> None:
             f"'{codex_manifest.get('name')}'"
         )
 
-    for key in MANIFEST_KEYS:
+    if claude_manifest.get("name") != plugin_dir.name:
+        raise SystemExit(
+            f"Plugin directory '{plugin_dir.name}' does not match Claude manifest name "
+            f"'{claude_manifest.get('name')}'"
+        )
+
+    for key in MANIFEST_PARITY_KEYS:
         if codex_manifest.get(key) != claude_manifest.get(key):
             raise SystemExit(
                 f"Manifest mismatch for plugin '{plugin_dir.name}' on key '{key}'"
             )
 
 
-def validate_marketplace_paths() -> None:
-    plugin_names = {path.name for path in iter_plugin_dirs()}
-    codex_marketplace = load_json(CODEX_MARKETPLACE_PATH)
-    claude_marketplace = load_json(CLAUDE_MARKETPLACE_PATH)
+def validate_codex_marketplace(plugin_names: set[str]) -> None:
+    marketplace = load_json(CODEX_MARKETPLACE_PATH)
+    marketplace_names: set[str] = set()
 
-    codex_names = set()
-    for entry in codex_marketplace.get("plugins", []):
+    for entry in marketplace.get("plugins", []):
         name = entry.get("name")
-        source_path = entry.get("source", {}).get("path")
-        if not name or not source_path:
-            raise SystemExit("Codex marketplace contains an entry without name or source.path")
-        resolved = (PLUGIN_ROOT / source_path).resolve()
-        if not resolved.is_dir():
-            raise SystemExit(f"Codex marketplace path does not exist for plugin '{name}': {source_path}")
-        codex_names.add(name)
+        source = entry.get("source", {})
+        source_path = source.get("path")
+        if not name or source.get("source") != "local" or not source_path:
+            raise SystemExit("Codex marketplace contains an invalid plugin source entry")
 
-    claude_names = set()
-    for entry in claude_marketplace.get("plugins", []):
-        name = entry.get("name")
-        source_path = entry.get("source")
-        if not name or not source_path:
-            raise SystemExit("Claude marketplace contains an entry without name or source")
-        resolved = (PLUGIN_ROOT / source_path).resolve()
+        resolved = (REPO_ROOT / source_path).resolve()
         if not resolved.is_dir():
-            raise SystemExit(f"Claude marketplace path does not exist for plugin '{name}': {source_path}")
-        claude_names.add(name)
+            raise SystemExit(
+                f"Codex marketplace path does not exist for plugin '{name}': {source_path}"
+            )
+        marketplace_names.add(name)
 
-    if codex_names != plugin_names:
+    if marketplace_names != plugin_names:
         raise SystemExit(
-            f"Codex marketplace plugins {sorted(codex_names)} do not match plugin directories {sorted(plugin_names)}"
+            f"Codex marketplace plugins {sorted(marketplace_names)} do not match plugin directories {sorted(plugin_names)}"
         )
-    if claude_names != plugin_names:
+
+
+def validate_claude_marketplace(plugin_names: set[str]) -> None:
+    marketplace = load_json(CLAUDE_MARKETPLACE_PATH)
+    marketplace_names: set[str] = set()
+
+    for entry in marketplace.get("plugins", []):
+        name = entry.get("name")
+        source = entry.get("source")
+        if not name or not isinstance(source, str):
+            raise SystemExit("Claude marketplace contains an invalid plugin source entry")
+
+        resolved = (REPO_ROOT / source).resolve()
+        if not resolved.is_dir():
+            raise SystemExit(
+                f"Claude marketplace path does not exist for plugin '{name}': {source}"
+            )
+        marketplace_names.add(name)
+
+    if marketplace_names != plugin_names:
         raise SystemExit(
-            f"Claude marketplace plugins {sorted(claude_names)} do not match plugin directories {sorted(plugin_names)}"
+            f"Claude marketplace plugins {sorted(marketplace_names)} do not match plugin directories {sorted(plugin_names)}"
         )
 
 
 def main() -> int:
     plugin_dirs = iter_plugin_dirs()
     if not plugin_dirs:
-        raise SystemExit(f"No plugins found under {PLUGIN_ROOT}")
+        raise SystemExit(f"No plugins found under {REPO_ROOT}")
 
     for plugin_dir in plugin_dirs:
         validate_manifest_pair(plugin_dir)
 
-    validate_marketplace_paths()
+    plugin_names = {path.name for path in plugin_dirs}
+    validate_codex_marketplace(plugin_names)
+    validate_claude_marketplace(plugin_names)
+
     print("Plugin validation passed.")
     return 0
 
