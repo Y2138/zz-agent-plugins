@@ -1,10 +1,16 @@
 # Codex Plugin Install Instructions
 
-Use this document when asking a Codex agent to install this plugin marketplace.
+Use this document when asking a Codex agent to install the `specz` plugin into a project.
 
 ## Goal
 
-Add the plugin entries from this repository to the project-level Codex marketplace without overwriting existing plugins. Also copy the specz plugin directory to the project.
+Install `specz` as a project-level plugin for Codex without overwriting unrelated existing plugins.
+
+The installation must:
+
+- copy the repository's `specz` plugin directory into the target project
+- merge this repository's Codex marketplace entry into the target project's marketplace
+- keep the plugin usable as a dual-platform plugin by preserving both `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` inside `specz/`
 
 Source files:
 
@@ -13,26 +19,39 @@ Source files:
 
 Target location:
 
-- `<project_root>/.agents/plugins/marketplace.json` for the project-level marketplace
-- `<project_root>/specz/` for the plugin directory
+- `<project_root>/.agents/plugins/marketplace.json`
+- `<project_root>/specz/`
 
 ## Required Behavior
 
-1. **Copy the specz plugin directory**:
-   - Copy the entire `<repo_root>/specz/` directory to `<project_root>/specz/`
-   - Overwrite existing files if they exist
+1. **Read the source data first**
+   - Read `<repo_root>/.agents/plugins/marketplace.json`
+   - Confirm that it contains a plugin entry with `name: "specz"`
+   - Read the `specz` plugin directory and preserve its full contents, including:
+     - `<repo_root>/specz/.codex-plugin/plugin.json`
+     - `<repo_root>/specz/.claude-plugin/plugin.json`
+     - `<repo_root>/specz/skills/`
 
-2. **Update the project-level marketplace**:
-   - Read the source marketplace from this repository first
+2. **Copy the `specz` plugin directory**
+   - Copy the entire `<repo_root>/specz/` directory to `<project_root>/specz/`
+   - If `<project_root>/specz/` already exists, update it in place so the installed plugin matches the source plugin
+   - Do not drop hidden files or hidden directories during the copy
+
+3. **Merge the Codex marketplace**
+   - Target file: `<project_root>/.agents/plugins/marketplace.json`
    - If the target marketplace does not exist, create it with the same top-level schema expected by Codex
    - If the target marketplace already exists, merge plugin entries by plugin `name`
-   - Do not remove or overwrite unrelated existing plugins in the target marketplace
-   - If a plugin with the same `name` already exists, update that plugin entry in place using the source marketplace entry
+   - Do not remove, reorder, or overwrite unrelated existing plugins
+   - If a plugin with `name: "specz"` already exists, replace only that plugin entry with the source `specz` entry
    - Preserve unrelated top-level metadata when possible
-   - Preserve existing plugin order, and append new plugin entries to the end
+   - Append `specz` only if it is missing
    - Keep the merged result valid JSON
-   - Keep repository plugin paths relative to the project root, for example `./specz`
+   - Keep the installed plugin path project-relative, for example `"./specz"`
 
 ## Install Scope
 
-This installation is only for project-level usage. Do not modify the user-level marketplace (`~/.agents/plugins/marketplace.json`).
+This installation is only for project-level usage.
+
+- Do not modify `~/.agents/plugins/marketplace.json`
+- Do not suggest replacing the user's existing marketplace with this repository's marketplace
+- Use merge behavior only

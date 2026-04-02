@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Specz",
     "shortDescription": "Run a spec-driven workflow with execution and verification skills.",
-    "longDescription": "Specz helps agents execute document-driven tasks with explicit add, exec, verify, and auto-run workflows backed by bounded repair loops.",
+    "longDescription": "Specz helps agents execute document-driven tasks with explicit plan, exec, verify, and auto-run workflows backed by bounded repair loops.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -28,7 +28,7 @@
     ],
     "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
     "defaultPrompt": [
-      "Use specz to add a new spec bundle for this task.",
+      "Use specz to plan a new spec bundle for this task.",
       "Run the specz execution flow for the current change.",
       "Verify this implementation with the specz verifier."
     ],
