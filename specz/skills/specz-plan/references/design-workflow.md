@@ -19,6 +19,17 @@ Create `design.md` when execution would otherwise need to guess repository-speci
 
 Skip `design.md` or keep it minimal when the change is local, obvious, and fits an existing pattern without meaningful architectural choice.
 
+## Constraints
+
+1. **Codebase-Grounded Design.** design.md MUST be grounded in the current project structure, reuse points, layering, data flow, and runtime boundaries. Do not invent architecture that ignores the codebase that actually exists.
+2. **Do Not Repeat Existing Standards.** Do not copy project-wide coding standards, naming rules, lint rules, or design-system guidance into design.md unless this change requires an explicit exception or an additional local constraint.
+3. **Design Without Overbuilding.** design.md must capture only the decisions that materially shape implementation, such as design pattern choices, module boundaries, key abstractions, UI layout, state ownership, data flow, and interface changes. Do not turn it into a long architecture treatise and do not write large amounts of business code or pseudocode.
+4. **Selective Sections.** All sections in design.md are optional by default. Include a section only when it adds meaningful implementation guidance for this change.
+5. **Directional Design.** The purpose of design.md is to keep later execution aligned with the intended implementation direction and avoid repository-specific drift or mismatched expectations. Favor concrete guidance over exhaustive analysis.
+6. **Design Deliberation.** Before writing design.md, think through multiple plausible implementation approaches and compare them against the current codebase, reuse points, complexity, and risk. The full comparison does not need to appear in the document unless it materially helps execution.
+7. **Core Design Representations.** When design.md is created, it MUST include enough structured representation to remove ambiguity from the implementation direction. Choose the representation format that best fits the design problem instead of defaulting everything to Mermaid.
+8. **Minimum Expression.** Use the smallest representation that makes the decision clear. Do not add diagrams, tables, or sketches that only restate surrounding prose.
+
 ## Deliberation Before Writing
 
 Before writing `design.md`, deliberately compare multiple plausible implementation approaches. This comparison is part of the planning process even when the final document stays short.
@@ -32,7 +43,7 @@ At minimum, think through:
 
 You do not need to document every rejected option. Record only the chosen direction unless the alternatives are important for execution clarity.
 
-## `design.md`
+## design.md Structure
 
 `design.md` is a guidance document, not a full design review packet. Its purpose is to keep execution aligned and avoid the wrong implementation direction.
 
@@ -73,6 +84,18 @@ Suggested structure:
 - Only when needed: high-risk behaviors, observability hooks, permission boundaries, or sensitive data handling
 ```
 
+Choose the most suitable representation for the question you need to answer:
+
+- Architecture boundaries or cross-module dependencies: Mermaid architecture diagram or layered list
+- Module responsibilities: structured list first, Mermaid component diagram when dependency direction matters
+- Data flow or state flow: Mermaid data-flow or state-machine diagram
+- Ordered interactions: Mermaid sequence diagram or a numbered text flow
+- Frontend UI layout: ASCII sketch first
+- Frontend interaction flow: Mermaid flow diagram or arrow-based text flow
+- API, schema, or model contract: Markdown table, field list, and JSON request/response examples
+
+Place each representation inside the most relevant section. For example, a data-flow diagram belongs under Data Flow / State Flow, and an ASCII UI layout belongs under UI / Interaction.
+
 Rules:
 
 - Tie every section to the current codebase.
@@ -81,3 +104,6 @@ Rules:
 - If the project already defines a standard pattern, reference the existing location or pattern briefly instead of repeating it.
 - Keep validation, observability, and security notes short. Skip them when they are not relevant to the change.
 - Do not write large blocks of business code.
+- Prefer ASCII for static UI layout because containment and spatial grouping are easier to read there than in a generic flowchart.
+- Prefer tables or JSON examples for contracts because field shape matters more than node connectivity.
+- Every diagram, sketch, table, or example MUST use concrete names from the codebase. Avoid abstract labels like "Component A" or "Service B".

@@ -5,30 +5,12 @@ description: "Orchestration Specz skill. It chains the exec and verify skills th
 
 # Constraints
 
-<constraint>
-    <name>Controller Only</name>
-    <content>This skill is a controller. It must not directly replace the execution or verification responsibilities of the exec or verify skills.</content>
-</constraint>
-<constraint>
-    <name>Separate Agent Contexts</name>
-    <content>Use one agent context for execution and a separate agent context for verification. The verifier must not inherit the executor's narrative as authority.</content>
-</constraint>
-<constraint>
-    <name>Bounded Loop</name>
-    <content>Run at most 3 full execution-verification rounds. Never loop indefinitely.</content>
-</constraint>
-<constraint>
-    <name>Bundle Scope</name>
-    <content>Operate on the current active bundle only. Do not automatically create a new version or change spec.md.</content>
-</constraint>
-<constraint>
-    <name>Stop Conditions</name>
-    <content>Stop immediately on scope ambiguity, requirement conflict, destructive actions, or missing critical environment prerequisites.</content>
-</constraint>
-<constraint>
-    <name>Design Context Propagation</name>
-    <content>When design.md exists, pass it to every execution and verification round as required context. Both stages must read, understand, and follow it.</content>
-</constraint>
+1. **Controller Only.** This skill is a controller. It must not directly replace the execution or verification responsibilities of the exec or verify skills.
+2. **Separate Agent Contexts.** Use one agent context for execution and a separate agent context for verification. The verifier must not inherit the executor's narrative as authority.
+3. **Bounded Loop.** Run at most 3 full execution-verification rounds. Never loop indefinitely.
+4. **Bundle Scope.** Operate on the current active bundle only. Do not automatically create a new version or change spec.md.
+5. **Stop Conditions.** Stop immediately on scope ambiguity, requirement conflict, destructive actions, or missing critical environment prerequisites.
+6. **Design Context Propagation.** When design.md exists, pass it to every execution and verification round as binding context. Both stages must read and follow it.
 
 # Purpose
 
@@ -41,7 +23,7 @@ description: "Orchestration Specz skill. It chains the exec and verify skills th
 1. Use the bundle explicitly named by the user if present.
 2. Otherwise choose the highest unfinished matching version in `.specs/<slug>_v<index>/`.
 3. Confirm the bundle contains `spec.md`, `tasks.md`, `checklist.md`, and `test-cases.md`.
-4. Treat `design.md` as optional but required context whenever the planning stage created it.
+4. If `design.md` exists, treat it as binding context for both exec and verify rounds.
 
 ## 2. Run the Loop
 

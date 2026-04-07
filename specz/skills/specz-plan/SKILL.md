@@ -5,50 +5,11 @@ description: "Planning-stage Specz skill. It creates or updates the active spec 
 
 # Constraints
 
-<constraint>
-    <name>Planning Only</name>
-    <content>Use this skill for planning and implementation-preparation only. During this stage, ONLY create or update files inside the active .specs bundle and do NOT write product code.</content>
-</constraint>
-<constraint>
-    <name>Shared Spec Workspace</name>
-    <content>Spec bundles live in $(cwd)/.specs/&lt;slug&gt;_v&lt;index&gt;. The default target is the highest unfinished matching version unless the user specifies another bundle.</content>
-</constraint>
-<constraint>
-    <name>Required Bundle Files</name>
-    <content>Each new or repaired bundle MUST contain spec.md, tasks.md, checklist.md, and test-cases.md. Add design.md whenever implementation design is needed to produce trustworthy tasks.</content>
-</constraint>
-<constraint>
-    <name>Local Spec State</name>
-    <content>.specs is local planning state and MUST NOT be committed to git. Respect existing ignore rules and add .specs/ to ignore rules when missing.</content>
-</constraint>
-<constraint>
-    <name>Spec Authority</name>
-    <content>spec.md is the only source of scope and acceptance truth. This skill is the only stage that may materially change spec.md unless the user explicitly reopens planning.</content>
-</constraint>
-<constraint>
-    <name>Codebase-Grounded Design</name>
-    <content>When design.md is needed, it MUST be grounded in the current project structure, reuse points, layering, data flow, and runtime boundaries. Do not invent architecture that ignores the codebase that actually exists.</content>
-</constraint>
-<constraint>
-    <name>Do Not Repeat Existing Standards</name>
-    <content>Do not copy project-wide coding standards, naming rules, lint rules, or design-system guidance into design.md unless this change requires an explicit exception or an additional local constraint.</content>
-</constraint>
-<constraint>
-    <name>Design Without Overbuilding</name>
-    <content>design.md must capture only the decisions that materially shape implementation, such as design pattern choices, module boundaries, key abstractions, UI layout, state ownership, data flow, and interface changes. Do not turn it into a long architecture treatise and do not write large amounts of business code or pseudocode.</content>
-</constraint>
-<constraint>
-    <name>Selective Sections</name>
-    <content>All sections in design.md are optional by default. Include a section only when it adds meaningful implementation guidance for this change.</content>
-</constraint>
-<constraint>
-    <name>Directional Design</name>
-    <content>The purpose of design.md is to keep later execution aligned with the intended implementation direction and avoid repository-specific drift or mismatched expectations. Favor concrete guidance over exhaustive analysis.</content>
-</constraint>
-<constraint>
-    <name>Design Deliberation</name>
-    <content>Before writing design.md, think through multiple plausible implementation approaches and compare them against the current codebase, reuse points, complexity, and risk. The full comparison does not need to appear in the document unless it materially helps execution.</content>
-</constraint>
+1. **Planning Only.** Use this skill for planning and implementation-preparation only. During this stage, ONLY create or update files inside the active .specs bundle and do NOT write product code.
+2. **Shared Spec Workspace.** Spec bundles live in $(cwd)/.specs/&lt;slug&gt;_v&lt;index&gt;. The default target is the highest unfinished matching version unless the user specifies another bundle.
+3. **Required Bundle Files.** Each new or repaired bundle MUST contain spec.md, tasks.md, checklist.md, and test-cases.md. Add design.md whenever implementation design is needed to produce trustworthy tasks.
+4. **Local Spec State.** .specs is local planning state and MUST NOT be committed to git. Respect existing ignore rules and add .specs/ to ignore rules when missing.
+5. **Spec Authority.** spec.md is the only source of scope and acceptance truth. This skill is the only stage that may materially change spec.md unless the user explicitly reopens planning.
 
 # Purpose
 
@@ -120,28 +81,40 @@ Rules:
 - Add enough scope, acceptance, and edge-case detail to guide execution and independent verification.
 - Do not turn `spec.md` into a design document.
 
-## 3. Decide Whether `design.md` Is Needed
+## 3. Write `design.md` When Needed
 
-Create `design.md` when implementation cannot be planned responsibly from `spec.md` alone. Common triggers include:
+Create `design.md` when the change crosses modules, depends on repository-specific reuse points, needs design pattern choices, or involves data flow / state / interface decisions that the executor would otherwise need to improvise. Skip when the change is local, obvious, and fits an existing pattern.
 
-- the change crosses multiple modules, services, pages, or layers
-- the work depends on repository-specific reuse or extension points
-- design pattern choice, component boundaries, or interaction states need deliberate shaping
-- data flow, state ownership, async coordination, caching, persistence, or consistency choices matter
-- API contracts, schemas, or model boundaries materially affect implementation
-- the executor would otherwise need to improvise structure while coding
+When needed, load `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md` and follow its constraints, deliberation process, and suggested structure.
 
-Skip `design.md` or keep it minimal when the change is local, obvious, and fits an existing pattern without meaningful architectural choice.
+## 4. Choose Design Representations
 
-## 4. Write `design.md` Only When It Improves Direction
+When `design.md` is created, it MUST include enough structured representation to make the intended implementation direction unambiguous. The right representation may be Mermaid, ASCII, Markdown tables, JSON examples, or structured lists.
 
-When `design.md` is needed, keep it short and specific to this repository. It should explain how the feature should be implemented here, with enough detail to guide execution choices such as design patterns, module responsibilities, data flow, state ownership, interface shape, and UI structure when needed.
+Use the decision table below to choose the most suitable expression for each design problem. Prefer the minimum representation that makes execution and verification reliable.
 
-Before writing it, compare multiple plausible implementation directions internally and then choose the one that best fits the current repository.
+| Design Problem | Recommended Representation | Alternative Representation | Omit When | Template File |
+|---|---|---|---|---|
+| Cross-module or cross-service boundaries | Mermaid architecture diagram | Layered list | The change stays inside one local module | `diagrams-templates/architecture.md` |
+| Module or component responsibilities | Structured list | Mermaid component diagram | Responsibilities are already obvious from existing structure | `diagrams-templates/component.md` |
+| Data flow, transformation, persistence | Mermaid data-flow diagram | Step list | The path is short and obvious | `diagrams-templates/data-flow.md` |
+| Ordered interactions or async coordination | Mermaid sequence diagram | Numbered request/response flow | Ordering and branching do not matter | `diagrams-templates/sequence.md` |
+| Entity lifecycle or process states | Mermaid state machine | State transition table | No meaningful discrete states exist | `diagrams-templates/state-machine.md` |
+| Schema or core model relationships | Mermaid ER diagram | Field/relationship table | The change does not alter meaningful structure | `diagrams-templates/er.md` |
+| API / schema / model contract | Markdown table plus JSON example | Structured field list | No external or module boundary contract changes | `diagrams-templates/api-contract.md` |
+| Frontend UI layout | ASCII layout sketch | Hierarchical list | Layout structure is unchanged or irrelevant | `diagrams-templates/ui-layout.md` |
+| Frontend UI interaction flow | Mermaid flow diagram | Arrow-based text flow | The change is static layout only | `diagrams-templates/ui-interaction-flow.md` |
 
-Do not include alternatives analysis unless it materially helps explain the chosen implementation direction. If needed, a short `Why This Approach` note is enough.
+All template files are under `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/`.
 
-Use `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md` as the design-specific reference.
+Rules:
+
+- Only include representations that materially help execution or verification.
+- Use Mermaid when flow, dependency, or state is the main question.
+- Use ASCII when spatial layout or containment is the main question.
+- Use tables or examples when contract shape is the main question.
+- Apply the minimum-expression principle: do not add a diagram just to make the document look complete.
+- Every representation MUST use concrete names from the codebase. Avoid placeholders like `Module A` or `Main Page`.
 
 ## 5. Derive `tasks.md` After Planning and Design
 
