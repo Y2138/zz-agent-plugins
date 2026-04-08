@@ -28,7 +28,7 @@ Filename rules:
 
 1. Use the archive as a workflow record, not as a permanent description of the latest codebase.
 2. Base the archive on the actual implemented result and verification evidence.
-3. Keep only the parts of `spec.md` and other bundle docs that help a future reader understand the original intent and final result.
+3. Keep only the parts of `spec.md` and other bundle docs that help a future reader understand the original intent, task evolution, and final result.
 4. Rewrite design conclusions to match the final implementation when planning and code diverged.
 5. Summarize task completion rather than copying the full task list.
 6. If work is incomplete, say what remains or was deferred, but keep the archive concise.
@@ -100,6 +100,7 @@ Keep this short and concrete:
 - manual checks
 - runtime evidence
 - important acceptance points that were verified
+- major verification failures and how the task list evolved when that history matters
 
 ### Remaining Notes
 

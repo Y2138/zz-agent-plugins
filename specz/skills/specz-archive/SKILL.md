@@ -21,7 +21,7 @@ description: "Closeout-stage Specz skill. It compresses a finished or partially 
 ## 1. Load the Bundle and Actual Result
 
 1. Resolve the target bundle from `$(cwd)/specs/<summary-slug>/`.
-2. Read `spec.md` first, then only the sections of `tasks.md`, `checklist.md`, `test-cases.md`, and `design.md` that are needed to explain the final result truthfully.
+2. Read `spec.md` first, then only the sections of `tasks.md` and `design.md` that are needed to explain the final result truthfully.
 3. Inspect the actual code, strongest validation evidence, and current task state so the archive reflects delivered behavior rather than planning intent alone.
 
 ## 2. Choose the Archive Filename
@@ -54,7 +54,7 @@ The archive must be concise and should preserve:
 After the archive file is written and checked for accuracy:
 
 1. Delete the original bundle directory under `specs/`.
-2. Do not leave stale `spec.md`, `design.md`, `tasks.md`, `checklist.md`, or `test-cases.md` behind.
+2. Do not leave stale `spec.md`, `design.md`, or `tasks.md` behind.
 3. Keep only the single archive record as the workflow summary artifact.
 
 # Exit Condition
