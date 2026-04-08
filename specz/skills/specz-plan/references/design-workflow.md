@@ -1,6 +1,6 @@
 # Specz Design Workflow
 
-Use this document only for the `design.md` part of `specz-plan`.
+Use this document for the full design stage of `specz-plan`, including the short brainstorming pass that happens before `design.md` is written.
 
 ## Goal
 
@@ -21,18 +21,30 @@ Skip `design.md` or keep it minimal when the change is local, obvious, and fits 
 
 ## Constraints
 
-1. **Codebase-Grounded Design.** design.md MUST be grounded in the current project structure, reuse points, layering, data flow, and runtime boundaries. Do not invent architecture that ignores the codebase that actually exists.
-2. **Do Not Repeat Existing Standards.** Do not copy project-wide coding standards, naming rules, lint rules, or design-system guidance into design.md unless this change requires an explicit exception or an additional local constraint.
-3. **Design Without Overbuilding.** design.md must capture only the decisions that materially shape implementation, such as design pattern choices, module boundaries, key abstractions, UI layout, state ownership, data flow, and interface changes. Do not turn it into a long architecture treatise and do not write large amounts of business code or pseudocode.
-4. **Selective Sections.** All sections in design.md are optional by default. Include a section only when it adds meaningful implementation guidance for this change.
-5. **Directional Design.** The purpose of design.md is to keep later execution aligned with the intended implementation direction and avoid repository-specific drift or mismatched expectations. Favor concrete guidance over exhaustive analysis.
-6. **Design Deliberation.** Before writing design.md, think through multiple plausible implementation approaches and compare them against the current codebase, reuse points, complexity, and risk. The full comparison does not need to appear in the document unless it materially helps execution.
-7. **Core Design Representations.** When design.md is created, it MUST include enough structured representation to remove ambiguity from the implementation direction. Choose the representation format that best fits the design problem instead of defaulting everything to Mermaid.
-8. **Minimum Expression.** Use the smallest representation that makes the decision clear. Do not add diagrams, tables, or sketches that only restate surrounding prose.
+1. **Directional Design.** The purpose of design.md is to keep later execution aligned with the intended implementation direction and avoid repository-specific drift or mismatched expectations. Favor concrete guidance over exhaustive analysis.
+2. **Codebase-Grounded Design.** design.md MUST be grounded in the current project structure, reuse points, layering, data flow, and runtime boundaries. Do not invent architecture that ignores the codebase that actually exists.
+3. **Ask Before Assuming.** When purpose, constraints, success criteria, or key tradeoffs are still unclear after inspecting the project context, ask the user clarifying questions before settling on a design direction.
+4. **One Question at a Time.** Ask clarifying questions one at a time and wait for the user's answer before asking the next. Prefer multiple choice when that makes the decision easier to answer.
+5. **Brainstorm Before Writing.** Before writing design.md, run a short comparison pass so the chosen direction is the result of deliberate comparison rather than first-idea bias.
+6. **Design Deliberation.** Before writing design.md, compare multiple plausible implementation approaches when the change is non-trivial. The full comparison does not need to appear in the document unless it materially helps execution.
+7. **Design Without Overbuilding.** design.md must capture only the decisions that materially shape implementation, such as design pattern choices, module boundaries, key abstractions, UI layout, state ownership, data flow, and interface changes. Do not turn it into a long architecture treatise and do not write large amounts of business code or pseudocode.
+8. **Do Not Repeat Existing Standards.** Do not copy project-wide coding standards, naming rules, lint rules, or design-system guidance into design.md unless this change requires an explicit exception or an additional local constraint.
+9. **Selective Sections.** All sections in design.md are optional by default. Include a section only when it adds meaningful implementation guidance for this change.
+10. **Core Design Representations.** When design.md is created, it MUST include enough structured representation to remove ambiguity from the implementation direction. Choose the representation format that best fits the design problem instead of defaulting everything to Mermaid.
+11. **Minimum Expression.** Use the smallest representation that makes the decision clear. Do not add diagrams, tables, or sketches that only restate surrounding prose.
 
-## Deliberation Before Writing
+## Brainstorm and Converge
 
-Before writing `design.md`, deliberately compare multiple plausible implementation approaches. This comparison is part of the planning process even when the final document stays short.
+Before writing `design.md`, frame the design question and compare realistic directions when the change is non-trivial.
+
+Use a lightweight pass:
+
+1. State what decision actually needs to be made.
+2. If purpose, constraints, success criteria, or a key tradeoff is still unclear, ask the user one focused clarifying question and wait for the answer before continuing.
+3. Generate 2-3 plausible directions only when the change is non-trivial.
+4. Compare them against the current codebase, reuse points, complexity, verification cost, and likely drift.
+5. Choose one direction explicitly.
+6. Write `design.md` from that chosen direction rather than from the raw option list.
 
 At minimum, think through:
 
@@ -41,7 +53,24 @@ At minimum, think through:
 - where state, side effects, orchestration, and ownership should live
 - which approach keeps the implementation simplest without fighting the current codebase
 
-You do not need to document every rejected option. Record only the chosen direction unless the alternatives are important for execution clarity.
+You do not need to document every rejected option. Record only the chosen direction unless alternatives materially improve implementation safety.
+
+Use a comparison table only when it helps:
+
+```markdown
+| Direction | Fit With Current Codebase | Main Benefit | Main Cost | Verdict |
+|---|---|---|---|---|
+| Extend existing orders page flow | High | Reuses existing fetch/state pattern | Makes page component heavier | Candidate |
+| Add new orders orchestration hook | Medium | Cleaner separation of state and UI | Introduces new abstraction | Candidate |
+| Introduce shared store slice | Low | Reusable across pages | Too heavy for current scope | Reject |
+```
+
+Questioning rules:
+
+- Ask questions one at a time rather than sending a laundry list.
+- Prefer multiple choice when possible, but use open-ended questions when the answer cannot be constrained usefully.
+- Focus questions on purpose, constraints, success criteria, decomposition, and major tradeoffs.
+- If the request is too broad for one design, use questions to help decompose it before writing `design.md`.
 
 ## design.md Structure
 

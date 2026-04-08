@@ -6,11 +6,11 @@ description: "Orchestration Specz skill. It chains the exec and verify skills th
 # Constraints
 
 1. **Controller Only.** This skill is a controller. It must not directly replace the execution or verification responsibilities of the exec or verify skills.
-2. **Separate Agent Contexts.** Use one agent context for execution and a separate agent context for verification. The verifier must not inherit the executor's narrative as authority.
-3. **Bounded Loop.** Run at most 3 full execution-verification rounds. Never loop indefinitely.
-4. **Bundle Scope.** Operate on the current active bundle only. Do not automatically create a new version or change spec.md.
-5. **Stop Conditions.** Stop immediately on scope ambiguity, requirement conflict, destructive actions, or missing critical environment prerequisites.
-6. **Design Context Propagation.** When design.md exists, pass it to every execution and verification round as binding context. Both stages must read and follow it.
+2. **Bundle Scope.** Operate on the current active bundle only. Do not automatically create another bundle or change `spec.md`.
+3. **Separate Agent Contexts.** Use one agent context for execution and a separate agent context for verification. The verifier must not inherit the executor's narrative as authority.
+4. **Design Context Propagation.** When `design.md` exists, pass only the needed sections to each execution and verification round as binding context.
+5. **Bounded Loop.** Run at most 3 full execution-verification rounds. Never loop indefinitely.
+6. **Stop Conditions.** Stop immediately on scope ambiguity, requirement conflict, destructive actions, or missing critical environment prerequisites.
 
 # Purpose
 
@@ -21,9 +21,9 @@ description: "Orchestration Specz skill. It chains the exec and verify skills th
 ## 1. Resolve the Bundle
 
 1. Use the bundle explicitly named by the user if present.
-2. Otherwise choose the highest unfinished matching version in `.specs/<slug>_v<index>/`.
+2. Otherwise choose the bundle in `specs/<summary-slug>/` that matches the current task summary.
 3. Confirm the bundle contains `spec.md`, `tasks.md`, `checklist.md`, and `test-cases.md`.
-4. If `design.md` exists, treat it as binding context for both exec and verify rounds.
+4. If `design.md` exists, pass only the needed sections for the current exec and verify rounds.
 
 ## 2. Run the Loop
 
@@ -40,9 +40,10 @@ description: "Orchestration Specz skill. It chains the exec and verify skills th
 
 - On success, report that the bundle satisfies `spec.md`, Acceptance, checklist outcomes, and required test evidence.
 - On success, also report whether `design.md` was present and whether execution stayed aligned with it.
+- On success, recommend `specz-archive` when the workflow should be summarized into one archive file and the original bundle should be removed.
 - On failure, report:
   - unmet acceptance items
   - reopened or newly added tasks
   - design drift or missing design decisions when relevant
   - recommended next action for the user
-- Never create a new bundle version automatically.
+- Never create another bundle automatically.

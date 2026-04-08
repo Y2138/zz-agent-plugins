@@ -10,7 +10,7 @@
     {
       "name": "specz",
       "source": "./specz",
-      "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and versioned spec bundles.",
+      "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and summary-named spec bundles.",
       "category": "productivity",
       "keywords": [
         "specz",

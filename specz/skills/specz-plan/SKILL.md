@@ -1,37 +1,30 @@
----
+***
+
 name: "specz-plan"
 description: "Planning-stage Specz skill. It creates or updates the active spec bundle, optionally adds implementation design that is grounded in the current codebase, and then derives tasks, checklist, and test cases."
----
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Constraints
 
-1. **Planning Only.** Use this skill for planning and implementation-preparation only. During this stage, ONLY create or update files inside the active .specs bundle and do NOT write product code.
-2. **Shared Spec Workspace.** Spec bundles live in $(cwd)/.specs/&lt;slug&gt;_v&lt;index&gt;. The default target is the highest unfinished matching version unless the user specifies another bundle.
-3. **Required Bundle Files.** Each new or repaired bundle MUST contain spec.md, tasks.md, checklist.md, and test-cases.md. Add design.md whenever implementation design is needed to produce trustworthy tasks.
-4. **Local Spec State.** .specs is local planning state and MUST NOT be committed to git. Respect existing ignore rules and add .specs/ to ignore rules when missing.
-5. **Spec Authority.** spec.md is the only source of scope and acceptance truth. This skill is the only stage that may materially change spec.md unless the user explicitly reopens planning.
+1. **Planning Only.** Use this skill only for planning and implementation-preparation. Create or update files inside the active specs bundle, but do not write product code.
+2. **Spec Authority.** `spec.md` is the only source of scope and acceptance truth. This is the only stage that may materially change `spec.md` unless the user explicitly reopens planning.
+3. **Shared Spec Workspace.** Spec bundles live in `$(cwd)/specs/<summary-slug>/`, where `<summary-slug>` comes from the current task summary. Reuse the matching bundle unless the user specifies another one.
+4. **Required Bundle Files.** Each new or repaired bundle MUST contain `spec.md`, `tasks.md`, `checklist.md`, and `test-cases.md`. Add `design.md` whenever implementation design is needed to produce trustworthy tasks.
+5. **Local Spec State.** `specs/` is local planning state and MUST NOT be committed to git. Respect existing ignore rules and add `specs/` to ignore rules when missing.
 
 # Purpose
 
 `specz-plan` is the planning-stage Specz skill. It converts a PRD, feature request, or change idea into one synchronized spec bundle that later execution and verification stages must follow.
 
-This skill defines the relationship between the bundle documents:
-
-- `spec.md`: authoritative scope, requirements, and acceptance
-- `design.md`: optional implementation design grounded in the current repository and focused on the key details that guide implementation direction
-- `tasks.md`: implementation work derived from `spec.md` and, when present, `design.md`
-- `checklist.md`: observable outcomes derived from Acceptance
-- `test-cases.md`: independent validation evidence derived from `spec.md` and Acceptance
-
 # Workflow
 
 ## 1. Reuse or Create the Active Bundle
 
-1. Inspect `$(cwd)/.specs/` for bundles that match the request topic.
+1. Inspect `$(cwd)/specs/` for bundles that match the request topic or current task summary.
 2. If the user specifies a bundle, use it directly.
-3. Otherwise, prefer the highest unfinished matching version such as `user-login_v2`.
-4. If only completed matches exist and the user is starting a new iteration of the same topic, create the next version.
-5. If no aligned bundle exists, create `$(cwd)/.specs/<slug>_v1/`.
+3. Otherwise, derive `<summary-slug>` from the current task summary and prefer `$(cwd)/specs/<summary-slug>/`.
+4. If that bundle already exists, update it instead of creating a versioned copy.
+5. If no aligned bundle exists, create `$(cwd)/specs/<summary-slug>/`.
 
 ## 2. Draft `spec.md` First
 
@@ -75,8 +68,6 @@ The system SHALL provide...
 ```
 
 Rules:
-
-- Keep `spec.md` lightweight and close to the current style.
 - Do not copy large PRD sections into `spec.md`; only reference the source PRD at the top.
 - Add enough scope, acceptance, and edge-case detail to guide execution and independent verification.
 - Do not turn `spec.md` into a design document.
@@ -85,36 +76,16 @@ Rules:
 
 Create `design.md` when the change crosses modules, depends on repository-specific reuse points, needs design pattern choices, or involves data flow / state / interface decisions that the executor would otherwise need to improvise. Skip when the change is local, obvious, and fits an existing pattern.
 
-When needed, load `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md` and follow its constraints, deliberation process, and suggested structure.
+When needed, load `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md` and use it for both the lightweight brainstorming pass, including any needed user questions, and the final `design.md`.
 
 ## 4. Choose Design Representations
 
-When `design.md` is created, it MUST include enough structured representation to make the intended implementation direction unambiguous. The right representation may be Mermaid, ASCII, Markdown tables, JSON examples, or structured lists.
+When `design.md` is created, it MUST include enough structured representation to make the intended implementation direction unambiguous.
 
-Use the decision table below to choose the most suitable expression for each design problem. Prefer the minimum representation that makes execution and verification reliable.
-
-| Design Problem | Recommended Representation | Alternative Representation | Omit When | Template File |
-|---|---|---|---|---|
-| Cross-module or cross-service boundaries | Mermaid architecture diagram | Layered list | The change stays inside one local module | `diagrams-templates/architecture.md` |
-| Module or component responsibilities | Structured list | Mermaid component diagram | Responsibilities are already obvious from existing structure | `diagrams-templates/component.md` |
-| Data flow, transformation, persistence | Mermaid data-flow diagram | Step list | The path is short and obvious | `diagrams-templates/data-flow.md` |
-| Ordered interactions or async coordination | Mermaid sequence diagram | Numbered request/response flow | Ordering and branching do not matter | `diagrams-templates/sequence.md` |
-| Entity lifecycle or process states | Mermaid state machine | State transition table | No meaningful discrete states exist | `diagrams-templates/state-machine.md` |
-| Schema or core model relationships | Mermaid ER diagram | Field/relationship table | The change does not alter meaningful structure | `diagrams-templates/er.md` |
-| API / schema / model contract | Markdown table plus JSON example | Structured field list | No external or module boundary contract changes | `diagrams-templates/api-contract.md` |
-| Frontend UI layout | ASCII layout sketch | Hierarchical list | Layout structure is unchanged or irrelevant | `diagrams-templates/ui-layout.md` |
-| Frontend UI interaction flow | Mermaid flow diagram | Arrow-based text flow | The change is static layout only | `diagrams-templates/ui-interaction-flow.md` |
-
-All template files are under `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/`.
+Choose the smallest representation that makes execution and verification reliable. For representation choice, placement, and templates, follow `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md` and the templates under `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/diagrams-templates/`.
 
 Rules:
-
 - Only include representations that materially help execution or verification.
-- Use Mermaid when flow, dependency, or state is the main question.
-- Use ASCII when spatial layout or containment is the main question.
-- Use tables or examples when contract shape is the main question.
-- Apply the minimum-expression principle: do not add a diagram just to make the document look complete.
-- Every representation MUST use concrete names from the codebase. Avoid placeholders like `Module A` or `Main Page`.
 
 ## 5. Derive `tasks.md` After Planning and Design
 
@@ -163,6 +134,7 @@ When the bundle is ready, stop at the planning boundary and direct the workflow 
 
 - `specz-exec` for task implementation
 - `specz-verify` for testing and final verification
+- `specz-archive` after verification is complete and the workflow should be summarized and cleaned up
 - `specz-auto-run` when the user wants a bounded executor/verifier loop
 
 Do not implement product code inside the `specz-plan` skill.

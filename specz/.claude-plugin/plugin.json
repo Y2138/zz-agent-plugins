@@ -1,7 +1,7 @@
 {
   "name": "specz",
-  "version": "0.2.0",
-  "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and versioned spec bundles.",
+  "version": "0.5.0",
+  "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and summary-named spec bundles.",
   "author": {
     "name": "zane",
     "url": "https://github.com/Y2138"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Specz",
     "shortDescription": "Run a spec-driven workflow with execution and verification skills.",
-    "longDescription": "Specz helps agents execute document-driven tasks with explicit plan, exec, verify, and auto-run workflows backed by bounded repair loops.",
+    "longDescription": "Specz helps agents execute document-driven tasks with explicit plan, exec, verify, archive, and auto-run workflows backed by bounded repair loops.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -30,7 +30,8 @@
     "defaultPrompt": [
       "Use specz to plan a new spec bundle for this task.",
       "Run the specz execution flow for the current change.",
-      "Verify this implementation with the specz verifier."
+      "Verify this implementation with the specz verifier.",
+      "Archive this completed spec bundle into a single workflow record."
     ],
     "brandColor": "#2563EB"
   }
