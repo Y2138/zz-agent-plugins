@@ -9,7 +9,6 @@ description: "Planning-stage Specz skill. It creates or updates the active spec 
 2. **Spec Authority.** `spec.md` is the only source of scope and acceptance truth. This is the only stage that may materially change `spec.md` unless the user explicitly reopens planning.
 3. **Shared Spec Workspace.** Spec bundles live in `$(cwd)/specs/<summary-slug>/`, where `<summary-slug>` comes from the current task summary. Reuse the matching bundle unless the user specifies another one.
 4. **Required Bundle Files.** Each new or repaired bundle MUST contain `spec.md` and `tasks.md`. Add `design.md` whenever implementation design is needed to produce trustworthy execution. Do not create `checklist.md`, `issues.md`, or `test-cases.md`.
-5. **Local Spec State.** `specs/` is local planning state and MUST NOT be committed to git. Respect existing ignore rules and add `specs/` to ignore rules when missing.
 
 # Purpose
 
