@@ -1,8 +1,7 @@
-***
-
+---
 name: "specz-plan"
 description: "Planning-stage Specz skill. It creates or updates the active spec bundle, optionally adds implementation design that is grounded in the current codebase, and then derives tasks, checklist, and test cases."
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Constraints
 
