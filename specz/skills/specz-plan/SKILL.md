@@ -6,9 +6,8 @@ description: "Planning-stage Specz skill. It creates or updates the active spec 
 # Constraints
 
 1. **Planning Only.** Use this skill only for planning and implementation-preparation. Create or update files inside the active specs bundle, but do not write product code.
-2. **Spec Authority.** `spec.md` is the only source of scope and acceptance truth. This is the only stage that may materially change `spec.md` unless the user explicitly reopens planning.
-3. **Shared Spec Workspace.** Spec bundles live in `$(cwd)/specs/<summary-slug>/`, where `<summary-slug>` comes from the current task summary. Reuse the matching bundle unless the user specifies another one.
-4. **Required Bundle Files.** Each new or repaired bundle MUST contain `spec.md` and `tasks.md`. Add `design.md` whenever implementation design is needed to produce trustworthy execution. Do not create `checklist.md`, `issues.md`, or `test-cases.md`.
+2. **Spec Bundle Authority.** `spec.md` is the only source of scope and acceptance truth. Maintain spec bundles in `$(cwd)/specs/<summary-slug>/`. Each bundle MUST contain `spec.md` and `tasks.md`; add `design.md` when needed. Do not create `checklist.md`, `issues.md`, or `test-cases.md`.
+3. **Clarify Before Planning.** Before writing any documents, identify critical gaps that affect result definition, scope, or execution direction. Ask 1-5 focused questions to confirm what to do, what constitutes completion, and what is out of scope. Skip only for obviously small tasks or when missing information would not materially affect the outcome.
 
 # Purpose
 
@@ -24,7 +23,17 @@ description: "Planning-stage Specz skill. It creates or updates the active spec 
 4. If that bundle already exists, update it instead of creating a versioned copy.
 5. If no aligned bundle exists, create `$(cwd)/specs/<summary-slug>/`.
 
-## 2. Draft `spec.md` First
+## 2. Brainstorm and Converge
+
+Before writing any spec or design documents, do a short convergence pass to align on direction:
+
+1. **Identify Critical Gaps.** Check if key information affecting result definition, scope boundaries, success criteria, or execution direction is missing.
+2. **Clarify First.** If critical gaps exist, ask the user 1-5 focused questions to confirm: what to do, what constitutes completion, and what is out of scope. Do not fill gaps with assumptions.
+3. **State the Decision Need.** Explain what implementation decision actually needs guidance.
+4. **Compare Directions (when non-trivial).** For non-trivial changes, compare 2-3 plausible implementation directions based on codebase fit, reuse points, complexity, and verification cost.
+5. **Converge and Proceed.** Choose one direction and proceed. Skip this entire step only when the task is obviously small, follows existing patterns, or missing information would not materially affect the outcome.
+
+## 3. Draft `spec.md` First
 
 ### `spec.md`
 
@@ -71,13 +80,13 @@ Rules:
 - Write Acceptance so a separate verify agent can decide pass or fail without needing executor narration.
 - Do not turn `spec.md` into a design document.
 
-## 3. Write `design.md` When Needed
+## 4. Write `design.md` When Needed
 
 Create `design.md` when the change crosses modules, depends on repository-specific reuse points, needs design pattern choices, or involves data flow, domain modeling, state, or interface decisions that the executor would otherwise need to improvise. Skip when the change is local, obvious, and fits an existing pattern.
 
-When needed, load `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md`, route to the matching end-specific template, and use that for both the lightweight brainstorming pass, including any needed user questions, and the final `design.md`.
+When needed, load `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md`, route to the matching end-specific template, and use that for the final `design.md`.
 
-## 4. Choose Design Representations
+## 5. Choose Design Representations
 
 When `design.md` is created, it MUST include enough structured representation to make the intended implementation direction unambiguous.
 
@@ -87,7 +96,7 @@ Rules:
 - Only include representations that materially help execution or verification.
 - For backend or domain-heavy changes, include DDD-style domain modeling when it is needed to remove ambiguity around bounded contexts, aggregates, entities, value objects, domain services, repositories, or domain events.
 
-## 5. Derive `tasks.md` After Planning and Design
+## 6. Derive `tasks.md` After Planning and Design
 
 ### `tasks.md`
 
@@ -111,7 +120,7 @@ Template:
 - [Task 2] depends on [Task 1]
 ```
 
-## 6. Do Not Write Verification-Owned Files During Planning
+## 7. Do Not Write Verification-Owned Files During Planning
 
 - Do not create `checklist.md`.
 - Do not create `issues.md`.
@@ -119,7 +128,7 @@ Template:
 - Do not try to script the verifier's testing process during planning unless the spec itself contains an explicit verification constraint.
 - If a feature has unusual verification risk, capture that risk in `spec.md` Acceptance or `design.md` notes instead of inventing a separate planning-owned verification document.
 
-## 7. Handoff Rule
+## 8. Handoff Rule
 
 When the bundle is ready, stop at the planning boundary and direct the workflow to:
 

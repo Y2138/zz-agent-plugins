@@ -50,18 +50,6 @@ Use only the matching template:
 
 If the task spans multiple ends, choose one primary end and add only the minimum supporting sections needed from the secondary end.
 
-## Brainstorm and Converge
-
-Before writing `design.md`, do a short convergence pass:
-
-1. State what implementation decision actually needs guidance.
-2. If key constraints or tradeoffs are still unclear, ask the user one focused question.
-3. Compare 2-3 plausible directions only when the change is non-trivial.
-4. Choose one direction based on fit with the current codebase, reuse points, complexity, and verification cost.
-5. Write `design.md` from that chosen direction.
-
-Keep any option comparison brief. The final document should mostly contain the chosen path, not the rejected ones.
-
 ## What `design.md` Should Usually Help With
 
 For later agents, `design.md` should make these points easy to answer:
