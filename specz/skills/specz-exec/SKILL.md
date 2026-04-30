@@ -6,7 +6,7 @@ description: "Execution-stage Specz skill. It implements and repairs tasks from 
 # Constraints
 
 1. **Execution Only.** This skill only executes implementation tasks from the active spec bundle. It must not redefine scope, reinterpret requirements, or change `spec.md`.
-2. **Binding Inputs.** Read `spec.md` first, use `tasks.md` as the execution queue, and treat `design.md` as binding implementation guidance when present. Do not depend on any separate issue or test-case file.
+2. **Binding Inputs.** Read `spec.md` first, use `tasks.md` as the execution queue, and treat `design.md` as binding implementation guidance when present. If `verification.md` exists, read it only as pre-implementation acceptance-evidence context. Do not treat any separate issue, test-case, or verification file as an execution queue.
 3. **Task State Sync.** Keep `tasks.md` accurate as work is claimed, completed, reopened, or refined. Do not mark work complete while it is still in progress, blocked, or unverified.
 4. **Scope-Safe Gap Handling.** If implementation reveals missing work, add or refine tasks before continuing, but only when the new work is still inside the current `spec.md` scope.
 5. **Separate Agent Context.** This skill must run in a different agent context from the verify skill. The executor must not reuse the verifier's judgment context.
@@ -25,6 +25,7 @@ description: "Execution-stage Specz skill. It implements and repairs tasks from 
 2. Read `spec.md` to confirm scope and acceptance.
 3. Read `tasks.md` as the implementation queue.
 4. If `design.md` exists, read the sections that constrain the current implementation decisions.
+5. If `verification.md` exists, read it as context for expected acceptance evidence, but do not execute or complete its evidence items.
 
 ## 2. Plan Execution Order and Parallelism
 
@@ -33,7 +34,7 @@ description: "Execution-stage Specz skill. It implements and repairs tasks from 
 3. Use binding context (design.md, if present) to identify module boundaries and decide which tasks can be implemented safely in parallel.
 4. Group tasks by dependency and file ownership before delegating.
 5. Only parallelize tasks that are independent in both dependency order and likely write scope.
-6. Use `tasks.md` as the loop contract: finish open implementation tasks, repair verifier-reopened tasks, and ignore already verified-complete work.
+6. Use `tasks.md` as the loop contract: finish open `[source: requirement]` implementation tasks, repair open `[source: verify]` tasks, and ignore already verified-complete work.
 7. Plan implementation work so acceptance proof can be deferred to `specz-verify` instead of re-created here.
 
 ## 3. Execute Tasks
@@ -59,6 +60,9 @@ description: "Execution-stage Specz skill. It implements and repairs tasks from 
 
 ## 5. Keep `tasks.md` Honest
 
+- Treat `[source: requirement]` tasks as initial implementation work derived from `spec.md` and `design.md`.
+- Treat `[source: verify]` tasks as verifier-discovered defects, missing behavior, or insufficient implementation work that must be repaired before the next verification round.
+- If a task has no source marker, infer its source from nearby context and add the marker when editing that line.
 - Check a task only after the code change and any implementation-side sanity checks for that task are complete.
 - Mark work in progress or ownership explicitly when that helps coordinate multiple subagents.
 - Leave acceptance-sensitive items unchecked when verification evidence is still pending.

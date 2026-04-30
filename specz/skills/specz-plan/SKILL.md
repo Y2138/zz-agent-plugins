@@ -1,17 +1,17 @@
 ---
 name: "specz-plan"
-description: "Planning-stage Specz skill. It creates or updates the active spec bundle, writes spec.md as the shared source of truth, adds codebase-grounded design.md when needed, and derives tasks.md as the only shared execution loop document."
+description: "Planning-stage Specz skill. It creates or updates the active spec bundle, writes spec.md as the shared source of truth, adds codebase-grounded design.md when needed, derives tasks.md, and writes a pre-implementation verification.md evidence plan."
 ---
 
 # Constraints
 
 1. **Planning Only.** Use this skill only for planning and implementation-preparation. Create or update files inside the active specs bundle, but do not write product code.
-2. **Spec Bundle Authority.** `spec.md` is the only source of scope and acceptance truth. Maintain spec bundles in `$(cwd)/specs/<summary-slug>/`. Each bundle MUST contain `spec.md` and `tasks.md`; add `design.md` when needed. Do not create `checklist.md`, `issues.md`, or `test-cases.md`.
+2. **Spec Bundle Authority.** `spec.md` is the only source of scope and acceptance truth. Maintain spec bundles in `$(cwd)/specs/<summary-slug>/`. Each bundle MUST contain `spec.md`, `tasks.md`, and `verification.md`; add `design.md` when needed. Do not create `checklist.md`, `issues.md`, or `test-cases.md`.
 3. **Clarify Before Planning.** Before writing any documents, identify critical gaps that affect result definition, scope, or execution direction. Ask 1-5 focused questions to confirm what to do, what constitutes completion, and what is out of scope. Skip only for obviously small tasks or when missing information would not materially affect the outcome.
 
 # Purpose
 
-`specz-plan` is the planning-stage Specz skill. It converts a PRD, feature request, or change idea into one synchronized spec bundle that later execution and verification stages must follow. Planning defines the shared truth for development and testing without preempting the verifier's independent judgment.
+`specz-plan` is the planning-stage Specz skill. It converts a PRD, feature request, or change idea into one synchronized spec bundle that later execution and verification stages must follow. Planning defines the shared truth for development and pre-implementation evidence expectations without preempting the verifier's independent final judgment.
 
 # Workflow
 
@@ -101,6 +101,7 @@ Rules:
 ### `tasks.md`
 
 - Write an ordered list of small, verifiable implementation tasks.
+- Mark initial implementation tasks with `[source: requirement]`.
 - Break tasks into subtasks only when it genuinely improves execution clarity.
 - Include validation work where needed.
 - Use `tasks.md` as the shared execution loop surface between `specz-exec` and `specz-verify`. Verification may later reopen, append, or reprioritize tasks based on discovered defects.
@@ -113,22 +114,59 @@ Template:
 
 ```markdown
 # Tasks
-- [ ] Task 1: [Describe the user-visible implementation goal]
+- [ ] [source: requirement] Task 1: [Describe the user-visible implementation goal]
   - [ ] Subtask 1.1: [Concrete implementation step]
 
 # Task Dependencies
 - [Task 2] depends on [Task 1]
 ```
 
-## 7. Do Not Write Verification-Owned Files During Planning
+## 7. Write `verification.md` After Tasks
+
+Create `verification.md` as the pre-implementation evidence plan. It defines what observable evidence should prove the acceptance items before implementation begins, so final verification is not reverse-engineered from the completed code.
+
+Rules:
+- Derive evidence from `spec.md` first, then `design.md` when present.
+- Read `tasks.md` only to understand planned implementation shape.
+- Do not inspect current implementation diffs or adapt the plan around already-written code.
+- Do not add requirements beyond `spec.md`.
+- Plan evidence that can be executed or observed. Do not use code review, diff inspection, executor claims, or static reasoning as the primary acceptance evidence.
+- For UI behavior, layout, or end-user flows, plan browser-capable runtime evidence such as `agent-browser`, Playwright, Chrome CDP, screenshots, DOM observation, or interaction checks.
+- Use API, CLI, integration, data assertions, generated artifact inspection, logs, or automated tests when those are the most suitable evidence for the requirement.
+- Do not force every requirement into a unit test.
+- `verification.md` is not an execution queue. `specz-exec` may read it as acceptance-evidence context, but must not mark its items complete.
+- The final pass/fail decision still belongs to `specz-verify`, which must execute concrete checks and may adapt the plan when a different proof path better validates the same acceptance item.
+
+Template:
+
+```markdown
+# Verification Plan
+
+## Source
+- Derived from: `spec.md`
+- Design context: `design.md` present / not present
+- Planned before implementation: yes
+
+## Evidence Plan
+
+- [ ] Evidence 1: [Acceptance item or scenario being proven]
+  - Method: [unit test | integration test | browser check | API request | CLI command | artifact inspection | other]
+  - Expected evidence: [observable pass condition]
+  - Notes: [optional constraints, fixtures, viewport, command target, or risk]
+
+## Gaps
+- [Ambiguities, missing prerequisites, or requirements that cannot be verified yet]
+```
+
+## 8. Do Not Write Extra Verification Trackers During Planning
 
 - Do not create `checklist.md`.
 - Do not create `issues.md`.
 - Do not create `test-cases.md`.
-- Do not try to script the verifier's testing process during planning unless the spec itself contains an explicit verification constraint.
-- If a feature has unusual verification risk, capture that risk in `spec.md` Acceptance or `design.md` notes instead of inventing a separate planning-owned verification document.
+- Do not create separate verification tracker files beyond `verification.md`.
+- Keep `verification.md` focused on evidence expectations. Do not turn it into a second task list or final verification result.
 
-## 8. Handoff Rule
+## 9. Handoff Rule
 
 When the bundle is ready, stop at the planning boundary and direct the workflow to:
 
