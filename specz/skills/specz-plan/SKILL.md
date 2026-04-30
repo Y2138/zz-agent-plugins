@@ -131,7 +131,7 @@ Rules:
 - Do not inspect current implementation diffs or adapt the plan around already-written code.
 - Do not add requirements beyond `spec.md`.
 - Plan evidence that can be executed or observed. Do not use code review, diff inspection, executor claims, or static reasoning as the primary acceptance evidence.
-- For UI behavior, layout, or end-user flows, plan browser-capable runtime evidence such as `agent-browser`, Playwright, Chrome CDP, screenshots, DOM observation, or interaction checks.
+- For UI behavior, layout, or end-user flows, plan browser-capable runtime evidence. Prefer `playwright-cli` for page flows, interactions, assertions, screenshots, and viewport checks; prefer `chrome-devtools` CLI when DevTools-level DOM, console, network, performance, storage, or runtime inspection is the stronger proof. Treat `agent-browser`, direct Playwright code, Chrome CDP, or equivalent tools as fallbacks.
 - Use API, CLI, integration, data assertions, generated artifact inspection, logs, or automated tests when those are the most suitable evidence for the requirement.
 - Do not force every requirement into a unit test.
 - `verification.md` is not an execution queue. `specz-exec` may read it as acceptance-evidence context, but must not mark its items complete.

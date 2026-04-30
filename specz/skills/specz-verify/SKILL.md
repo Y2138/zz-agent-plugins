@@ -12,7 +12,7 @@ description: "Verification-stage Specz skill. It independently validates the act
 5. **Spec Is Read Only.** Do not silently modify `spec.md`. If verification reveals scope ambiguity or a requirement conflict, return the issue to planning or the user.
 6. **Acceptance Owner.** This skill owns final acceptance proof. Prefer running the broadest and most decision-relevant tests here instead of repeating tests already used only as implementation-side sanity checks in `specz-exec`.
 7. **Observed Verification Required.** Final acceptance requires at least one concrete, executed verification action that observes behavior, output, or artifacts relevant to the spec. Code review, diff inspection, static reasoning, executor claims, or the existence of unrun tests are never sufficient by themselves.
-8. **UI Runtime Proof.** For UI behavior, layout, or end-user flows, use a browser-capable runtime check such as `agent-browser`, Playwright, Chrome CDP, or an equivalent tool to observe rendered behavior. Build, typecheck, lint, or code inspection alone cannot prove UI acceptance.
+8. **UI Runtime Proof.** For UI behavior, layout, or end-user flows, use a browser-capable runtime check to observe rendered behavior. Prefer `playwright-cli` for page flows, interactions, assertions, screenshots, and viewport checks; prefer `chrome-devtools` CLI when DevTools-level DOM, console, network, performance, storage, or runtime inspection is the stronger proof. Use `agent-browser`, direct Playwright code, Chrome CDP, or equivalent tools only as fallbacks when the preferred CLIs are unavailable or insufficient. Build, typecheck, lint, or code inspection alone cannot prove UI acceptance.
 
 # Purpose
 
@@ -36,7 +36,7 @@ Choose the right mix of evidence for the change:
 - Write or refine unit tests when automated coverage is missing.
 - Run the smallest set of automated tests that can prove the spec, preferring targeted suites before broad full-suite reruns.
 - Run integration or end-to-end checks when the spec requires system-level proof.
-- Use `agent-browser` when UI behavior or end-user flows need runtime verification.
+- For UI behavior or end-user flows, prefer `playwright-cli` first, then `chrome-devtools` CLI when DevTools-level inspection is needed. Use `agent-browser`, direct Playwright code, Chrome CDP, or equivalent tools as fallbacks.
 - Inspect runtime output, logs, or generated artifacts when that is the most reliable proof.
 - If binding context (`design.md`) exists, verify that the code structure and behavior do not materially violate its explicit commitments.
 - Do not accept executor self-reporting or executor-authored tests alone as proof of completion.
