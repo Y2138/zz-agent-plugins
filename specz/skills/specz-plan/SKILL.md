@@ -1,178 +1,170 @@
 ---
 name: "specz-plan"
-description: "Planning-stage Specz skill. It creates or updates the active spec bundle, writes spec.md as the shared source of truth, adds codebase-grounded design.md when needed, derives tasks.md, and writes a pre-implementation verification.md evidence plan."
+description: "Planning-stage Specz skill. It turns spec.md into the smallest sufficient execution baseline: optional design.md, tasks.md, and verification.md."
 ---
-
-# Constraints
-
-1. **Planning Only.** Use this skill only for planning and implementation-preparation. Create or update files inside the active specs bundle, but do not write product code.
-2. **Spec Bundle Authority.** `spec.md` is the only source of scope and acceptance truth. Maintain spec bundles in `$(cwd)/specs/<summary-slug>/`. Each bundle MUST contain `spec.md`, `tasks.md`, and `verification.md`; add `design.md` when needed. Do not create `checklist.md`, `issues.md`, or `test-cases.md`.
-3. **Clarify Before Planning.** Before writing any documents, identify critical gaps that affect result definition, scope, or execution direction. Ask 1-5 focused questions to confirm what to do, what constitutes completion, and what is out of scope. Skip only for obviously small tasks or when missing information would not materially affect the outcome.
 
 # Purpose
 
-`specz-plan` is the planning-stage Specz skill. It converts a PRD, feature request, or change idea into one synchronized spec bundle that later execution and verification stages must follow. Planning defines the shared truth for development and pre-implementation evidence expectations without preempting the verifier's independent final judgment.
+Prepare non-small work for execution without over-documenting. `spec.md` remains the behavior authority; planning adds only the implementation guidance and evidence plan the task actually needs.
+
+# Outputs
+
+- Required: `spec.md`, `tasks.md`, `verification.md`
+- Optional: `design.md`
+- Never: `requirements.md` or product code
+
+# Must
+
+- Read `spec.md` first and respect its `Size`.
+- Inspect relevant code before writing tasks or design.
+- Use ID references: `SPEC-*`, `DESIGN-*` when design exists, `TASK-*`, `VERIFY-*`.
+- Keep artifacts short and executable.
+- Run the applicable Bundle Lint before handoff.
+
+# Must Not
+
+- Do not expand scope beyond `spec.md`.
+- Do not create `design.md` for small or obvious local changes unless a concrete implementation decision is needed.
+- Do not create vague tasks.
+- Do not duplicate mappings or implementation details across artifacts.
+
+# Design Decision
+
+Create `design.md` only when one is needed to avoid executor guesswork.
+
+Use `design.md` for:
+
+- cross-module, cross-system, frontend/backend, API, persistence, migration, permission, async, or stateful work
+- new or changed contracts, schemas, config, storage, or data mapping
+- meaningful compatibility, fallback, rollout, or error-handling decisions
+- large tasks
+
+Skip `design.md` for:
+
+- local single-file or obvious pattern-following changes
+- text/content tweaks
+- small bug fixes with clear acceptance and low regression risk
+
+If skipped, note this in `tasks.md`:
+
+```markdown
+> Design: skipped; local low-risk change executable from `spec.md`.
+```
 
 # Workflow
 
-## 1. Reuse or Create the Active Bundle
+1. Resolve the bundle and read `spec.md`.
+2. If `Size: small`, prefer handing directly to `specz-exec`; only continue if the user asked for planning or the code inspection reveals hidden risk.
+3. Inspect relevant repository files.
+4. Decide whether `design.md` is needed.
+5. Write optional `design.md`.
+6. Write `tasks.md`.
+7. Write `verification.md`.
+8. Run Bundle Lint and repair only the failing parts.
 
-1. Inspect `$(cwd)/specs/` for bundles that match the request topic or current task summary.
-2. If the user specifies a bundle, use it directly.
-3. Otherwise, derive `<summary-slug>` from the current task summary and prefer `$(cwd)/specs/<summary-slug>/`.
-4. If that bundle already exists, update it instead of creating a versioned copy.
-5. If no aligned bundle exists, create `$(cwd)/specs/<summary-slug>/`.
+# `design.md` Contract
 
-## 2. Brainstorm and Converge
-
-Before writing any spec or design documents, do a short convergence pass to align on direction:
-
-1. **Identify Critical Gaps.** Check if key information affecting result definition, scope boundaries, success criteria, or execution direction is missing.
-2. **Clarify First.** If critical gaps exist, ask the user 1-5 focused questions to confirm: what to do, what constitutes completion, and what is out of scope. Do not fill gaps with assumptions.
-3. **State the Decision Need.** Explain what implementation decision actually needs guidance.
-4. **Compare Directions (when non-trivial).** For non-trivial changes, compare 2-3 plausible implementation directions based on codebase fit, reuse points, complexity, and verification cost.
-5. **Converge and Proceed.** Choose one direction and proceed. Skip this entire step only when the task is obviously small, follows existing patterns, or missing information would not materially affect the outcome.
-
-## 3. Draft `spec.md` First
-
-### `spec.md`
-
-Use this structure:
+When design is needed, keep this compact:
 
 ```markdown
-# [Feature Name] Spec
+# Implementation Design
 
-> PRD Reference: [path or link]
+## Codebase Facts
+- DESIGN-FACT-01: ...
 
-## Why
-[1-2 sentences on problem or opportunity]
+## Chosen Approach
+- DESIGN-DECISION-01: ...
 
-## What Changes
-- [Bullet list of changes]
-- [Mark breaking changes with **BREAKING**]
+## Files / Modules
+| Area | File / Module | Change |
+|---|---|---|
 
-## Scope
-- In scope: [short bullets]
-- Out of scope: [short bullets]
+## Contracts / Data Mapping
+| ID | Source | Field / API / Config | Target | Rule |
+|---|---|---|---|---|
 
-## Impact
-- Affected specs: [list capabilities]
-- Affected code: [key files or systems]
+## Flow / Fallback / Compatibility
+- DESIGN-FLOW-01: ...
+- DESIGN-FALLBACK-01: ...
+- DESIGN-COMPAT-01: ...
 
-## Requirements
-### Requirement: New Feature
-The system SHALL provide...
-
-#### Scenario: Success case
-- **WHEN** user performs action
-- **THEN** expected result
-
-## Acceptance
-- [Observable result that must be true]
-
-## Risks / Edge Cases
-- [Key boundary or risk only]
+## Non-Goals / Blockers
+- DESIGN-NONGOAL-01: ...
+- BLOCKER-01: ...
 ```
 
 Rules:
-- Do not copy large PRD sections into `spec.md`; only reference the source PRD at the top.
-- Add enough scope, acceptance, and edge-case detail to guide execution and independent verification.
-- Write Acceptance so a separate verify agent can decide pass or fail without needing executor narration.
-- Do not turn `spec.md` into a design document.
 
-## 4. Write `design.md` When Needed
+- Reference real files, modules, contracts, config, or data structures.
+- Put implementation mappings here, not in `spec.md`.
+- No unresolved "maybe/if" branches unless listed as `BLOCKER-*`.
 
-Create `design.md` when the change crosses modules, depends on repository-specific reuse points, needs design pattern choices, or involves data flow, domain modeling, state, or interface decisions that the executor would otherwise need to improvise. Skip when the change is local, obvious, and fits an existing pattern.
-
-When needed, load `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md`, route to the matching end-specific template, and use that for the final `design.md`.
-
-## 5. Choose Design Representations
-
-When `design.md` is created, it MUST include enough structured representation to make the intended implementation direction unambiguous.
-
-Choose the smallest representation that makes execution and verification reliable. For representation choice, placement, and templates, follow `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-workflow.md`, the end-specific templates under `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-templates/`, and the diagram templates under `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/diagrams-templates/` only when needed.
-
-Rules:
-- Only include representations that materially help execution or verification.
-- For backend or domain-heavy changes, include DDD-style domain modeling when it is needed to remove ambiguity around bounded contexts, aggregates, entities, value objects, domain services, repositories, or domain events.
-
-## 6. Derive `tasks.md` After Planning and Design
-
-### `tasks.md`
-
-- Write an ordered list of small, verifiable implementation tasks.
-- Mark initial implementation tasks with `[source: requirement]`.
-- Break tasks into subtasks only when it genuinely improves execution clarity.
-- Include validation work where needed.
-- Use `tasks.md` as the shared execution loop surface between `specz-exec` and `specz-verify`. Verification may later reopen, append, or reprioritize tasks based on discovered defects.
-- Avoid overdesign and avoid speculative tasks.
-- Every task must remain inside the current `spec.md` scope.
-- When `design.md` exists, tasks must reflect its module boundaries, sequencing, and key decisions.
-- Do not pre-create testing tasks whose only purpose is to tell the verifier how to test. Verification should derive its own validation steps directly from `spec.md` and `design.md`.
-
-Template:
+# `tasks.md` Contract
 
 ```markdown
 # Tasks
-- [ ] [source: requirement] Task 1: [Describe the user-visible implementation goal]
-  - [ ] Subtask 1.1: [Concrete implementation step]
 
-# Task Dependencies
-- [Task 2] depends on [Task 1]
+> Design: `design.md` | skipped; [reason]
+
+- [ ] TASK-01 [P] [Concrete task title]
+  - Covers: SPEC-SCENARIO-01
+  - Design: DESIGN-DECISION-01 | none
+  - Files: `path/or/module`
+  - Done when: ...
+
+## Dependencies
+- TASK-03 depends on TASK-01
 ```
 
-## 7. Write `verification.md` After Tasks
-
-Create `verification.md` as the pre-implementation evidence plan. It defines what observable evidence should prove the acceptance items before implementation begins, so final verification is not reverse-engineered from the completed code.
-
 Rules:
-- Derive evidence from `spec.md` first, then `design.md` when present.
-- Read `tasks.md` only to understand planned implementation shape.
-- Do not inspect current implementation diffs or adapt the plan around already-written code.
-- Do not add requirements beyond `spec.md`.
-- Plan evidence that can be executed or observed. Do not use code review, diff inspection, executor claims, or static reasoning as the primary acceptance evidence.
-- For UI behavior, layout, or end-user flows, plan browser-capable runtime evidence. Prefer `playwright-cli` for page flows, interactions, assertions, screenshots, and viewport checks; prefer `chrome-devtools` CLI when DevTools-level DOM, console, network, performance, storage, or runtime inspection is the stronger proof. Treat `agent-browser`, direct Playwright code, Chrome CDP, or equivalent tools as fallbacks.
-- Use API, CLI, integration, data assertions, generated artifact inspection, logs, or automated tests when those are the most suitable evidence for the requirement.
-- Do not force every requirement into a unit test.
-- `verification.md` is not an execution queue. `specz-exec` may read it as acceptance-evidence context, but must not mark its items complete.
-- The final pass/fail decision still belongs to `specz-verify`, which must execute concrete checks and may adapt the plan when a different proof path better validates the same acceptance item.
 
-Template:
+- Each task has `Covers`, `Design`, `Files`, and `Done when`.
+- Each task is concrete enough to execute without another planning pass.
+- Mark independent tasks with `[P]`.
+- Include implementation-side test edits only when code must add or update tests.
+
+# `verification.md` Contract
 
 ```markdown
 # Verification Plan
 
-## Source
-- Derived from: `spec.md`
-- Design context: `design.md` present / not present
-- Planned before implementation: yes
+## Matrix
+| Evidence | Covers Spec | Covers Tasks | Method | Type |
+|---|---|---|---|---|
+| VERIFY-01 | SPEC-SCENARIO-01 | TASK-01 | test/browser/API/manual | positive |
 
-## Evidence Plan
+## Evidence Details
+- [ ] VERIFY-01: ...
+  - Covers: SPEC-SCENARIO-01, TASK-01
+  - Method:
+  - Expected evidence:
+  - Negative / regression case:
 
-- [ ] Evidence 1: [Acceptance item or scenario being proven]
-  - Method: [unit test | integration test | browser check | API request | CLI command | artifact inspection | other]
-  - Expected evidence: [observable pass condition]
-  - Notes: [optional constraints, fixtures, viewport, command target, or risk]
-
-## Gaps
-- [Ambiguities, missing prerequisites, or requirements that cannot be verified yet]
+## Latest Verification Result
+- Status: NOT RUN
+- Verified at: none
+- Evidence: none
+- Remaining repair tasks: none
 ```
 
-## 8. Do Not Write Extra Verification Trackers During Planning
+Rules:
 
-- Do not create `checklist.md`.
-- Do not create `issues.md`.
-- Do not create `test-cases.md`.
-- Do not create separate verification tracker files beyond `verification.md`.
-- Keep `verification.md` focused on evidence expectations. Do not turn it into a second task list or final verification result.
+- Every `SPEC-SCENARIO-*` has evidence.
+- Key tasks have evidence.
+- Add negative/regression evidence only where risk justifies it.
+- UI behavior needs runtime/browser evidence.
 
-## 9. Handoff Rule
+# Bundle Lint
 
-When the bundle is ready, stop at the planning boundary and direct the workflow to:
+Required checks:
 
-- `specz-exec` for task implementation
-- `specz-verify` for independent testing and task-state repair
-- `specz-archive` after verification is complete and the workflow should be summarized and cleaned up
-- `specz-auto-run` when the user wants a bounded executor/verifier loop
+- `spec.md` has no implementation details.
+- `tasks.md` tasks include `Covers`, `Design`, `Files`, and `Done when`.
+- `verification.md` maps evidence to spec scenarios and key tasks.
+- If `design.md` exists, it references real codebase surfaces and has no unresolved branches.
+- If `design.md` is skipped, `tasks.md` explains why and tasks are still executable.
+- Repeated content is replaced with ID references.
 
-Do not implement product code inside the `specz-plan` skill.
+# Handoff
+
+When lint passes, hand to `specz-exec` or `specz-auto-run`.

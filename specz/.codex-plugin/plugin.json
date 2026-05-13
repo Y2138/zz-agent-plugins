@@ -1,7 +1,7 @@
 {
   "name": "specz",
-  "version": "0.6.3",
-  "description": "Document-driven spec workflow plugin with separate execution and verification agents, bounded repair loops, and summary-named spec bundles.",
+  "version": "0.8.0",
+  "description": "Spec-driven workflow plugin with task-size routing, optional design, traceable tasks, verification evidence, bounded repair loops, archive history, and lifecycle status checks.",
   "author": {
     "name": "zane",
     "url": "https://github.com/Y2138"
@@ -18,8 +18,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Specz",
-    "shortDescription": "Run a spec-driven workflow with execution and verification skills.",
-    "longDescription": "Specz helps agents execute document-driven tasks with explicit plan, exec, verify, archive, and auto-run workflows backed by bounded repair loops.",
+    "shortDescription": "Run efficient spec-driven workflows with small-task fast paths.",
+    "longDescription": "Specz helps agents route work by task size, execute small specs directly, and use optional design, traceable tasks, verification evidence, archive, status, and bounded repair loops for larger work.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -28,10 +28,12 @@
     ],
     "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
     "defaultPrompt": [
+      "Use specz to clarify the behavior spec for this task.",
       "Use specz to plan a new spec bundle for this task.",
       "Run the specz execution flow for the current change.",
       "Verify this implementation with the specz verifier.",
-      "Archive this completed spec bundle into a single workflow record."
+      "Archive this completed spec bundle into a single workflow record.",
+      "Check the status of active specz bundles."
     ],
     "brandColor": "#2563EB"
   }

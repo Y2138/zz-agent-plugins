@@ -1,72 +1,62 @@
-# Specz Design Workflow
+# Design Workflow
 
-Use this document for the design stage of `specz-plan`.
+Use only when `specz-plan` decides `design.md` is needed.
 
-## Goal
+# Rule
 
-Produce a `design.md` that works like an execution brief for later agents:
+`design.md` removes executor guesswork. It is not a design essay.
 
-- concrete enough that `specz-exec` can follow it directly
-- scoped enough that `specz-verify` can validate against it when needed
-- small enough that it does not bloat context with cross-end or low-value design detail
+# Create `design.md` For
 
-## When `design.md` Is Needed
+- cross-module/system/end work
+- contracts, schemas, storage, config, migrations, permissions
+- async/stateful flows, compatibility, fallback, rollout
+- large tasks or unclear implementation ownership
 
-Create `design.md` only when execution would otherwise need to guess a meaningful implementation direction. Common triggers include:
+# Skip `design.md` For
 
-- the change crosses multiple modules, services, pages, or layers
-- repository-specific reuse points materially affect the implementation
-- the implementation path is not obvious from `spec.md` alone
-- state ownership, orchestration, contracts, or domain boundaries need an explicit direction
-- the change spans more than one end and later agents need a coordinated execution order
+- small local changes
+- obvious existing-pattern edits
+- text/content tweaks
+- low-risk bug fixes with clear acceptance
 
-Skip `design.md` when the change is local, obvious, and fits an existing pattern without meaningful implementation ambiguity.
+# Required Shape
 
-## Core Rules
+```markdown
+# Implementation Design
 
-1. **Execution Brief, Not Design Essay.** Write `design.md` as direct implementation guidance, not as a full design review packet.
-2. **Route By End.** First determine the primary end for this task, then use only that template unless a secondary end is truly necessary.
-3. **Keep Cross-End Noise Out.** Do not include frontend-only rules in backend designs, backend-only rules in frontend designs, or multi-end detail unless the task actually spans them.
-4. **Use Real Codebase Names.** Reference actual files, modules, components, services, routes, handlers, tables, or schemas from the repository.
-5. **Prefer Decisions Over Discussion.** Record the chosen path and the concrete execution guidance. Do not spend tokens on long alternative analysis unless the tradeoff is genuinely necessary.
-6. **Minimum Useful Shape.** Only include sections that directly help later execution or verification decide what to change, in what order, and what to avoid.
-7. **No Large Pseudocode Blocks.** Avoid long pseudocode and boilerplate implementation sketches.
+## Codebase Facts
+- DESIGN-FACT-01: ...
 
-## End Routing
+## Chosen Approach
+- DESIGN-DECISION-01: ...
 
-Choose one primary end before writing `design.md`:
+## Files / Modules
+| Area | File / Module | Change |
 
-- `frontend`: UI, page, component, interaction, client state, browser behavior
-- `backend`: domain logic, data model, services, persistence, jobs, workflows
-- `api-integration`: API contracts, third-party integrations, service-to-service flows, idempotency, retries
-- `fullstack`: meaningful frontend and backend work that must be coordinated together
+## Contracts / Data Mapping
+| ID | Source | Field / API / Config | Target | Rule |
 
-Use only the matching template:
+## Flow / Fallback / Compatibility
+- DESIGN-FLOW-01: ...
+- DESIGN-FALLBACK-01: ...
+- DESIGN-COMPAT-01: ...
 
-- frontend: `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-templates/frontend.md`
-- backend: `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-templates/backend.md`
-- api-integration: `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-templates/api-integration.md`
-- fullstack: `/Users/staff/Documents/zz-agent-plugins/specz/skills/specz-plan/references/design-templates/fullstack.md`
+## Non-Goals / Blockers
+- DESIGN-NONGOAL-01: ...
+- BLOCKER-01: ...
+```
 
-If the task spans multiple ends, choose one primary end and add only the minimum supporting sections needed from the secondary end.
+# Checks
 
-## What `design.md` Should Usually Help With
+- uses real codebase names
+- no unresolved maybe/if branches except `BLOCKER-*`
+- implementation mappings live here, not in `spec.md`
+- scenarios are referenced by ID, not copied
 
-For later agents, `design.md` should make these points easy to answer:
+# End Hints
 
-- which real files, modules, or surfaces are likely to change
-- what implementation path should be followed
-- what execution order is recommended
-- which reuse points or architectural constraints must be preserved
-- what should explicitly be avoided
-
-## Representation Guidance
-
-Only use structured representations when they materially reduce ambiguity:
-
-- ASCII: simple UI layout or hierarchy
-- Mermaid: flow, sequence, state, or dependency direction only when prose is not enough
-- Tables: contracts, schema changes, field mapping
-- Structured lists: preferred default for execution guidance
-
-Default to structured lists first. Add at most one diagram or one table unless the task genuinely needs more.
+- frontend: routes/components/hooks/state/client behavior
+- backend: handlers/services/repos/schemas/jobs/permissions
+- api-integration: clients/adapters/webhooks/retries/idempotency
+- fullstack: frontend slice, backend slice, shared contract, rollout
