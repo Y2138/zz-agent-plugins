@@ -1,6 +1,6 @@
 ---
 name: "specz-plan"
-description: "Planning-stage Specz skill. It turns spec.md into the smallest sufficient execution baseline: optional design.md, tasks.md, and verification.md."
+description: "Planning-stage Specz skill. Use when specz-flow routes a bundle to planning. It turns spec.md into the smallest sufficient execution baseline: optional design.md, tasks.md, and verification.md."
 ---
 
 # Purpose
@@ -11,12 +11,14 @@ Prepare non-small work for execution without over-documenting. `spec.md` remains
 
 - Required: `spec.md`, `tasks.md`, `verification.md`
 - Optional: `design.md`
-- Never: `requirements.md` or product code
+- Never: product code
 
 # Must
 
 - Read `spec.md` first and respect its `Size`.
 - Inspect relevant code before writing tasks or design.
+- Use clearly relevant archive records only as low-priority historical context.
+- If `design.md` is created, include a concise existing-code analysis table.
 - Use ID references: `SPEC-*`, `DESIGN-*` when design exists, `TASK-*`, `VERIFY-*`.
 - Keep artifacts short and executable.
 - Run the applicable Bundle Lint before handoff.
@@ -54,7 +56,7 @@ If skipped, note this in `tasks.md`:
 # Workflow
 
 1. Resolve the bundle and read `spec.md`.
-2. If `Size: small`, prefer handing directly to `specz-exec`; only continue if the user asked for planning or the code inspection reveals hidden risk.
+2. If `Size: small`, prefer handing directly to `specz-run`; only continue if the user asked for planning or the code inspection reveals hidden risk.
 3. Inspect relevant repository files.
 4. Decide whether `design.md` is needed.
 5. Write optional `design.md`.
@@ -69,10 +71,12 @@ When design is needed, keep this compact:
 ```markdown
 # Implementation Design
 
-## Codebase Facts
-- DESIGN-FACT-01: ...
+## Existing Code Analysis
+| Surface | Location | Current Capability | Handling |
+|---|---|---|---|
+| ... | `path/or/module` | ... | reuse \| extend \| build new \| leave unchanged \| remove |
 
-## Chosen Approach
+## Design Decisions
 - DESIGN-DECISION-01: ...
 
 ## Files / Modules
@@ -95,7 +99,9 @@ When design is needed, keep this compact:
 
 Rules:
 
-- Reference real files, modules, contracts, config, or data structures.
+- Existing-code analysis must reference real files, modules, contracts, config, or data structures.
+- Keep the existing-code table short; include only facts that affect the design.
+- Prefer reuse or extension when maintainable; use build-new only when existing capability is absent or unsuitable.
 - Put implementation mappings here, not in `spec.md`.
 - No unresolved "maybe/if" branches unless listed as `BLOCKER-*`.
 
@@ -161,10 +167,10 @@ Required checks:
 - `spec.md` has no implementation details.
 - `tasks.md` tasks include `Covers`, `Design`, `Files`, and `Done when`.
 - `verification.md` maps evidence to spec scenarios and key tasks.
-- If `design.md` exists, it references real codebase surfaces and has no unresolved branches.
+- If `design.md` exists, it has `Existing Code Analysis`, references real codebase surfaces, and has no unresolved branches.
 - If `design.md` is skipped, `tasks.md` explains why and tasks are still executable.
 - Repeated content is replaced with ID references.
 
 # Handoff
 
-When lint passes, hand to `specz-exec` or `specz-auto-run`.
+When lint passes, hand to `specz-run`.

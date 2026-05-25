@@ -1,22 +1,23 @@
 ---
 name: "specz-archive"
-description: "Closeout-stage Specz skill. It writes one concise archive record, then removes the original bundle."
+description: "Closeout-stage Specz skill. Use when specz-flow or specz-run routes a passed bundle to archive. It writes one concise archive record, then removes the original bundle."
 ---
 
 # Purpose
 
-Preserve what actually happened in one archive file under `specs/archive/`.
+Preserve what actually happened in one low-priority historical record under `specs/archive/`.
 
 # Must
 
 - Ground the archive in actual result and verification evidence, not plan intent alone.
-- Write one file: `specs/archive/YYYY-MM-DD--<summary-slug>.md`.
-- Keep only request intent, delivered result, final design notes, key traceability, verification summary, and remaining gaps.
-- Delete the original `specs/<summary-slug>/` only after the archive is accurate.
+- Write one file: `specs/archive/YYYY-MM-DD--<summary-name>.md`.
+- Use the user's/project's natural language for archive content.
+- Keep only request intent, delivered result, historical design rationale, final design notes, key traceability, verification summary, and remaining gaps.
+- Delete the original `specs/<summary-name>/` only after the archive is accurate.
 
 # Must Not
 
-- Do not keep the archive as a living code reference.
+- Do not keep the archive as an authoritative current code reference.
 - Do not copy the full task list or evidence plan.
 - Do not leave stale bundle files after successful archive.
 

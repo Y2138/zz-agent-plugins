@@ -1,14 +1,15 @@
 # Archive Workflow
 
-Write one concise workflow record, not a permanent code reference.
+Write one concise workflow record. It is low-priority historical context, not an authoritative current code reference.
 
 Path:
 
-- `specs/archive/YYYY-MM-DD--<summary-slug>.md`
+- `specs/archive/YYYY-MM-DD--<summary-name>.md`
 
 Rules:
 
 - summarize actual result and strongest evidence
+- capture only the design rationale future agents may need to understand the decision
 - rewrite design notes to match implementation when plan/code diverged
 - preserve only important `SPEC-* -> TASK-* -> VERIFY-*` links
 - state unfinished/deferred work when relevant
@@ -19,7 +20,7 @@ Template:
 ```markdown
 # [Feature / Change Name] Archive
 
-- Source bundle: `specs/<summary-slug>/`
+- Source bundle: `specs/<summary-name>/`
 - Archived at: `YYYY-MM-DD`
 
 ## Request Summary
@@ -29,6 +30,9 @@ Template:
 - ...
 
 ## Final Design Notes
+- ...
+
+## Historical Design Rationale
 - ...
 
 ## Traceability

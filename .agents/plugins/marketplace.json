@@ -10,7 +10,7 @@
     {
       "name": "specz",
       "displayName": "Specz",
-      "description": "Spec-driven workflow plugin with task-size routing, optional design, traceable tasks, verification evidence, bounded repair loops, archive history, and lifecycle status checks.",
+      "description": "Efficient, lightweight spec-driven workflow plugin with a primary flow router, optional design with existing-code analysis, traceable tasks, bounded run loops, and archive history.",
       "source": {
         "source": "local",
         "path": "./specz"

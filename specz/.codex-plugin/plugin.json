@@ -1,7 +1,7 @@
 {
   "name": "specz",
-  "version": "0.8.0",
-  "description": "Spec-driven workflow plugin with task-size routing, optional design, traceable tasks, verification evidence, bounded repair loops, archive history, and lifecycle status checks.",
+  "version": "0.9.0",
+  "description": "Efficient, lightweight spec-driven workflow plugin with a primary flow router, task-size routing, optional design with existing-code analysis, traceable tasks, verification evidence, bounded run loops, and archive history.",
   "author": {
     "name": "zane",
     "url": "https://github.com/Y2138"
@@ -18,8 +18,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Specz",
-    "shortDescription": "Run efficient spec-driven workflows with small-task fast paths.",
-    "longDescription": "Specz helps agents route work by task size, execute small specs directly, and use optional design, traceable tasks, verification evidence, archive, status, and bounded repair loops for larger work.",
+    "shortDescription": "Run efficient, lightweight spec-driven workflows through one flow entry.",
+    "longDescription": "Specz helps agents select or create a bundle, route by task size, execute small specs directly, plan larger work with concise existing-code analysis, run implementation and independent verification in bounded loops, and archive completed work.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -28,12 +28,12 @@
     ],
     "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
     "defaultPrompt": [
-      "Use specz to clarify the behavior spec for this task.",
-      "Use specz to plan a new spec bundle for this task.",
-      "Run the specz execution flow for the current change.",
-      "Verify this implementation with the specz verifier.",
-      "Archive this completed spec bundle into a single workflow record.",
-      "Check the status of active specz bundles."
+      "Use specz-flow to decide the next Specz step for this task.",
+      "Use specz-flow to resume the active spec bundle.",
+      "Use specz-clarify to create or update the behavior spec.",
+      "Use specz-plan to prepare concise design, tasks, and verification evidence.",
+      "Use specz-run to implement, verify, and repair the active bundle.",
+      "Use specz-archive to archive a passed bundle."
     ],
     "brandColor": "#2563EB"
   }
