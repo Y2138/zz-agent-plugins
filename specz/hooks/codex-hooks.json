@@ -1,0 +1,16 @@
+{
+  "description": "Project-level Codex hook template for Specz session-start reminders.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"./specz/hooks/specz-flow-reminder.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

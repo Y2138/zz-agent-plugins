@@ -1,0 +1,16 @@
+{
+  "description": "Codex session-start reminder to consider specz-flow for non-trivial development work.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"./specz/hooks/specz-flow-reminder.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

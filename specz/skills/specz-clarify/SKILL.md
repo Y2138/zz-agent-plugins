@@ -18,6 +18,8 @@ Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the wor
 - Use the user's/project's natural language for bundle names and artifact content.
 - Classify task size before handoff.
 - Ask only questions that affect scope, behavior, acceptance, or task size.
+- Before asking, self-check available project context and existing code when it can answer factual questions.
+- Ask at most 1-3 high-value questions at a time, each with a clear reason it blocks scope, behavior, acceptance, or size.
 - Preserve stable `SPEC-*` IDs when updating.
 - Keep top metadata current.
 - Use related archive records only as low-priority historical context.
@@ -27,6 +29,18 @@ Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the wor
 - Do not put file paths, module names, API fields, storage keys, config structures, implementation order, or test commands in `spec.md`.
 - Do not choose architecture or write implementation tasks.
 - Do not let archive records override the current user request.
+
+# Clarification Discipline
+
+Use a short self-check before writing questions:
+
+- Read only the context needed to avoid asking the user about facts already available in the project.
+- Check existing terminology, user-facing behavior, adjacent flows, and likely impact surface when they affect scope or size.
+- Prefer `ASSUMPTION-*` for non-blocking interpretations and defaults.
+- Use `QUESTION-*` only for decisions that would change scope, behavior, acceptance, priority, or task size.
+- For each `QUESTION-*`, state why the answer is blocking.
+- When the request is ambiguous, propose a default interpretation the user can confirm or correct.
+- Do not ask implementation-choice questions that belong in planning.
 
 # Size Routing
 
@@ -46,9 +60,10 @@ Handoff:
 
 1. Resolve `specs/<summary-name>/`.
 2. Read the request, existing `spec.md`, and only relevant archive records.
-3. Clarify missing product intent if it affects behavior or acceptance.
-4. Write or update `spec.md`.
-5. Run the quality gate and hand off by size.
+3. Run the clarification self-check.
+4. Clarify missing product intent if it affects behavior, acceptance, scope, priority, or task size.
+5. Write or update `spec.md`.
+6. Run the quality gate and hand off by size.
 
 # `spec.md` Contract
 
@@ -98,8 +113,11 @@ The system SHALL ...
 - `spec.md` has `Size`, `Status`, `Priority`, `Created`, and `Updated`.
 - `spec.md` has no implementation details.
 - Every `SPEC-REQ-*` has at least one `SPEC-SCENARIO-*`.
+- `Size: small` has at least one main-path scenario.
+- `Size: standard | large` covers main-path behavior and includes risk-based boundary, failure, permission, empty-state, rollback, or compatibility scenarios where applicable.
 - Acceptance criteria are observable.
 - Scope in/out is explicit enough for the chosen size.
+- Blocking `QUESTION-*` entries explain why they block progress.
 
 # Handoff
 

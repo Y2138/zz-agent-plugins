@@ -21,6 +21,7 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 - Treat `design.md` as binding when present.
 - Treat `tasks.md` as the execution state surface: update task checkboxes after execution and leave blocked work unchecked with reason.
 - Treat `verification.md` as the verification state surface for planned bundles.
+- Respect task type tags when present: `[new]`, `[fix]`, `[refactor]`, `[test]`, `[verify-repair]`.
 - Run at most 3 `execute -> verify` rounds.
 - Use concrete evidence: tests, typecheck, lint, browser/runtime checks, API/CLI checks, logs, or artifact inspection.
 - For UI behavior, use runtime/browser evidence.
@@ -38,6 +39,7 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 - Do not use broad checks when targeted evidence is decisive.
 - Do not exceed 3 repair rounds.
 - Do not mark unfinished or unverified work complete.
+- Do not leave temporary instrumentation, debug output, or verification-only files unless they are intentionally part of the permanent change.
 
 # Execution Context
 
@@ -63,6 +65,8 @@ Run this gate before each execution round and before final pass:
 # Execution State
 
 - Execute unchecked `TASK-*` from `tasks.md`; do not use `verification.md` as the task queue.
+- For `[fix]` and `[verify-repair]` tasks, identify the failure signal or regression evidence before changing code when it is available.
+- For `[fix]` and `[verify-repair]` tasks, state the root-cause hypothesis in the task note or execution result when the cause is not obvious from the code change.
 - After implementation, update `tasks.md`:
   - check completed tasks
   - leave blocked or partial tasks unchecked with reason
@@ -77,6 +81,9 @@ Run this gate before each execution round and before final pass:
 - Mark unrun or not-applicable `VERIFY-*` entries with a reason.
 - After every verification round, update `Latest Verification Result`.
 - For small specs without `verification.md`, derive the smallest decisive evidence from `spec.md`; if `verification.md` is created later, use it as the verification authority.
+- For `[fix]` and `[verify-repair]`, include regression evidence when feasible.
+- For standard/large planned bundles, include selected architecture quality evidence from `verification.md`.
+- Confirm temporary verification files and debug instrumentation were removed unless they are intentionally retained.
 
 # Workflow
 
@@ -98,7 +105,7 @@ Run this gate before each execution round and before final pass:
 # Repair Task Contract
 
 ```markdown
-- [ ] TASK-99 [Repair title] [source: verify]
+- [ ] TASK-99 [verify-repair] [Repair title] [source: verify]
   - Covers: SPEC-SCENARIO-01
   - Design: DESIGN-DECISION-01 | none
   - Files: `path/or/module`

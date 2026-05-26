@@ -10,7 +10,7 @@
     {
       "name": "specz",
       "source": "./specz",
-      "description": "Efficient, lightweight spec-driven workflow plugin with a primary flow router, optional design with existing-code analysis, traceable tasks, bounded run loops, and archive history.",
+      "description": "Efficient, lightweight spec-driven workflow plugin with disciplined clarification, impact-aware planning, traceable tasks, bounded run loops, and archive history.",
       "category": "productivity",
       "keywords": [
         "specz",

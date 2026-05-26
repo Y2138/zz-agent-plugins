@@ -1,7 +1,7 @@
 {
   "name": "specz",
-  "version": "0.9.0",
-  "description": "Efficient, lightweight spec-driven workflow plugin with a primary flow router, task-size routing, optional design with existing-code analysis, traceable tasks, verification evidence, bounded run loops, and archive history.",
+  "version": "1.0.0",
+  "description": "Efficient, lightweight spec-driven workflow plugin with disciplined clarification, impact-aware planning, traceable tasks, verification evidence, bounded run loops, and archive history.",
   "author": {
     "name": "zane",
     "url": "https://github.com/Y2138"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Specz",
     "shortDescription": "Run efficient, lightweight spec-driven workflows through one flow entry.",
-    "longDescription": "Specz helps agents select or create a bundle, route by task size, execute small specs directly, plan larger work with concise existing-code analysis, run implementation and independent verification in bounded loops, and archive completed work.",
+    "longDescription": "Specz helps agents select or create a bundle, route by task size, clarify behavior with focused questions, plan larger work with impact-aware existing-code analysis, run implementation and independent verification in bounded loops, and archive completed work.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [

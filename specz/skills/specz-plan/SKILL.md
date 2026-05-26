@@ -16,12 +16,13 @@ Prepare non-small work for execution without over-documenting. `spec.md` remains
 # Must
 
 - Read `spec.md` first and respect its `Size`.
-- Inspect relevant code before writing tasks or design.
+- Inspect relevant project context and code before writing tasks or design.
 - Use clearly relevant archive records only as low-priority historical context.
 - If `design.md` is created, include a concise existing-code analysis table.
 - Use ID references: `SPEC-*`, `DESIGN-*` when design exists, `TASK-*`, `VERIFY-*`.
 - Keep artifacts short and executable.
 - Run the applicable Bundle Lint before handoff.
+- After planning non-small work, present a concise review summary so the user can request adjustments before execution.
 
 # Must Not
 
@@ -57,12 +58,13 @@ If skipped, note this in `tasks.md`:
 
 1. Resolve the bundle and read `spec.md`.
 2. If `Size: small`, prefer handing directly to `specz-run`; only continue if the user asked for planning or the code inspection reveals hidden risk.
-3. Inspect relevant repository files.
+3. Inspect relevant project context, repository files, and impact surfaces.
 4. Decide whether `design.md` is needed.
 5. Write optional `design.md`.
 6. Write `tasks.md`.
 7. Write `verification.md`.
 8. Run Bundle Lint and repair only the failing parts.
+9. Report the planning result with key design, task, and verification points for user review.
 
 # `design.md` Contract
 
@@ -72,9 +74,9 @@ When design is needed, keep this compact:
 # Implementation Design
 
 ## Existing Code Analysis
-| Surface | Location | Current Capability | Handling |
-|---|---|---|---|
-| ... | `path/or/module` | ... | reuse \| extend \| build new \| leave unchanged \| remove |
+| Surface | Location | Role | Callers / Dependents | Existing Pattern | Handling |
+|---|---|---|---|---|---|
+| ... | `path/or/module` | ... | ... | ... | reuse \| extend \| build new \| leave unchanged \| remove |
 
 ## Design Decisions
 - DESIGN-DECISION-01: ...
@@ -101,9 +103,11 @@ Rules:
 
 - Existing-code analysis must reference real files, modules, contracts, config, or data structures.
 - Keep the existing-code table short; include only facts that affect the design.
+- Prefer structured code context and call/dependency information when available; otherwise inspect the smallest relevant code surface directly.
 - Prefer reuse or extension when maintainable; use build-new only when existing capability is absent or unsuitable.
 - Put implementation mappings here, not in `spec.md`.
 - No unresolved "maybe/if" branches unless listed as `BLOCKER-*`.
+- For standard/large work, identify affected entry points, dependents, existing patterns, and testability surfaces when they influence the implementation.
 
 # `tasks.md` Contract
 
@@ -112,7 +116,7 @@ Rules:
 
 > Design: `design.md` | skipped; [reason]
 
-- [ ] TASK-01 [P] [Concrete task title]
+- [ ] TASK-01 [P] [new|fix|refactor|test|verify-repair] [Concrete task title]
   - Covers: SPEC-SCENARIO-01
   - Design: DESIGN-DECISION-01 | none
   - Files: `path/or/module`
@@ -126,8 +130,10 @@ Rules:
 
 - Each task has `Covers`, `Design`, `Files`, and `Done when`.
 - Each task is concrete enough to execute without another planning pass.
+- Each task has one type tag: `[new]`, `[fix]`, `[refactor]`, `[test]`, or `[verify-repair]`.
 - Mark independent tasks with `[P]`.
 - Include implementation-side test edits only when code must add or update tests.
+- Use `[verify-repair]` only for tasks created from failed verification evidence.
 
 # `verification.md` Contract
 
@@ -159,6 +165,8 @@ Rules:
 - Key tasks have evidence.
 - Add negative/regression evidence only where risk justifies it.
 - UI behavior needs runtime/browser evidence.
+- Standard/large verification should include risk-based architecture quality evidence where applicable: scope fit, existing-pattern fit, boundary integrity, contract compatibility, state/data flow, testability, cleanup, or blast radius.
+- Do not add every architecture quality check by default; select only checks justified by the design risk.
 
 # Bundle Lint
 
@@ -166,6 +174,7 @@ Required checks:
 
 - `spec.md` has no implementation details.
 - `tasks.md` tasks include `Covers`, `Design`, `Files`, and `Done when`.
+- `tasks.md` tasks include a task type tag.
 - `verification.md` maps evidence to spec scenarios and key tasks.
 - If `design.md` exists, it has `Existing Code Analysis`, references real codebase surfaces, and has no unresolved branches.
 - If `design.md` is skipped, `tasks.md` explains why and tasks are still executable.
@@ -173,4 +182,15 @@ Required checks:
 
 # Handoff
 
-When lint passes, hand to `specz-run`.
+When lint passes, report a review summary before execution.
+
+Report:
+
+- active bundle
+- created or updated artifacts
+- key design decisions or `design.md` skipped reason
+- task breakdown summary
+- verification approach summary
+- any assumptions, blockers, or tradeoffs that deserve user review
+
+If the user requests adjustments, update the planning artifacts before execution. If the user has already explicitly asked to continue through execution, hand to `specz-run` after the review summary.
