@@ -1,0 +1,39 @@
+{
+  "name": "prd-designz",
+  "version": "0.1.0",
+  "description": "Product design and UI prototype skills for new-product design direction, existing-project UI skill generation, and project-consistent prototyping.",
+  "author": {
+    "name": "zane",
+    "url": "https://github.com/Y2138"
+  },
+  "homepage": "https://github.com/Y2138/zz-agent-plugins/tree/main/prd-designz",
+  "repository": "https://github.com/Y2138/zz-agent-plugins",
+  "license": "MIT",
+  "keywords": [
+    "prd",
+    "design",
+    "prototype",
+    "design-token",
+    "ui"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PRD Designz",
+    "shortDescription": "Design specs, project UI skill generation, and prototype workflows.",
+    "longDescription": "PRD Designz bundles design-md for new-product DESIGN.md and HTML prototype generation, project-ui-skill-builder for extracting an existing project's UI tokens and component patterns into a reusable project-specific prototype skill, and project-ui-prototyper for using those project UI rules to generate PRD-to-prototype or sketch-to-prototype outputs.",
+    "developerName": "zane",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/prd-designz",
+    "defaultPrompt": [
+      "Use design-md to create a DESIGN.md and high-fidelity prototype for a new product or page direction.",
+      "Use project-ui-skill-builder to extract an existing project's UI tokens and generate a project-specific prototype skill.",
+      "Use project-ui-prototyper to turn a PRD, page request, flow, screenshot, wireframe, or sketch into a prototype that matches an existing project UI system.",
+      "Generate prototypes that follow either a new design direction or an extracted project UI system."
+    ],
+    "brandColor": "#7C3AED"
+  }
+}

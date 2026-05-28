@@ -30,6 +30,19 @@
         "content",
         "agent"
       ]
+    },
+    {
+      "name": "prd-designz",
+      "source": "./prd-designz",
+      "description": "Product design and UI prototype skills for new-product design direction, existing-project UI skill generation, and project-consistent prototyping.",
+      "category": "productivity",
+      "keywords": [
+        "prd",
+        "design",
+        "prototype",
+        "design-token",
+        "ui"
+      ]
     }
   ]
 }
