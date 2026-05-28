@@ -10,7 +10,7 @@
     {
       "name": "specz",
       "displayName": "Specz",
-      "description": "Efficient, lightweight spec-driven workflow plugin with disciplined clarification, impact-aware planning, traceable tasks, bounded run loops, and archive history.",
+      "description": "Efficient, lightweight spec-driven workflow plugin for non-trivial coding development work, with disciplined clarification, impact-aware planning, traceable tasks, bounded run loops, and archive history.",
       "source": {
         "source": "local",
         "path": "./specz"
