@@ -1,11 +1,19 @@
 ---
 name: "specz-flow"
-description: "Primary Specz orchestration skill for efficient, lightweight spec-driven workflow. Use before implementing, enhancing, fixing, refactoring, resuming, planning, verifying, or archiving non-trivial code changes; use when a repository has specs/ bundles or the user asks for Specz/spec-driven workflow. It selects or creates the active bundle from bundle files and routes to clarify, plan, run, or archive."
+description: "Primary Specz orchestration skill for efficient, lightweight spec-driven workflow. Use for non-trivial coding development work: implementing, enhancing, fixing, refactoring, resuming, planning, verifying, or archiving code/runtime changes. It selects or creates the active bundle from bundle files and routes to clarify, plan, run, or archive."
 ---
 
 # Purpose
 
 Choose the active Specz bundle and route to the next Specz stage. Keep this skill as the efficient, lightweight entry point; do not duplicate stage contracts here.
+
+Specz flow is for coding work that can move toward implementation, verification, and archive. For docs-only, skill/prompt editing, design-only, research, critique, or consultation tasks, handle the task directly unless the user explicitly asks to use Specz.
+
+# Entry Gate
+
+Before scanning bundles or creating a new bundle, confirm the request is coding work: code/runtime behavior, tests, build/dev tooling, CI, schemas, APIs, persistence, permissions, migrations, infrastructure, bugs, regressions, or an explicit Specz request.
+
+If the request is only docs, skills/prompts, design, critique, research, or consultation, do not create a bundle by default. If the fit is ambiguous, ask one concise question before continuing.
 
 # Must
 
@@ -14,6 +22,9 @@ Choose the active Specz bundle and route to the next Specz stage. Keep this skil
 - Use the user's/project's natural language for bundle names and Specz artifact content.
 - Prefer continuing an existing relevant bundle over creating a duplicate.
 - Route to exactly one next skill unless the user explicitly asks for a status summary.
+- Route to `specz-brief` only when the bundle is planned and the user explicitly asks for a human-readable brief, review packet, alignment doc, stakeholder summary, or product/engineering/QA handoff.
+- Only create or continue a bundle after the Entry Gate passes.
+- When helpful, report one lightweight execution strategy: local fast path, standard plan path, high-risk plan path, or regression repair path.
 
 # Must Not
 
@@ -23,6 +34,8 @@ Choose the active Specz bundle and route to the next Specz stage. Keep this skil
 - Do not maintain `清单.md`, index files, or synchronized state mirrors.
 
 # Bundle Selection
+
+Only run this section after the Entry Gate passes.
 
 1. If the user names a bundle, use that bundle.
 2. If the user asks to continue, resume the most recently updated unfinished bundle.
@@ -38,10 +51,24 @@ Use the files, not only metadata hints:
 - `spec.md` has unresolved `QUESTION-*` that blocks scope -> `specz-clarify`.
 - `Size: small` and no planned artifacts are needed -> `specz-run`.
 - `Size: standard | large` and `tasks.md` or `verification.md` is missing -> `specz-plan`.
+- Planned artifacts exist and user explicitly asks for a human-readable brief or review packet -> `specz-brief`.
 - `tasks.md` has unchecked tasks -> `specz-run`.
 - Tasks are complete and latest verification is not `PASS` -> `specz-run`.
 - Latest verification is `PASS` -> `specz-archive`.
 - Missing or contradictory required fields -> route to the stage that owns the broken file.
+
+# Execution Strategy
+
+This is advisory context only; it must not become a second state machine.
+
+- Local fast path: small, local, low-risk work executable from `spec.md`; usually route to `specz-run`.
+- Standard plan path: multi-file or moderate-risk work; route through `specz-plan`.
+- High-risk plan path: contracts, permissions, persistence, migrations, compatibility, or user-critical flows; expect `design.md` and stronger verification.
+- Regression repair path: failed verification, tests, CI, review feedback, or production failure; preserve the failure signal and create focused repair work.
+
+# Optional Brief
+
+`specz-brief` is an optional human-readable handoff stage between planning and execution. It writes `brief.md` for product, engineering, and QA alignment. It does not replace `spec.md`, `design.md`, `tasks.md`, or `verification.md`, and it must not block `specz-run` when the user did not ask for it.
 
 # Output
 
@@ -49,5 +76,6 @@ Report only:
 
 - active bundle
 - detected state
+- execution strategy, when useful
 - next skill
 - one-sentence reason

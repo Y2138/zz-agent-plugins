@@ -4,7 +4,7 @@ cat << 'EOF'
 {
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
-    "additionalContext": "Specz reminder: for feature work, enhancements, bug fixes, refactors, or resuming development tasks, first consider using specz-flow to select or create the active specs/ bundle and route to clarify, plan, run, or archive. Keep this lightweight; skip only when the request is clearly trivial or non-code."
+    "additionalContext": "Specz reminder: use specz-flow only for non-trivial coding development work: code/runtime changes, tests, bugs, CI failures, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Do not use Specz for docs-only edits, skill/prompt edits, design-only work, critique, research, or consultation unless the user explicitly asks for Specz. If scope or acceptance is unclear, ask before creating a bundle."
   }
 }
 EOF

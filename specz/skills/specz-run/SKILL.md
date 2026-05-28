@@ -10,7 +10,7 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 # Inputs
 
 - Required: `spec.md`
-- Optional: `design.md`, `tasks.md`, `verification.md`
+- Optional: `design.md`, `tasks.md`, `verification.md`, `brief.md`
 
 # Must
 
@@ -19,6 +19,7 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 - If `tasks.md` exists, execute unchecked `TASK-*` in dependency order.
 - If no `tasks.md` exists, proceed only when `spec.md` has `Size: small`.
 - Treat `design.md` as binding when present.
+- Treat `brief.md` as human-readable context only; never use it as execution authority.
 - Treat `tasks.md` as the execution state surface: update task checkboxes after execution and leave blocked work unchecked with reason.
 - Treat `verification.md` as the verification state surface for planned bundles.
 - Respect task type tags when present: `[new]`, `[fix]`, `[refactor]`, `[test]`, `[verify-repair]`.
@@ -34,6 +35,7 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 
 - Do not expand `spec.md` scope.
 - Do not bypass `verification.md` for planned bundles.
+- Do not execute from `brief.md`; use `spec.md`, `design.md`, `tasks.md`, and `verification.md`.
 - Do not change verification method, expected evidence, or applicability without updating `verification.md` first.
 - Do not trust executor narration or unrun tests as final proof.
 - Do not use broad checks when targeted evidence is decisive.
@@ -67,11 +69,13 @@ Run this gate before each execution round and before final pass:
 - Execute unchecked `TASK-*` from `tasks.md`; do not use `verification.md` as the task queue.
 - For `[fix]` and `[verify-repair]` tasks, identify the failure signal or regression evidence before changing code when it is available.
 - For `[fix]` and `[verify-repair]` tasks, state the root-cause hypothesis in the task note or execution result when the cause is not obvious from the code change.
+- For regression repair work, keep the repair focused on the recorded failure signal; do not broaden scope without updating the active bundle.
 - After implementation, update `tasks.md`:
   - check completed tasks
   - leave blocked or partial tasks unchecked with reason
   - add newly discovered in-scope implementation tasks only when needed
 - When verification fails, reopen the related `TASK-*` or add a focused `[source: verify]` repair task.
+- Repair tasks created from verification failures must name the failed evidence or regression signal they address.
 
 # Verification State
 
@@ -83,12 +87,13 @@ Run this gate before each execution round and before final pass:
 - For small specs without `verification.md`, derive the smallest decisive evidence from `spec.md`; if `verification.md` is created later, use it as the verification authority.
 - For `[fix]` and `[verify-repair]`, include regression evidence when feasible.
 - For standard/large planned bundles, include selected architecture quality evidence from `verification.md`.
+- Verify behavior through the key `SPEC-SCENARIO-*` evidence, not only by marking implementation tasks done.
 - Confirm temporary verification files and debug instrumentation were removed unless they are intentionally retained.
 
 # Workflow
 
 1. Resolve the active bundle.
-2. Read `spec.md`; read `design.md`, `tasks.md`, and `verification.md` if present.
+2. Read `spec.md`; read `design.md`, `tasks.md`, and `verification.md` if present. Read `brief.md` only for human context, not execution instructions.
 3. Run Gate; if planned artifacts are required but missing, return to `specz-plan`.
 4. Repeat up to 3 rounds:
    - run Gate

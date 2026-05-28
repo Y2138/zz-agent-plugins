@@ -1,5 +1,5 @@
 {
-  "description": "Codex session-start reminder to consider specz-flow for non-trivial development work.",
+  "description": "Codex session-start reminder to consider specz-flow only for non-trivial coding development work.",
   "hooks": {
     "SessionStart": [
       {

@@ -5,7 +5,7 @@ description: "Clarification-stage Specz skill. Use when specz-flow routes a bund
 
 # Purpose
 
-Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the work needs planning or can run directly.
+Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the work needs planning or can run directly. Clarify before writing; after `spec.md` is written, it should have no unresolved blocking questions.
 
 # Outputs
 
@@ -29,6 +29,7 @@ Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the wor
 - Do not put file paths, module names, API fields, storage keys, config structures, implementation order, or test commands in `spec.md`.
 - Do not choose architecture or write implementation tasks.
 - Do not let archive records override the current user request.
+- Do not proceed to planning or execution with unresolved `QUESTION-*`.
 
 # Clarification Discipline
 
@@ -36,11 +37,15 @@ Use a short self-check before writing questions:
 
 - Read only the context needed to avoid asking the user about facts already available in the project.
 - Check existing terminology, user-facing behavior, adjacent flows, and likely impact surface when they affect scope or size.
+- Identify whether the user has already specified the target outcome, non-goals, acceptance criteria, and preferred tradeoffs.
 - Prefer `ASSUMPTION-*` for non-blocking interpretations and defaults.
 - Use `QUESTION-*` only for decisions that would change scope, behavior, acceptance, priority, or task size.
 - For each `QUESTION-*`, state why the answer is blocking.
 - When the request is ambiguous, propose a default interpretation the user can confirm or correct.
+- When there are blocking questions, ask the user directly and wait before writing `spec.md`.
 - Do not ask implementation-choice questions that belong in planning.
+- Keep scenarios minimally verifiable: each key `SPEC-SCENARIO-*` should make clear who or what acts, what condition triggers the behavior, and what observable result proves correctness.
+- Add boundary, failure, permission, empty-state, rollback, or compatibility scenarios only when risk or size justifies them.
 
 # Size Routing
 
@@ -61,8 +66,8 @@ Handoff:
 1. Resolve `specs/<summary-name>/`.
 2. Read the request, existing `spec.md`, and only relevant archive records.
 3. Run the clarification self-check.
-4. Clarify missing product intent if it affects behavior, acceptance, scope, priority, or task size.
-5. Write or update `spec.md`.
+4. If any blocking question exists, ask 1-3 concise questions and wait for the user.
+5. Write or update `spec.md` only after blocking questions are answered or the request is already clear.
 6. Run the quality gate and hand off by size.
 
 # `spec.md` Contract
@@ -118,6 +123,8 @@ The system SHALL ...
 - Acceptance criteria are observable.
 - Scope in/out is explicit enough for the chosen size.
 - Blocking `QUESTION-*` entries explain why they block progress.
+- No unresolved blocking `QUESTION-*` remains before handoff to `specz-plan` or `specz-run`.
+- Key scenarios have the minimum actor/trigger/observable-result shape.
 
 # Handoff
 

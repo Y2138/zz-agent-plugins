@@ -58,13 +58,41 @@ If skipped, note this in `tasks.md`:
 
 1. Resolve the bundle and read `spec.md`.
 2. If `Size: small`, prefer handing directly to `specz-run`; only continue if the user asked for planning or the code inspection reveals hidden risk.
-3. Inspect relevant project context, repository files, and impact surfaces.
+3. Inspect relevant project context, repository files, and impact surfaces using the Context Collection Protocol below.
 4. Decide whether `design.md` is needed.
 5. Write optional `design.md`.
 6. Write `tasks.md`.
 7. Write `verification.md`.
 8. Run Bundle Lint and repair only the failing parts.
 9. Report the planning result with key design, task, and verification points for user review.
+
+# Context Collection Protocol
+
+Use this protocol to keep planning grounded in real code while avoiding broad exploration.
+
+Priority:
+
+1. Entry points: user actions, commands, APIs, components, hooks, jobs, or config entry points.
+2. Impact relationships: callers, callees, dependents, and cross-module boundaries.
+3. Data and state: types, schemas, state machines, cache, config, and persistence.
+4. Existing patterns: naming, module shape, validation, error handling, and test style near the change.
+5. Verification surface: existing tests, fixtures, scripts, runtime entry points, or manual checks.
+
+Tool strategy:
+
+- Prefer structured code context, call/dependency information, or impact analysis when available.
+- If no structural index is available, use the smallest useful file list and text search, then read only the relevant files.
+- If the relevant file is already known, read it directly instead of searching broadly.
+- Use text search for literal strings, messages, config keys, or command names.
+- Use official docs or project-pinned references for external APIs or libraries.
+
+Depth by size:
+
+- Small: collect only enough context to confirm the change is local and low-risk.
+- Standard: cover entry points, existing patterns, and verification surface.
+- Large or high-risk: cover entry points, impact relationships, data/state, and verification surface.
+
+If a needed entry point or contract cannot be found, record a `BLOCKER-*` or a narrow assumption rather than designing from unverifiable facts.
 
 # `design.md` Contract
 
@@ -103,7 +131,7 @@ Rules:
 
 - Existing-code analysis must reference real files, modules, contracts, config, or data structures.
 - Keep the existing-code table short; include only facts that affect the design.
-- Prefer structured code context and call/dependency information when available; otherwise inspect the smallest relevant code surface directly.
+- Follow the Context Collection Protocol; prefer structured code context and call/dependency information when available, otherwise inspect the smallest relevant code surface directly.
 - Prefer reuse or extension when maintainable; use build-new only when existing capability is absent or unsuitable.
 - Put implementation mappings here, not in `spec.md`.
 - No unresolved "maybe/if" branches unless listed as `BLOCKER-*`.
@@ -175,8 +203,11 @@ Required checks:
 - `spec.md` has no implementation details.
 - `tasks.md` tasks include `Covers`, `Design`, `Files`, and `Done when`.
 - `tasks.md` tasks include a task type tag.
+- Task titles are concrete actions, not vague labels such as "update related logic" or "handle edge cases".
 - `verification.md` maps evidence to spec scenarios and key tasks.
+- Verification entries include an expected result, not only a command name.
 - If `design.md` exists, it has `Existing Code Analysis`, references real codebase surfaces, and has no unresolved branches.
+- If `design.md` exists, design decisions cite or derive from real code context instead of restating `spec.md`.
 - If `design.md` is skipped, `tasks.md` explains why and tasks are still executable.
 - Repeated content is replaced with ID references.
 
