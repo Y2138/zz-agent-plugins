@@ -43,6 +43,12 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 - Do not mark unfinished or unverified work complete.
 - Do not leave temporary instrumentation, debug output, or verification-only files unless they are intentionally part of the permanent change.
 
+# Checkpoints
+
+- 🔴 CHECKPOINT / 🛑 STOP before execution: if the active bundle is ambiguous, `spec.md` is missing, `Size` is missing, or blocking `QUESTION-*` remains, stop at the owning stage instead of executing.
+- 🔴 CHECKPOINT / 🛑 STOP before sub-agent work: confirm open tasks or small-spec scope are actionable, `design.md` decisions are binding when present, and the implementation prompt contains no verifier conclusions or hidden acceptance answers.
+- 🔴 CHECKPOINT / 🛑 STOP before PASS/archive: all in-scope tasks are checked or explicitly blocked, verification uses concrete evidence, `Latest Verification Result` is updated when present, and temporary verification files or debug instrumentation are removed.
+
 # Execution Context
 
 - Use a sub-agent/sub-run for implementation work whenever the platform supports it.
@@ -63,6 +69,13 @@ Run this gate before each execution round and before final pass:
 - For planned bundles, `verification.md` has a matrix entry for each spec scenario.
 - Required environment or credentials are available; otherwise stop as `BLOCKED`.
 - No destructive action is required unless the user explicitly approved it.
+
+# State Recovery
+
+- If `Size: standard | large` is missing `tasks.md` or `verification.md`, route to `specz-plan`; do not execute from partial planning state.
+- If `tasks.md` and `verification.md` disagree about task IDs, spec coverage, or repair state, reconcile the state surfaces first or add a focused `[verify-repair]` task before changing product code.
+- If `verification.md` lacks matrix coverage for a key `SPEC-SCENARIO-*`, update `verification.md` before running evidence.
+- If a small spec lacks decisive verification evidence, derive the minimum evidence from `spec.md` and record it in the final Result Block; do not invent broad checks to compensate for missing planning artifacts.
 
 # Execution State
 

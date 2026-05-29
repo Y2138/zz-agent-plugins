@@ -31,6 +31,12 @@ Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the wor
 - Do not let archive records override the current user request.
 - Do not proceed to planning or execution with unresolved `QUESTION-*`.
 
+# Checkpoints
+
+- 🔴 CHECKPOINT / 🛑 STOP before asking: if the request already states scope, behavior, acceptance, and size enough to write `spec.md`, do not ask clarification questions; write the spec and record non-blocking defaults as `ASSUMPTION-*`.
+- 🔴 CHECKPOINT / 🛑 STOP before updating an existing spec: preserve stable `SPEC-*` IDs, touch only sections affected by the new request, and leave unrelated requirements and acceptance criteria unchanged.
+- 🔴 CHECKPOINT / 🛑 STOP before handoff: if any blocking `QUESTION-*` remains, stop at clarification and do not route to `specz-plan` or `specz-run`.
+
 # Clarification Discipline
 
 Use a short self-check before writing questions:
@@ -38,12 +44,14 @@ Use a short self-check before writing questions:
 - Read only the context needed to avoid asking the user about facts already available in the project.
 - Check existing terminology, user-facing behavior, adjacent flows, and likely impact surface when they affect scope or size.
 - Identify whether the user has already specified the target outcome, non-goals, acceptance criteria, and preferred tradeoffs.
+- When the request is clear enough, write or update `spec.md` without asking; do not add questions for implementation details or stylistic preferences.
 - Prefer `ASSUMPTION-*` for non-blocking interpretations and defaults.
 - Use `QUESTION-*` only for decisions that would change scope, behavior, acceptance, priority, or task size.
 - For each `QUESTION-*`, state why the answer is blocking.
 - When the request is ambiguous, propose a default interpretation the user can confirm or correct.
 - When there are blocking questions, ask the user directly and wait before writing `spec.md`.
 - Do not ask implementation-choice questions that belong in planning.
+- When updating an existing `spec.md`, make the smallest behavior-focused diff: keep existing IDs, update only related rules, scenarios, acceptance, assumptions, and metadata.
 - Keep scenarios minimally verifiable: each key `SPEC-SCENARIO-*` should make clear who or what acts, what condition triggers the behavior, and what observable result proves correctness.
 - Add boundary, failure, permission, empty-state, rollback, or compatibility scenarios only when risk or size justifies them.
 

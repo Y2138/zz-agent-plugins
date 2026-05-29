@@ -31,6 +31,12 @@ Prepare non-small work for execution without over-documenting. `spec.md` remains
 - Do not create vague tasks.
 - Do not duplicate mappings or implementation details across artifacts.
 
+# Checkpoints
+
+- 🔴 CHECKPOINT / 🛑 STOP before planning: if `spec.md` is missing, has unresolved blocking `QUESTION-*`, or `Size: small` with no hidden risk and no explicit planning request, route back instead of writing planning artifacts.
+- 🔴 CHECKPOINT / 🛑 STOP before writing `design.md` or `tasks.md`: confirm the Context Evidence Gate below has enough real code evidence for the declared size and risk.
+- 🔴 CHECKPOINT / 🛑 STOP before handoff: Bundle Lint must pass, every non-obvious task must cite real files/modules or a `BLOCKER-*`, and no product code was modified by this skill.
+
 # Design Decision
 
 Create `design.md` only when one is needed to avoid executor guesswork.
@@ -93,6 +99,16 @@ Depth by size:
 - Large or high-risk: cover entry points, impact relationships, data/state, and verification surface.
 
 If a needed entry point or contract cannot be found, record a `BLOCKER-*` or a narrow assumption rather than designing from unverifiable facts.
+
+# Context Evidence Gate
+
+Before writing planning artifacts, record enough evidence to prevent generic plans:
+
+- Standard work: at least one entry point, one existing pattern or adjacent module, and one verification surface must be identified.
+- Large or high-risk work: at least one entry point, one impact relationship or data/state surface, one compatibility or fallback concern, and one verification surface must be identified.
+- For each changed surface named by `spec.md` or the user, such as API, UI, state, permissions, persistence, migration, config, or external integration, identify at least one real code surface or record a `BLOCKER-*`.
+- If an evidence item cannot be found after the smallest useful search, record `BLOCKER-*` or a narrow assumption in `design.md` or `tasks.md`; do not invent file paths, contracts, or test commands.
+- If `design.md` is skipped, `tasks.md` must state the concrete context that made the work local and low-risk.
 
 # `design.md` Contract
 
@@ -220,6 +236,7 @@ Report:
 - active bundle
 - created or updated artifacts
 - key design decisions or `design.md` skipped reason
+- evidence surfaces used for planning, plus any `BLOCKER-*`
 - task breakdown summary
 - verification approach summary
 - any assumptions, blockers, or tradeoffs that deserve user review

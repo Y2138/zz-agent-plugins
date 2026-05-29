@@ -15,14 +15,23 @@ Preserve what actually happened in one low-priority historical record under `spe
 - Keep only request intent, delivered result, historical design rationale, final design notes, key code context or design tradeoffs, brief/handoff summary when useful, key traceability, verification summary, and remaining gaps.
 - Summarize the decisive context and evidence; do not copy quality checklists, full task lists, or full verification plans.
 - Delete the original `specs/<summary-name>/` only after the archive is accurate.
+- Stop instead of archiving when final verification is missing, not `PASS`, or contradicts the delivered result.
 
 # Must Not
 
 - Do not keep the archive as an authoritative current code reference.
+- Do not write an archive or delete the bundle from plan intent alone.
+- Do not delete the original bundle while evidence is missing, ambiguous, or failed.
 - Do not copy the full task list or evidence plan.
 - Do not copy `brief.md` in full; summarize only what helped human alignment.
 - Do not copy short-checklist or lint process details unless they explain a meaningful final decision.
 - Do not leave stale bundle files after successful archive.
+
+# Stop Conditions
+
+- If the target bundle is missing or multiple bundles match equally, ask one concise question and stop.
+- If latest verification is not clearly `PASS`, report the missing or failed evidence and stop before writing an archive file.
+- If the archive cannot be checked against the actual delivered result, keep the bundle in place and stop.
 
 # Workflow
 
@@ -31,8 +40,8 @@ Preserve what actually happened in one low-priority historical record under `spe
 3. Inspect actual code/evidence enough to summarize truthfully.
 4. Use `references/archive-workflow.md` for the compact archive shape.
 5. Write the archive file.
-6. Verify it matches the final result.
-7. Remove the original bundle directory.
+6. 🔴 CHECKPOINT / 🛑 STOP before deletion: verify the archive matches the final result, latest verification evidence, remaining gaps, and source bundle path.
+7. Remove the original bundle directory only after the checkpoint passes.
 
 # Exit Gate
 

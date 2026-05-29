@@ -43,6 +43,12 @@ This skill is optional. It helps people quickly understand requirements, functio
 - Do not invent requirements, acceptance criteria, or implementation decisions not supported by the bundle.
 - Do not run broad code searches unless the bundle artifacts are contradictory and a minimal check is needed to avoid misleading humans.
 
+# Checkpoints
+
+- 🔴 CHECKPOINT / 🛑 STOP before writing: if `spec.md` is missing, stop; do not build a brief from tasks, code, archives, or external notes.
+- 🔴 CHECKPOINT / 🛑 STOP before conclusions: if artifacts conflict in a way that changes scope, behavior, acceptance, design authority, or verification confidence, mark the conflict as `【待确认】` instead of turning it into a `★` conclusion.
+- 🔴 CHECKPOINT / 🛑 STOP before output: run the Self-Check, repair `brief.md` only, and confirm no execution artifacts or product code were modified.
+
 # Reference Use
 
 Use these references only when they improve the brief.
@@ -80,6 +86,8 @@ Diagram guidance:
 - If `design.md` is missing, still create the brief when `spec.md` is sufficient, but make the key design section a planning summary and mark design gaps as `【待确认】` when they affect alignment.
 - If `verification.md` is missing, still create the brief when useful, but mark testing coverage as `【待确认】尚未形成验证计划`.
 - If bundle artifacts conflict, prefer `spec.md` for behavior, `design.md` for implementation decisions, and `verification.md` for evidence planning. If the conflict changes scope or acceptance, mark it as `【待确认】`.
+- Treat `spec.md` as sufficient when it states the goal, scope, actors, at least one observable behavior, and acceptance signal; otherwise write only a limited brief and mark missing alignment inputs as `【待确认】`.
+- Do not resolve conflicts by averaging artifacts. Keep `spec.md` as behavior authority, summarize confirmed design facts separately, and surface the conflict for human alignment.
 
 # `brief.md` Contract
 

@@ -1,0 +1,13 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-05-28T19:23:05+08:00	baseline	specz-archive	-	68.7	baseline	-	runtime_warn=0; dim4缺显性checkpoint; dim3缺证据不足停止分支	full_test
+2026-05-28T19:23:05+08:00	baseline	specz-brief	-	83.0	baseline	-	runtime_warn=0; dim4缺显性checkpoint; artifact冲突处理缺显性停止点	full_test
+2026-05-28T19:23:05+08:00	baseline	specz-clarify	-	78.7	baseline	-	runtime_warn=0; dim4缺显性checkpoint; 增量更新最小diff指引不足	full_test
+2026-05-28T19:23:05+08:00	baseline	specz-flow	-	78.1	baseline	-	runtime_warn=0; dim4缺显性checkpoint; 轻量任务流程摩擦偏高	full_test
+2026-05-28T19:23:05+08:00	baseline	specz-plan	-	80.4	baseline	-	runtime_warn=0; dim4缺显性checkpoint; 上下文采集最低证据门槛不足	full_test
+2026-05-28T19:23:05+08:00	baseline	specz-run	-	83.9	baseline	-	runtime_warn=0; dim4缺显性checkpoint; 状态完备性依赖偏强	full_test
+2026-05-28T19:29:39+08:00	working-tree	specz-archive	68.7	84.7	keep	dim3+dim4	新增Stop Conditions和删除前显性checkpoint; judges=A/B dim8=9	full_test
+2026-05-28T19:46:28+08:00	working-tree	specz-flow	78.1	87.5	keep	dim3+dim4	新增Checkpoints并硬化continue/命名bundle失败分支和local fast path; judges=C/D dim8=9	full_test
+2026-05-28T19:56:57+08:00	working-tree	specz-clarify	78.7	87.5	keep	dim3+dim4	新增Checkpoints并硬化明确请求不多问与既有spec最小diff; judges=A/B2 dim8=9	full_test
+2026-05-28T20:17:07+08:00	working-tree	specz-plan	80.4	87.5	keep	dim3+dim4	新增Checkpoints和Context Evidence Gate并要求changed surface证据映射; judges=C/D dim8=9	full_test
+2026-05-28T20:30:35+08:00	working-tree	specz-brief	83.0	89.5	keep	dim3+dim4	新增Checkpoints并硬化spec充分性和artifact冲突不做结论; judges=A/B dim8=9	full_test
+2026-05-29T09:11:56+08:00	working-tree	specz-run	83.9	87.5	keep	dim3+dim4	新增Checkpoints和State Recovery并要求small证据写入Result Block; judges=A/B dim8=8.7/9	full_test

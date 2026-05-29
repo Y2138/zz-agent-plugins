@@ -15,6 +15,12 @@ Before scanning bundles or creating a new bundle, confirm the request is coding 
 
 If the request is only docs, skills/prompts, design, critique, research, or consultation, do not create a bundle by default. If the fit is ambiguous, ask one concise question before continuing.
 
+# Checkpoints
+
+- 🔴 CHECKPOINT / 🛑 STOP before bundle work: if the request fails the Entry Gate, do not scan bundles or create a bundle; handle it directly or ask one concise fit question.
+- 🔴 CHECKPOINT / 🛑 STOP before routing: if zero or multiple unfinished bundles match equally, ask one concise question and stop before creating a duplicate.
+- 🔴 CHECKPOINT / 🛑 STOP before output: confirm exactly one active bundle, exactly one next skill, and no product code or stage artifacts were modified by this skill.
+
 # Must
 
 - Scan `specs/*/` except `specs/archive/`.
@@ -37,11 +43,13 @@ If the request is only docs, skills/prompts, design, critique, research, or cons
 
 Only run this section after the Entry Gate passes.
 
-1. If the user names a bundle, use that bundle.
-2. If the user asks to continue, resume the most recently updated unfinished bundle.
-3. If the request matches an unfinished bundle's intent, update that bundle.
-4. Otherwise create a new short bundle path: `specs/<summary-name>/`.
-5. If multiple unfinished bundles match equally, ask one concise question.
+1. If the user names an existing bundle, use that bundle.
+2. If the user names a bundle that does not exist, ask one concise question and stop; do not silently create a similarly named bundle.
+3. If the user asks to continue and an unfinished bundle exists, resume the most recently updated relevant unfinished bundle.
+4. If the user asks to continue and no unfinished bundle exists, ask one concise question and stop; do not create a new bundle from a continuation request.
+5. If the request matches an unfinished bundle's intent, update that bundle.
+6. Otherwise create a new short bundle path: `specs/<summary-name>/`.
+7. If multiple unfinished bundles match equally, ask one concise question.
 
 # State Detection
 
@@ -61,7 +69,7 @@ Use the files, not only metadata hints:
 
 This is advisory context only; it must not become a second state machine.
 
-- Local fast path: small, local, low-risk work executable from `spec.md`; usually route to `specz-run`.
+- Local fast path: small, local, low-risk work executable from existing `spec.md`; route directly to `specz-run` and keep the reason to one sentence.
 - Standard plan path: multi-file or moderate-risk work; route through `specz-plan`.
 - High-risk plan path: contracts, permissions, persistence, migrations, compatibility, or user-critical flows; expect `design.md` and stronger verification.
 - Regression repair path: failed verification, tests, CI, review feedback, or production failure; preserve the failure signal and create focused repair work.
