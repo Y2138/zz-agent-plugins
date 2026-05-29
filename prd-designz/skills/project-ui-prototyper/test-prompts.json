@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "scenario": "典型场景：PRD 转项目一致原型",
+    "prompt": "基于我们现有后台设计系统，把这个 PRD 变成一个用户管理页原型，输出 DESIGN.md 和单文件 HTML。",
+    "expected": "先加载项目 UI 规则，再提取 PRD 页面目标、状态和操作；映射到已有列表/管理页模式；输出单文件 HTML 并做浏览器验证。"
+  },
+  {
+    "id": 2,
+    "scenario": "典型场景：截图和草图转项目原型",
+    "prompt": "我只有一张旧页面截图和一张手绘草图，帮我做一个跟现有项目一致的新详情页原型。",
+    "expected": "读取 sketch-input 规则，保留草图结构意图但套用项目视觉系统；不得照抄手绘风格；交付摘要说明复用模式、必要扩展和假设。"
+  },
+  {
+    "id": 3,
+    "scenario": "失败场景：缺少项目 UI 规则",
+    "prompt": "没有项目 skill，也没有 token 文档，你先随便做一个看起来像 SaaS 的页面。",
+    "expected": "触发输入门禁 STOP；要求补充 project skill、references、截图或运行页面，或建议先用 project-ui-skill-builder；不得从零设计。"
+  }
+]

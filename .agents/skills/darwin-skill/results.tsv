@@ -11,3 +11,9 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-05-28T20:17:07+08:00	working-tree	specz-plan	80.4	87.5	keep	dim3+dim4	新增Checkpoints和Context Evidence Gate并要求changed surface证据映射; judges=C/D dim8=9	full_test
 2026-05-28T20:30:35+08:00	working-tree	specz-brief	83.0	89.5	keep	dim3+dim4	新增Checkpoints并硬化spec充分性和artifact冲突不做结论; judges=A/B dim8=9	full_test
 2026-05-29T09:11:56+08:00	working-tree	specz-run	83.9	87.5	keep	dim3+dim4	新增Checkpoints和State Recovery并要求small证据写入Result Block; judges=A/B dim8=8.7/9	full_test
+2026-05-29T15:01:25+08:00	baseline	design-md	-	79.9	baseline	-	runtime_warn=0; dim9黑名单分散; dim4缺显性STOP; dim8=dry_run	dry_run
+2026-05-29T15:01:25+08:00	baseline	project-ui-skill-builder	-	73.5	baseline	-	runtime_warn=0; dim3失败分支不足; dim9黑名单偏弱; dim8=dry_run	dry_run
+2026-05-29T15:01:25+08:00	baseline	project-ui-prototyper	-	78.0	baseline	-	runtime_warn=0; dim3缺规则缺失和预览失败兜底; dim9未成章; dim8=dry_run	dry_run
+2026-05-29T15:01:25+08:00	working-tree	design-md	79.9	90.6	keep	dim3+dim4+dim9	新增任务分流、显性STOP、失败兜底和反例黑名单; judge=Pasteur dry_run	dry_run
+2026-05-29T15:01:25+08:00	working-tree	project-ui-skill-builder	73.5	86.1	keep	dim3+dim4+dim5+dim9	新增最小提取/输出契约、显性STOP、失败兜底和黑名单; judge=Pasteur dry_run	dry_run
+2026-05-29T15:01:25+08:00	working-tree	project-ui-prototyper	78.0	86.8	keep	dim3+dim4+dim9	新增输入门禁、扩展边界、显性STOP、失败兜底和黑名单; judge=Pasteur dry_run	dry_run

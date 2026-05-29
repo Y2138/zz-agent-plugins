@@ -16,7 +16,7 @@ description: 分析已有产品/应用的 UI 界面，提取设计系统并生�
 3. 真实渲染 UI 证据 > 推断的样式值
 4. 证据不足时，向用户索取最小补充：截图、关键路由、组件库、样式配置或设计文档
 
-**检查点 1**：确认证据覆盖核心 UI 区域后再进入提取。
+**🔴 CHECKPOINT 1 · 🛑 STOP**：证据覆盖页面外壳、核心内容页和关键组件状态后再提取；不足时不生成 project skill。
 
 ### Phase 2 · 提取设计与可复用 UI 资产
 
@@ -25,9 +25,13 @@ description: 分析已有产品/应用的 UI 界面，提取设计系统并生�
 3. 识别应生成为 `assets/` 的固定可复用 UI 结构：admin shell、侧边栏、顶栏、导航框架、页面外框、表格工具栏外壳、模态框/抽屉框架、仪表盘网格
 4. 每条重要规则标注证据和置信度
 
+最小提取清单：Token 覆盖色彩/字体/间距/圆角/阴影/边框/断点；组件覆盖导航/按钮/输入/表格/反馈态；布局覆盖外壳/内容宽度/工具栏/响应式；交互覆盖 hover/focus/selected/disabled/loading/empty/error；视觉禁区覆盖禁用视觉。缺项标“证据不足”。规则格式：`规则 -> 证据 -> 置信度 -> 例外/待确认`。
+
 ### Phase 3 · 生成前确认
 
 写最终 project skill 之前，先展示 UI 证据摘要和提议的 token/组件基线。只问会影响生成结果的决策：冲突 token、不明确的主风格、缺失核心组件、输出位置。
+
+**🔴 CHECKPOINT 2 · 🛑 STOP**：用户确认证据摘要、token/组件基线和输出位置后，才写 `SKILL.md`、`references/` 或 `assets/`。
 
 ### Phase 4 · 生成 Project Skill
 
@@ -37,13 +41,15 @@ description: 分析已有产品/应用的 UI 界面，提取设计系统并生�
 4. 稳定的可复用布局/组件脚手架放 `assets/`
 5. 包含 consistency checklist，让未来 agent 自我检查原型
 
+最小输出契约：`SKILL.md` 必含上下文、流程、规则、兜底/黑名单；`references/` 必含 token、技术栈、组件、布局、交互、原型和检查；ref 含证据/置信度/待补项。只为稳定结构生成 assets。
+
 ### Phase 5 · 小样本验证
 
 1. 走 `references/validation-protocol.md`
 2. 用新生成的 skill 做一个小的样本页面
 3. 验证产出是否符合提取的项目 UI 基线
 
-**检查点 2**：样本页面通过一致性检查后再交付。
+**🔴 CHECKPOINT 3 · 🛑 STOP**：样本页面通过一致性检查后再交付。若样本无法渲染或明显偏离项目 UI，先修 generated skill，再重新验证。
 
 ## 默认输出
 
@@ -79,6 +85,23 @@ description: 分析已有产品/应用的 UI 界面，提取设计系统并生�
 - 矛盾证据不静默合并：记录主规则 + 例外 + 待决问题
 - 不承诺从任意项目全自动提取，诚实标注证据质量
 - 除非用户要求打包成插件，否则不把生成的 project skill 变成完整 plugin
+
+## 失败模式与兜底
+
+- 如果找不到代码、截图、Storybook、Figma 或运行页面，则索取最小证据包；仍缺时只输出缺口清单，不生成 project skill。
+- 如果项目无法本地运行，则用截图、Storybook、源码、CSS 变量和配置交叉提取；渲染规则标 `medium/low`。
+- 如果 Tailwind resolved config 失败，则读 `tailwind.config.*`、CSS 入口、token 模块和组件样式；只提取有证据的 token。
+- 如果 UI 证据矛盾，则写“主规则 / 例外 / 待决策”，未确认前不写最终 skill。
+- 如果样本无法渲染或偏离项目 UI，则回到 Phase 2 修正规则和 assets；仍失败则交付草稿并标待补项。
+
+## 反例黑名单
+
+- 不凭少量截图发明完整设计系统；缺什么就标什么。
+- 不把生成的 project skill 写回 `prd-designz` 插件目录；写到用户项目或指定位置。
+- 不把一次性页面组件放进 `assets/`；assets 只收稳定可复用脚手架。
+- 不静默合并新旧 UI 风格；写主规则、例外和待决策。
+- 不承诺“自动提取全部 UI”；交付证据覆盖范围和置信度。
+- 不在用户未要求时打包完整 plugin；默认只生成项目专属原型 skill。
 
 ## References 路由表
 
