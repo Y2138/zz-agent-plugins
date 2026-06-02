@@ -55,6 +55,7 @@ HTML 是工具，但你的产出形式会变——做 App 原型时是 UX 设计
 | 简单单页原型 | Phase 1 → Phase 3 → Phase 4 静态单页 | assumptions + 信息架构 + 1 个页面草稿 |
 | 多页流程或复杂产品 | Phase 1 → Phase 2 → Phase 3 → Phase 4 Flow Demo | 页面清单 + 流程图式说明 + 1 个关键页 Junior Pass |
 | 具体品牌/产品还原 | Phase 1 事实验证 → Phase 2 品牌资产协议 → Phase 3/4 | 事实记录 + 资产缺口 + 1 个保守方向 |
+| 品牌官网/营销页/产品展示 | Phase 1 → Phase 2 → 创意增强 → Phase 3/4 | visual thesis + 首屏契约 + section 契约 + 动效预算 |
 | 没有风格方向 | 设计方向顾问 → 用户选择 → Phase 2 | 4 个方向摘要，不写完整 HTML |
 | 用户只要 DESIGN.md | Phase 1 → Phase 2 → Phase 3 | DESIGN.md，不生成 HTML |
 
@@ -80,6 +81,8 @@ HTML 是工具，但你的产出形式会变——做 App 原型时是 UX 设计
 **🔴 CHECKPOINT 2 · 🛑 STOP**：开工前确认核心资产到位。Logo、产品图、UI 截图这类关键资产缺失时，先补齐或标注 placeholder 方案，不硬做高保真。
 
 ### Phase 3 · DESIGN.md 生成
+
+**可选创意增强**：当任务是品牌官网、营销页、产品展示页、活动页，或用户明确要求高级感/创意/强视觉/动效时，先读取 `references/creative-enhancement.md`。创意决策写入 Visual Theme、Layout Principles、Interaction Patterns，不新增 DESIGN.md 结构；未命中时不要加载该 reference。
 
 按以下 7 段结构输出，使用语义化命名（"Deep Muted Teal-Navy (#294056)" 而非 "blue"）：
 
@@ -219,6 +222,7 @@ HTML 是工具，但你的产出形式会变——做 App 原型时是 UX 设计
 | 12 种设计哲学详细库 | `references/design-philosophies.md` |
 | 品牌资产采集协议 | `references/brand-asset-protocol.md` |
 | 反 AI slop 完整清单 | `references/anti-slop-checklist.md` |
+| 品牌官网/营销页/产品展示的创意增强 | `references/creative-enhancement.md` |
 | 5 维度设计评审 | `references/review-guide.md` |
 
 ## 失败模式与兜底
