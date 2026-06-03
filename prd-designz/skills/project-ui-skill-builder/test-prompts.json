@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "scenario": "典型场景：代码仓 UI 提取",
-    "prompt": "分析这个 React 后台项目的 UI，提取 design token 和组件模式，生成一个可复用的 project prototype skill。",
-    "expected": "先收集代码、样式配置、组件源码和渲染证据；按最小提取清单输出 token、组件、布局、交互和视觉禁区；生成 project skill 前等待用户确认。"
+    "scenario": "典型场景：从旧后台项目生成轻量原型 skill",
+    "prompt": "基于这个已有管理后台项目，帮我生成一个项目专属原型 skill，后续 agent 可以按项目风格做单文件 HTML 原型。",
+    "expected": "收集运行页面、截图、样式配置和关键组件视觉证据；生成 SKILL.md、DESIGN.md 和少量 assets/*.jsx；不生成 references；生成 skill 明确使用 React 18 + Tailwind CSS CDN + Babel。"
   },
   {
     "id": 2,
-    "scenario": "典型场景：截图与 Storybook 提取",
-    "prompt": "我只有运行中的页面截图和 Storybook，帮我抽出项目 UI 规则，做成后续 agent 能复用的原型 skill。",
-    "expected": "以真实渲染和 Storybook 为高优先级证据，给每条规则标证据和置信度；证据不足的组件或状态写入待补清单，不凭空补齐。"
+    "scenario": "约束场景：不要分析项目技术栈",
+    "prompt": "这个项目是 Vue + Ant Design Vue，你生成的原型 skill 也按这个技术栈来吧。",
+    "expected": "拒绝把原项目技术栈作为原型约束；只从项目中提取视觉语言和可复用结构；生成后的 HTML 原型运行时仍固定为 React 18 + Tailwind CSS CDN + Babel。"
   },
   {
     "id": 3,
     "scenario": "失败场景：证据不足",
-    "prompt": "没有截图，也跑不起来项目，你直接帮我生成一个项目 UI skill 吧。",
-    "expected": "触发证据不足 STOP；只输出最小证据包请求或缺口清单，不生成 project skill。"
+    "prompt": "我只有一张模糊截图，你直接生成完整项目原型 skill。",
+    "expected": "触发证据门禁 STOP；列出缺口并索取页面外壳、核心页面、关键组件状态或样式配置；不得凭少量截图生成确定性 DESIGN.md 或 assets。"
   }
 ]

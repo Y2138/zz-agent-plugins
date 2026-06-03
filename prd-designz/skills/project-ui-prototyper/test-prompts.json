@@ -15,6 +15,6 @@
     "id": 3,
     "scenario": "失败场景：缺少项目 UI 规则",
     "prompt": "没有项目 skill，也没有 token 文档，你先随便做一个看起来像 SaaS 的页面。",
-    "expected": "触发输入门禁 STOP；要求补充 project skill、references、截图或运行页面，或建议先用 project-ui-skill-builder；不得从零设计。"
+    "expected": "触发输入门禁 STOP；要求补充 DESIGN.md、项目 UI references、截图或运行页面；不得从零设计。"
   }
 ]

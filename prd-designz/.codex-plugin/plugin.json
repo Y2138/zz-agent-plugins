@@ -1,7 +1,7 @@
 {
   "name": "prd-designz",
-  "version": "0.1.1",
-  "description": "Product design and UI prototype skills for new-product design direction, existing-project UI skill generation, and project-consistent prototyping.",
+  "version": "0.1.4",
+  "description": "Product design and UI prototype skills for DESIGN.md generation, existing-project style extraction, reusable UI assets, and project-consistent prototyping.",
   "author": {
     "name": "zane",
     "url": "https://github.com/Y2138"
@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "PRD Designz",
-    "shortDescription": "Design specs, project UI skill generation, and prototype workflows.",
-    "longDescription": "PRD Designz bundles design-md for new-product DESIGN.md and HTML prototype generation, project-ui-skill-builder for extracting an existing project's UI tokens and component patterns into a reusable project-specific prototype skill, and project-ui-prototyper for using those project UI rules to generate PRD-to-prototype or sketch-to-prototype outputs.",
+    "shortDescription": "Design specs, existing-project style extraction, reusable UI assets, and prototype workflows.",
+    "longDescription": "PRD Designz supports new-product DESIGN.md and HTML prototype generation, lightweight DESIGN.md extraction from existing front-end projects, reusable React/Tailwind UI asset extraction for project-specific prototype skills, and project-consistent PRD/sketch-to-prototype workflows.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -30,7 +30,8 @@
     "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/prd-designz",
     "defaultPrompt": [
       "Use design-md to create a DESIGN.md and high-fidelity prototype for a new product or page direction.",
-      "Use project-ui-skill-builder to extract an existing project's UI tokens and generate a project-specific prototype skill.",
+      "Use project-design-md to extract a lightweight DESIGN.md from an existing front-end project, screenshots, running pages, or style configuration.",
+      "Use project-ui-skill-builder to extract an existing project's DESIGN.md and reusable React/Tailwind assets, then generate a project-specific prototype skill.",
       "Use project-ui-prototyper to turn a PRD, page request, flow, screenshot, wireframe, or sketch into a prototype that matches an existing project UI system.",
       "Generate prototypes that follow either a new design direction or an extracted project UI system."
     ],

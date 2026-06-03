@@ -19,7 +19,7 @@ description: 基于已有项目 UI 规则，从 PRD、页面需求、流程图�
 
 - PRD、页面需求、用户流程、验收说明、截图、线框图或草图
 
-若项目 UI 规则缺失，向用户索取或建议先用 `project-ui-skill-builder` 提取。
+若项目 UI 规则缺失，向用户索取 `DESIGN.md`、项目 UI references、截图或运行页面；仍缺时不生成“项目一致”原型。
 
 ## 工作流程
 

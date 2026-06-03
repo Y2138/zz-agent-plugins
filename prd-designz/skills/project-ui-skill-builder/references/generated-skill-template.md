@@ -1,15 +1,29 @@
 # 生成的 Project Skill 模板
 
-生成一个可移植的 skill 文件夹，任何 agent 都能用它产出匹配特定项目 UI 的原型。
+生成一个可移植的 skill 文件夹，任何 agent 都能用它产出匹配特定项目 UI 的单文件 HTML 原型。
 
-## 生成的 `SKILL.md`
+生成物保持轻量：`SKILL.md` + `DESIGN.md` + `assets/`。不要生成 `references/`。
+
+## 生成结构
+
+```text
+<project-name>-prototype/
+├── SKILL.md
+├── DESIGN.md
+└── assets/
+    ├── admin_shell.jsx        # 可选
+    ├── table_page_shell.jsx   # 可选
+    └── overlay_frames.jsx     # 可选
+```
+
+## 生成的 SKILL.md
 
 保持生成的 `SKILL.md` 简洁：
 
 ```markdown
 ---
 name: <project-name>-prototype
-description: 生成匹配 <项目名> 已有 UI 系统的 DESIGN.md 和高保真 HTML 原型。当用户要求做新页面、新流程、功能原型、PRD 转 UI mockup、草图转原型或 UI 变体探索时使用，产出须遵循此项目的 Token、组件、布局密度和交互规则。
+description: 生成匹配 <项目名> 已有 UI 风格的单文件 HTML 原型。当用户要求做新页面、新流程、功能原型、PRD 转 UI mockup、草图转原型或 UI 变体探索时使用，产出须遵循 DESIGN.md 和 assets 中记录的视觉语言、组件气质、布局密度和交互规则。
 ---
 
 # <项目名> 原型 Skill
@@ -18,120 +32,151 @@ description: 生成匹配 <项目名> 已有 UI 系统的 DESIGN.md 和高保真
 
 ## 必需上下文
 
-生成原型前先读取：
-- `references/design-tokens.md`
-- `references/tech-stack.md`
-- `references/component-patterns.md`
-- `references/layout-patterns.md`
-- `references/interaction-patterns.md`
-- `references/prototype-rules.md`
+生成原型前必须读取：
 
-若本 skill 在 `assets/` 下有可复用 UI 资产，生成 HTML 前先读取对应资产文件。内联或适配该脚手架，不从文字描述重建固定项目外框。
+- `DESIGN.md`
+- 当前页面需要复用的 `assets/*.jsx`
+
+`DESIGN.md` 是唯一设计权威；`assets/` 是可复用 UI 脚手架。不要临时发明新的视觉系统。
+
+## 原型运行时
+
+最终产出必须是一个独立 `.html` 文件，统一使用：
+
+- React 18 CDN
+- ReactDOM 18 CDN
+- Babel Standalone CDN
+- Tailwind CSS CDN
+
+禁止使用 npm install、构建步骤、dev server、本地项目路径或原项目技术栈。
 
 ## 工作流
 
 1. 理解用户的页面或流程需求
-2. 若含草图或截图，提取布局意图但不复制不一致的视觉样式
-3. 将需求页面映射到最接近的已有项目页面模式
-4. 复用匹配的 `assets/` 脚手架作为固定项目外框和页面外壳
-5. 使用项目 Token 和组件规则生成 DESIGN.md 或 HTML 原型
-6. HTML 产出为单文件独立 `.html`
-7. 交付前跑 `references/consistency-checklist.md` 并在浏览器中预览 HTML
+2. 读取 `DESIGN.md`
+3. 选择最接近的 `assets/*.jsx` 作为页面外壳或固定结构
+4. 将资产代码内联到 HTML 的 `<script type="text/babel">`
+5. 使用 React + Tailwind 生成单文件 HTML 原型
+6. 所有页面视觉遵守 `DESIGN.md`
+7. 只在已有模式无法表达需求时做最小扩展，并在交付摘要中说明
+8. 交付前在浏览器中预览，确认无白屏、无 JS 错误、无明显布局破碎
 
 ## 规则
 
-- 默认复用项目 Token 和组件模式
-- 复用生成的 `assets/` 布局或组件脚手架，不手建固定导航、顶栏、页面外壳、模态框、抽屉、表格外壳或仪表盘框架
-- 原型优先使用项目原始 UI 技术栈和组件库；仅在原始技术栈无法安全用于独立 HTML 文件时才降级为原生 HTML/CSS/JS
-- 仅在已有模式无法表达需求时才扩展
+- 默认复用 `DESIGN.md` 的颜色、字体、圆角、间距、密度、组件形状和状态语言
+- 优先复用 `assets/`，不要从文字描述重建固定导航、顶栏、页面外壳、模态框、抽屉、表格外壳或仪表盘框架
 - 产品行为或数据缺失时标注假设
-- 不引入项目中不存在的渐变、图标、圆角卡片系统、阴影或营销布局
+- 不引入 `DESIGN.md` 中不存在的渐变、图标、圆角卡片系统、阴影或营销布局
+- 不输出需要本地依赖、构建、启动服务或项目源码导入的原型
 ```
 
-## 需生成的 Reference 文件
+## HTML Runtime 模板
 
-### `references/design-tokens.md`
+生成的原型 HTML 使用此形态，可按需补充 title、内联 CSS、assets 和页面组件：
 
-包含：
-- 证据摘要
-- Token 表（Token、值、角色、证据、置信度）
-- 冲突说明和未解决问题
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Prototype Name]</title>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    // Inline assets/*.jsx here.
 
-### `references/tech-stack.md`
+    function App() {
+      return <div>Prototype</div>;
+    }
 
-包含：
-- 框架、元框架、语言、样式方案、组件库、图标、图表、表格
-- 原始资产来源：字体、图标库、Logo、产品图、插画、静态资源
-- 每项检测到的技术的证据和置信度
-- 原型指南：如何在单文件 HTML 中近似项目技术栈
-- 资产处理指南：关键本地资产内嵌、使用稳定 URL、或提供占位符
-- 降级规则：原始技术栈优先，原生 HTML/CSS/JS 次之
-
-### `references/component-patterns.md`
-
-包含：
-- 导航、操作、数据展示、输入、遮罩层、反馈状态
-- 组件使用规则和反模式
-- 有 `assets/` 脚手架支持的组件，链接资产路径并描述槽位/props
-
-### `references/layout-patterns.md`
-
-包含：
-- 页面外壳、密度、间距节奏、响应式行为、常见页面原型
-- 将可复用外壳映射到生成的资产，如 `assets/admin_shell.jsx`、`assets/table_page_shell.jsx`、`assets/detail_page_shell.jsx`
-
-### `references/interaction-patterns.md`
-
-包含：
-- hover/focus/selected/disabled、loading、empty、error、确认、批量操作
-
-### `references/prototype-rules.md`
-
-包含：
-- HTML 原型约束：可交付物必须是独立 `.html` 文件，inline CSS/JS，无构建步骤
-- 如何将 PRD 或草图映射到项目 UI
-- 如何选择和内联生成的 `assets/` 脚手架作为固定项目外框
-- 如何在独立文件中使用原始 UI 框架/组件库
-- 如何在独立文件中引用原始资产而不出现本地路径断裂
-- 何时允许扩展
-
-### `references/consistency-checklist.md`
-
-包含检查项：
-- 独立 HTML 预览无 JS 错误加载
-- 原始资产已渲染或有显式降级
-- Token 使用
-- 组件一致性
-- 布局密度
-- 状态覆盖
-- 未引入不支持的新视觉元素
-- 假设和置信度标注
-
-## 需生成的 Assets
-
-当稳定的项目 UI 结构应被未来原型直接复用时，生成 `assets/` 文件。这些文件不是文档，是可移植的原型脚手架，类似设备框组件。
-
-Admin 或 SaaS 项目推荐资产：
-
-```text
-assets/
-├── admin_shell.jsx          # 应用框架：侧栏、顶栏、面包屑、内容槽位
-├── sidebar_nav.jsx          # 导航树、active/收起态、图标节奏
-├── topbar.jsx               # 搜索、账户菜单、通知、全局操作
-├── table_page_shell.jsx     # 筛选、工具栏、表格区、分页、空态/加载槽位
-├── detail_page_shell.jsx    # header 摘要、Tab、元数据、侧面板槽位
-├── overlay_frames.jsx       # 模态/抽屉框架和操作 footer 模式
-└── reference-screenshots/   # 仅用作视觉证据的截图
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
 ```
 
-仅生成有证据支持的资产。文件按可复用结构命名，不按一次性页面命名。保持小巧、基于槽位、可直接内联到独立 HTML 原型。包含足够的 CSS/类/Token 以保持布局保真度，但避免硬编码业务内容（中立占位符除外）。
+## DESIGN.md 验收
 
-非 React 项目：优先原始框架（可行的独立浏览器构建）；否则用相同文件目的的纯 JS/CSS 脚手架，并在 `references/prototype-rules.md` 中记录降级方案。
+生成的 `DESIGN.md` 必须包含：
 
-## 示例
+```markdown
+# Design System: [项目名]
 
-证据充足时包含：
-- `examples/DESIGN.md`：一个有代表性的生成设计规格
-- `examples/prototype.html`：一个匹配项目的小页面原型或外壳，有 `assets/` 脚手架时至少复用一个
+## 1. Visual Theme & Atmosphere
+## 2. Color Palette & Roles
+## 3. Typography Rules
+## 4. Component Stylings
+## 5. Layout Principles
+## 6. Interaction Patterns
+## 7. Prompt Hints
+## 8. Evidence & Confidence
+```
 
-证据不足时，仅在标注低置信度后才包含示例。
+验收标准：
+
+- 语义化描述项目风格，不只是 token 表
+- 记录主规则、例外、待确认和证据置信度
+- `Prompt Hints` 可直接用于后续页面生成
+- 不包含框架版本、组件库版本、Runtime Contract 或工程实现分析
+
+## Assets 验收
+
+生成的 `assets/*.jsx` 必须：
+
+- 是 React 函数组件，可内联到 `<script type="text/babel">`
+- 使用 Tailwind utility class 和必要 arbitrary value 表达项目视觉
+- 暴露简单 props 或 `children` 插槽
+- 只包含稳定可复用结构，不硬编码一次性业务内容
+- 顶部注释证据来源和适用场景
+- 通过 `Object.assign(window, {...})` 暴露组件，便于多个脚本块复用
+
+示例：
+
+```jsx
+// Evidence: dashboard screenshot + sidebar layout source. Use for admin pages.
+function AdminShell({ activeNav, title, actions = null, children }) {
+  return (
+    <div className="min-h-screen bg-[#F6F8FC] text-[#1F2937]">
+      <aside className="fixed inset-y-0 left-0 w-64 border-r border-[#E5EAF3] bg-white">
+        {/* navigation */}
+      </aside>
+      <main className="ml-64 min-h-screen p-6">
+        <header className="mb-5 flex items-center justify-between">
+          <h1 className="text-xl font-semibold">{title}</h1>
+          {actions}
+        </header>
+        {children}
+      </main>
+    </div>
+  );
+}
+
+Object.assign(window, { AdminShell });
+```
+
+## 生成产物验收门
+
+生成后逐项检查，不通过就回到生成阶段修正。
+
+- `SKILL.md` 指向 `DESIGN.md` 和 `assets/`
+- `SKILL.md` 明确 React 18 + Tailwind CSS CDN + Babel 单文件 HTML
+- `DESIGN.md` 结构完整，且包含 Evidence & Confidence
+- `assets/` 只包含稳定可复用 React/Tailwind 组件
+- 没有生成 `references/`
+- 没有生成 `tech-stack.md`、`design-tokens.md`、`prototype-rules.md` 或 Runtime Contract
+- 没有默认保留 `examples/prototype.html`
+- 没有要求 npm install、构建步骤、dev server、本地项目路径或原项目技术栈
+
+## 临时验证样本
+
+如需验证，可临时生成一个 `prototype.html`，使用 `SKILL.md`、`DESIGN.md` 和 `assets/` 生成小页面并在浏览器预览。验证通过后删除临时样本，除非用户明确要求保留。
