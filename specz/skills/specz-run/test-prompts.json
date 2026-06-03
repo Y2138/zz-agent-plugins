@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "执行一个 planned bundle，tasks.md 有两个未完成任务，verification.md 有三条 VERIFY。",
+    "expected": "按任务依赖执行，更新 tasks.md，用 verification.md 独立验证，更新 Latest Verification Result，必要时最多 3 轮修复。"
+  },
+  {
+    "id": 2,
+    "prompt": "Size: standard 但缺少 verification.md，用户让你直接改代码。",
+    "expected": "Gate 停止并路由到 specz-plan，不从部分规划状态执行。"
+  },
+  {
+    "id": 3,
+    "prompt": "验证失败后发现需要临时测试文件才能定位问题。",
+    "expected": "创建或更新 focused repair task，验证结束后删除非永久验证文件，不能把未跑测试当 PASS。"
+  }
+]

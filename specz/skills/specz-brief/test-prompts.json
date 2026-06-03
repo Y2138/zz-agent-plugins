@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "基于已 planned 的 bundle 生成一份给产品、研发、QA 共读的 brief.md。",
+    "expected": "从 spec/design/tasks/verification 提炼人读简报，标记关键结论和待确认项，不复制任务清单。"
+  },
+  {
+    "id": 2,
+    "prompt": "bundle 只有 tasks.md，没有 spec.md，也想生成 brief。",
+    "expected": "在写入前停止，说明 spec.md 缺失，不能从任务或外部笔记构造 brief。"
+  },
+  {
+    "id": 3,
+    "prompt": "spec 和 design 对同一行为描述冲突。",
+    "expected": "优先 spec 作为行为权威，把冲突标为待确认，不把冲突改写成确定结论。"
+  }
+]

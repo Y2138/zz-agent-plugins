@@ -1,7 +1,7 @@
 {
   "name": "specz",
-  "version": "1.1.0",
-  "description": "Efficient, lightweight spec-driven workflow plugin for non-trivial coding development work, with disciplined clarification, impact-aware planning, traceable tasks, verification evidence, bounded run loops, and archive history.",
+  "version": "1.2.0",
+  "description": "Efficient, lightweight spec-driven workflow plugin for non-trivial coding development work, with stage-gated handoffs, project-memory context, disciplined clarification, impact-aware planning, traceable tasks, verification evidence, bounded run loops, and archive history.",
   "author": {
     "name": "zane",
     "url": "https://github.com/Y2138"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Specz",
     "shortDescription": "Run efficient, lightweight spec-driven workflows through one flow entry.",
-    "longDescription": "Specz helps agents handle non-trivial coding development work: select or create a bundle after an entry gate, route by task size, clarify behavior with focused user questions, plan larger work with impact-aware existing-code analysis, run implementation and independent verification in bounded loops, and archive completed work. Docs-only, skill/prompt, design-only, research, critique, and consultation tasks should stay outside Specz unless the user explicitly asks for it.",
+    "longDescription": "Specz helps agents handle non-trivial coding development work: select or create a bundle after an entry gate, route by task size, load the required stage skill before stage work, use general project memory as contextual guidance, clarify behavior with focused user questions, plan larger work with impact-aware existing-code analysis, run implementation and independent verification in bounded loops, and archive completed work. Docs-only, skill/prompt, design-only, research, critique, and consultation tasks should stay outside Specz unless the user explicitly asks for it.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -29,6 +29,8 @@
     "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/specz",
     "defaultPrompt": [
       "Use specz-flow only for non-trivial coding development work, not docs-only or skill/prompt edits.",
+      "After specz-flow routes, load the required next stage skill before doing stage work.",
+      "Use available general project memory and project instructions as context without letting memory override current instructions, active bundle artifacts, code facts, or verification evidence.",
       "Use specz-flow to resume the active spec bundle.",
       "Use specz-clarify to create or update the behavior spec.",
       "Use specz-plan to prepare concise design, tasks, and verification evidence.",

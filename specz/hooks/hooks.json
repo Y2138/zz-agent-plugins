@@ -1,5 +1,5 @@
 {
-  "description": "Session-start reminder to consider specz-flow only for non-trivial coding development work.",
+  "description": "Session-start reminder to consider specz-flow only for non-trivial coding development work, then load the routed stage skill before stage work.",
   "hooks": {
     "SessionStart": [
       {

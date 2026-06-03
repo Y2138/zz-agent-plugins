@@ -7,6 +7,22 @@ description: "Planning-stage Specz skill. Use when specz-flow routes a bundle to
 
 Prepare non-small work for execution without over-documenting. `spec.md` remains the behavior authority; planning adds only the implementation guidance and evidence plan the task actually needs.
 
+# 🔴 Activation Gate / 🛑 STOP
+
+- Proceed only when this `specz-plan` skill is loaded as the active stage contract, either because the user invoked it directly or because `specz-flow` routed here.
+- If only `specz-flow` is loaded, stop and load `specz-plan` before writing `design.md`, `tasks.md`, or `verification.md`.
+- If the platform cannot load this skill, stop and report that the planning stage skill is unavailable.
+
+# Project Memory Context
+
+Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not a Specz artifact and not a substitute for code inspection.
+
+- Load relevant platform/project memory and project instructions before planning when available.
+- Use memory to understand durable conventions, prior decisions, known hazards, verification habits, and user/project preferences.
+- Verify memory-derived technical claims against current code or record them as assumptions/blockers; do not design from memory alone.
+- Active user instructions, system/developer instructions, project instructions, `spec.md`, current code facts, and concrete evidence override memory.
+- Do not create, update, or delete project memory from this stage. If planning uncovers durable memory candidates, mention them in the review summary only when useful.
+
 # Outputs
 
 - Required: `spec.md`, `tasks.md`, `verification.md`
@@ -17,6 +33,7 @@ Prepare non-small work for execution without over-documenting. `spec.md` remains
 
 - Read `spec.md` first and respect its `Size`.
 - Inspect relevant project context and code before writing tasks or design.
+- Load relevant project memory/instructions when available before context collection.
 - Use clearly relevant archive records only as low-priority historical context.
 - If `design.md` is created, include a concise existing-code analysis table.
 - Use ID references: `SPEC-*`, `DESIGN-*` when design exists, `TASK-*`, `VERIFY-*`.

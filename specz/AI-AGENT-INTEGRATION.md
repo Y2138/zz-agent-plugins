@@ -8,7 +8,9 @@
 
 完成后，agent 应能做到：
 
-- 发现并调用 `specz-flow`、`specz-clarify`、`specz-plan`、`specz-run`、`specz-archive`
+- 发现并调用 `specz-flow`、`specz-clarify`、`specz-plan`、`specz-brief`、`specz-run`、`specz-archive`
+- 在 `specz-flow` 路由后加载并遵循对应阶段 skill，不只凭 flow 文档执行阶段职责
+- 在 Specz 阶段中读取平台/项目已有的通用记忆和项目指令上下文
 - 在新会话或开发任务开始时收到 Specz reminder
 - 若平台不支持 hooks，则从可识别的 agent 指令文件中获得同等约束
 - 不覆盖用户已有 skills、hooks、AGENTS.md、SYSTEM.md 或其他平台指令
@@ -32,6 +34,7 @@ Specz skills 位于本插件目录的 `skills/` 下：
 specz/skills/specz-flow/SKILL.md
 specz/skills/specz-clarify/SKILL.md
 specz/skills/specz-plan/SKILL.md
+specz/skills/specz-brief/SKILL.md
 specz/skills/specz-run/SKILL.md
 specz/skills/specz-archive/SKILL.md
 ```
@@ -39,24 +42,60 @@ specz/skills/specz-archive/SKILL.md
 如果当前平台支持目录式 skills：
 
 1. 找到该平台要求的项目级或用户级 skills 目录
-2. 将 `specz/skills/` 下的五个 skill 目录复制到目标 skills 目录
+2. 将 `specz/skills/` 下的六个 skill 目录复制到目标 skills 目录
 3. 保留每个目录内的 `SKILL.md` 文件名和 front matter
 4. 如果目标目录已存在同名 skill，只更新 Specz 同名 skill，不删除其他 skills
 5. 若平台需要刷新 skill 索引或重载会话，按平台要求执行
 
 如果当前平台支持 manifest 注册而不是直接复制目录：
 
-1. 使用平台规定的注册格式指向上述五个 skill
+1. 使用平台规定的注册格式指向上述六个 skill
 2. 保留每个 skill 的 `name` 与 `description`
 3. 注册时按名称合并，不覆盖无关 skill 条目
 4. 注册后确认 `specz-flow` 是默认入口或最容易被发现的入口
 
 如果当前平台完全不支持 skills：
 
-1. 不要把五个 `SKILL.md` 机械拼接进系统提示
+1. 不要把六个 `SKILL.md` 机械拼接进系统提示
 2. 优先把本文档和 `specz/README.md` 提供给该 agent 的长期上下文或项目知识库
 3. 在 agent 指令文件中加入“优先阅读并遵循 Specz skills 文档”的约束
 4. 明确指出 `specz-flow` 是非平凡开发任务的入口
+
+## 阶段加载交接
+
+`specz-flow` 只负责选择 active bundle 和下一阶段。agent 不能只凭 `specz-flow` 的状态检测规则执行阶段职责。
+
+当 `specz-flow` 输出下一阶段时，agent 必须：
+
+1. 加载 `Required next skill` 指定的阶段 skill
+2. 阅读并遵循该阶段 `SKILL.md`
+3. 只在该阶段 skill 的 Activation Gate 通过后执行阶段工作
+4. 如果目标阶段 skill 不存在或无法加载，停止并报告缺失 skill
+
+交接块格式：
+
+```text
+Required next skill: specz-run
+Load required: yes
+Stage work allowed from specz-flow: no
+If unavailable: stop and report missing stage skill
+```
+
+阶段职责包括但不限于：写 `spec.md`、写 `design.md` / `tasks.md` / `verification.md`、修改产品代码、执行验证、归档和删除 bundle。
+
+## 通用项目记忆接入
+
+项目记忆不是 Specz 私有状态。它与 `AGENTS.md`、`SYSTEM.md`、平台长期记忆、项目 conventions / decisions 文档一样，属于通用项目上下文。
+
+接入时应确保 agent 在 Specz 阶段能读取已有通用记忆：
+
+1. 优先使用平台原生 memory / project knowledge / instruction 机制
+2. 保留并加载项目已有 `AGENTS.md`、`SYSTEM.md`、`CLAUDE.md` 或等价指令文件
+3. 如果项目已有明确的 memory / knowledge / conventions / decisions 文档，按项目规则读取
+4. 不为 Specz 强制创建私有记忆目录
+5. 不因没有项目记忆而阻塞 Specz；缺失记忆时从当前项目上下文继续
+
+权威顺序和失效处理见 `specz/PROJECT-MEMORY.md`。记忆不能覆盖当前用户请求、项目指令、active bundle、当前代码或验证证据。
 
 ## 安装 Hook Reminder
 
@@ -65,7 +104,7 @@ Specz 的 hook 只做新会话提示，不做文件写入 guard、提交检查�
 标准 reminder 内容为：
 
 ```text
-Specz reminder: use specz-flow only for non-trivial coding development work: code/runtime changes, tests, bugs, CI failures, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Do not use Specz for docs-only edits, skill/prompt edits, design-only work, critique, research, or consultation unless the user explicitly asks for Specz. If scope or acceptance is unclear, ask before creating a bundle.
+Specz reminder: use specz-flow only for non-trivial coding development work: code/runtime changes, tests, bugs, CI failures, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Do not use Specz for docs-only edits, skill/prompt edits, design-only work, critique, research, or consultation unless the user explicitly asks for Specz. If scope or acceptance is unclear, ask before creating a bundle. After specz-flow routes, load the required next stage skill before doing stage work. Use available general project memory and project instructions as context, but do not let memory override current instructions, active bundle artifacts, code facts, or verification evidence.
 ```
 
 如果当前平台支持会话开始或任务开始 hook：
@@ -95,7 +134,7 @@ Specz reminder: use specz-flow only for non-trivial coding development work: cod
 ```markdown
 ## Specz
 
-Use `specz-flow` only for non-trivial coding development work: code/runtime changes, tests, bugs, CI failures, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Do not use Specz for docs-only edits, skill/prompt edits, design-only work, critique, research, or consultation unless the user explicitly asks for Specz. If scope or acceptance is unclear, ask before creating a bundle.
+Use `specz-flow` only for non-trivial coding development work: code/runtime changes, tests, bugs, CI failures, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Do not use Specz for docs-only edits, skill/prompt edits, design-only work, critique, research, or consultation unless the user explicitly asks for Specz. If scope or acceptance is unclear, ask before creating a bundle. After `specz-flow` routes, load the required next stage skill before doing stage work. Use available general project memory and project instructions as context, but do not let memory override current instructions, active bundle artifacts, code facts, or verification evidence.
 ```
 
 如果目标文件已经存在等价 Specz 约束，不要重复添加；如需更新，只替换 Specz 小节。
@@ -115,11 +154,13 @@ Use `specz-flow` only for non-trivial coding development work: code/runtime chan
 
 接入完成后执行以下检查：
 
-1. 当前平台能发现五个 Specz skills
+1. 当前平台能发现六个 Specz skills
 2. `specz-flow` 可作为入口被调用或被 agent 明确识别
-3. 支持 hooks 的平台能在会话开始或任务开始时注入 reminder
-4. 不支持 hooks 的平台，其 `AGENTS.md`、`SYSTEM.md` 或等价指令文件包含 Specz 约束
-5. 原有非 Specz 配置仍然存在
+3. `specz-flow` 路由后，agent 会加载对应阶段 skill，而不是只凭 flow 继续
+4. 支持 hooks 的平台能在会话开始或任务开始时注入 reminder
+5. 不支持 hooks 的平台，其 `AGENTS.md`、`SYSTEM.md` 或等价指令文件包含 Specz 约束
+6. Specz 阶段能读取平台/项目已有通用记忆和项目指令上下文
+7. 原有非 Specz 配置仍然存在
 
 若任一检查失败，只修复对应接入点；不要重装或覆盖整个配置。
 

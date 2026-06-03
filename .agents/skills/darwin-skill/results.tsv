@@ -17,3 +17,9 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-05-29T15:01:25+08:00	working-tree	design-md	79.9	90.6	keep	dim3+dim4+dim9	新增任务分流、显性STOP、失败兜底和反例黑名单; judge=Pasteur dry_run	dry_run
 2026-05-29T15:01:25+08:00	working-tree	project-ui-skill-builder	73.5	86.1	keep	dim3+dim4+dim5+dim9	新增最小提取/输出契约、显性STOP、失败兜底和黑名单; judge=Pasteur dry_run	dry_run
 2026-05-29T15:01:25+08:00	working-tree	project-ui-prototyper	78.0	86.8	keep	dim3+dim4+dim9	新增输入门禁、扩展边界、显性STOP、失败兜底和黑名单; judge=Pasteur dry_run	dry_run
+2026-06-03T19:07:42+08:00	baseline	specz-flow	-	85.5	baseline	dim2+dim5	runtime_warn=0; judges=A/B dry_run; 需要状态权威顺序和输出模板	dry_run
+2026-06-03T19:07:42+08:00	baseline	specz-clarify	-	86.4	baseline	dim3+dim9	runtime_warn=0; judges=A/B dry_run; 缺少集中Failure Modes和不该问什么	dry_run
+2026-06-03T19:07:42+08:00	baseline	specz-archive	-	86.7	baseline	dim2+dim5	runtime_warn=0; judges=A/B dry_run; 输出契约不够机器化但历史高分90.1	dry_run
+2026-06-03T19:07:42+08:00	working-tree	specz-flow	85.5	89.5	keep	dim2+dim3+dim5	新增State authority order、Decision examples、Output template; judges=C/D dry_run	dry_run
+2026-06-03T19:07:42+08:00	working-tree	specz-clarify	86.4	89.0	keep	dim3+dim9	新增Failure Modes和不该问什么; judges=C/D dry_run	dry_run
+2026-06-03T19:07:42+08:00	working-tree	specz-archive	86.7	88.3	revert	dim2+dim5	Archive Output Contract未严格超过历史上沿90.1; 已回滚本轮archive增量; judges=C/D dry_run	dry_run

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "归档一个 latest verification 为 PASS 的 bundle。",
+    "expected": "读取源 bundle 和实际证据，写 specs/archive/YYYY-MM-DD--name.md，确认准确后删除原 bundle。"
+  },
+  {
+    "id": 2,
+    "prompt": "用户要求归档，但 latest verification 是 FAIL。",
+    "expected": "停止，不写 archive，不删除 bundle，报告缺失或失败的证据。"
+  },
+  {
+    "id": 3,
+    "prompt": "归档时发现计划和最终代码不一致。",
+    "expected": "以实际交付和验证证据为准改写最终设计 notes，不复制过期计划。"
+  }
+]

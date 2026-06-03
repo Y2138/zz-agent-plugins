@@ -7,6 +7,21 @@ description: "Closeout-stage Specz skill. Use when specz-flow or specz-run route
 
 Preserve what actually happened in one low-priority historical record under `specs/archive/`.
 
+# 🔴 Activation Gate / 🛑 STOP
+
+- Proceed only when this `specz-archive` skill is loaded as the active stage contract, either because the user invoked it directly, `specz-flow` routed here, or `specz-run` routed a passed bundle here.
+- If only `specz-flow` or `specz-run` route text is loaded, stop and load `specz-archive` before writing an archive or deleting a bundle.
+- If the platform cannot load this skill, stop and report that the archive stage skill is unavailable.
+
+# Project Memory Context
+
+Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not owned by Specz archive records.
+
+- Load relevant platform/project memory and project instructions when available so archive wording stays consistent with project terminology.
+- Do not create, update, or delete project memory from this stage unless the user explicitly asks or the platform's general memory workflow requires it.
+- When a passed bundle contains durable lessons useful beyond this bundle, include a short "Memory candidates" note in the user-facing result or archive only as suggestions for the general project memory system.
+- Active user instructions, system/developer instructions, project instructions, latest verification evidence, delivered code, and the source bundle override memory.
+
 # Must
 
 - Ground the archive in actual result and verification evidence, not plan intent alone.

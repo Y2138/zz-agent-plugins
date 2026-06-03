@@ -1,8 +1,17 @@
 # Specz 插件
 
-当前版本：`1.1.0`
+当前版本：`1.2.0`
 
 Specz 是面向 Codex 与 Claude Code 的高效轻量规范驱动工程 workflow 插件。它只面向非平凡 coding development work：代码/运行时行为、测试、bug、CI、重构、schema、API、迁移、infra 或继续已有 Specz bundle。它用 `spec.md` 作为行为基线，通过 `specz-flow` 自动选择当前 bundle 和下一阶段，在减少用户手动决断和 agent 上下文负担的同时提高执行闭环效率。
+
+## 1.2.0 更新
+
+- 新增 **阶段加载交接协议**：`specz-flow` 只负责路由，进入 `specz-clarify`、`specz-plan`、`specz-brief`、`specz-run` 或 `specz-archive` 前必须加载对应阶段 skill。
+- 各阶段 skill 新增 Activation Gate，防止 agent 只凭 `specz-flow` 流程执行阶段职责。
+- 新增通用项目记忆协议：Specz 阶段会读取平台/项目已有记忆和指令上下文，但不把记忆作为 Specz 私有状态。
+- 新增 `PROJECT-MEMORY.md`，定义记忆来源、权威顺序、阶段使用方式、写入规则和失效处理。
+- 更新 hook reminder 和接入说明，强调路由后必须加载阶段 skill。
+- 修正接入说明中的 skill 数量，包含 `specz-brief` 在内共六个 Specz skills。
 
 ## 1.1.0 更新
 
@@ -65,6 +74,21 @@ specz-flow
 5. 有未完成任务或验证未通过：交给 `specz-run`
 6. 验证已通过：交给 `specz-archive`
 
+### 阶段加载交接
+
+`specz-flow` 是路由器，不是阶段执行器。它输出下一阶段后，agent 必须加载对应阶段 skill 的 `SKILL.md`，并按该阶段的 Activation Gate、Must、Workflow 和 checkpoints / gates 执行。
+
+交接输出必须包含：
+
+```text
+Required next skill: specz-run
+Load required: yes
+Stage work allowed from specz-flow: no
+If unavailable: stop and report missing stage skill
+```
+
+如果平台无法加载目标阶段 skill，agent 必须停止并报告缺失 skill，不能只凭 `specz-flow` 的状态判断继续写规格、规划、改代码、验证或归档。
+
 ## Bundle Artifacts
 
 - `spec.md`：WHAT/WHY。行为、范围、业务规则和验收事实源
@@ -74,6 +98,24 @@ specz-flow
 - `brief.md`：READ。可选的人读简报；服务产品、研发、测试对齐，不作为执行依据
 
 不维护全局 `清单.md`。新会话从 `specs/*/` 的 bundle 文件恢复状态。
+
+## 通用项目记忆
+
+Specz 读取通用项目记忆，但不拥有项目记忆。
+
+项目记忆的职责类似 `AGENTS.md`、`SYSTEM.md`、平台长期记忆或项目 conventions / decisions 文档：它提供长期上下文、术语、历史决策、项目偏好、已知风险和验证习惯。它不是 `specs/*/` bundle，不参与 Specz 状态机。
+
+权威顺序：
+
+1. system / developer / 平台安全约束
+2. 用户当前请求和明确指令
+3. 当前项目指令文件
+4. active Specz bundle
+5. 当前代码、运行结果、测试、日志和实际证据
+6. 通用项目记忆
+7. `specs/archive/` 历史记录
+
+各阶段按需读取记忆来减少重复探索和保持项目一致性，但不能把记忆当作当前事实或验证证据。完整协议见 `PROJECT-MEMORY.md`。
 
 ## spec.md
 
@@ -177,7 +219,9 @@ specs/<summary-name>/brief.md
 - 双平台 manifest 和 marketplace 元数据保持一致
 - hook reminder 只做新会话提示，不做写文件 guard、提交检查或自动流程执行
 - Specz flow 只用于非平凡 coding development work；docs-only、skill/prompt 编辑、纯设计、研究、咨询默认不进入
+- `specz-flow` 只负责路由；阶段工作必须在对应阶段 skill 加载后执行
 - bundle 名和 Specz artifact 内容使用用户/项目的自然语言
+- 各阶段按需读取通用项目记忆和项目指令，但记忆不替代当前代码、active bundle 或验证证据
 - `spec.md` 是行为权威
 - `specz-clarify` 先自查上下文；存在阻塞性歧义时必须先问并等待用户确认
 - `design.md` 按需出现，但出现时必须有 existing-code analysis
