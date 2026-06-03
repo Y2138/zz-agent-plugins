@@ -2,13 +2,22 @@
 
 本文件根据仓库 `git log`、双端插件 manifest 和 `specz` 目录历史整理，记录从初始版本到当前版本的整体演进路径。
 
-当前最新版本：`1.2.0`
+当前最新版本：`1.3.0`
 
 ## 版本路径
 
-`0.1.0` -> `0.2.0` -> `0.5.0` -> `0.5.1` -> `0.6.0` -> `0.6.1` -> `0.6.2` -> `0.6.3` -> `0.8.0` -> `0.9.0` -> `1.0.0` -> `1.1.0` -> `1.2.0`
+`0.1.0` -> `0.2.0` -> `0.5.0` -> `0.5.1` -> `0.6.0` -> `0.6.1` -> `0.6.2` -> `0.6.3` -> `0.8.0` -> `0.9.0` -> `1.0.0` -> `1.1.0` -> `1.2.0` -> `1.3.0`
 
 > 说明：仓库历史中没有独立的 `0.3.x`、`0.4.x`、`0.7.x` 版本节点；上述跳号按 manifest 中实际出现的版本号保留。
+
+## 1.3.0 - 2026-06-03
+
+- 使用 Darwin Skill 完整流程对 Specz 六个 skills 进行优化：设计测试 prompts、双 judge baseline、bounded optimization、独立复评和 ratchet 决策。
+- 为 `specz-flow`、`specz-clarify`、`specz-plan`、`specz-brief`、`specz-run`、`specz-archive` 新增 `test-prompts.json`。
+- 强化 `specz-flow` 的状态判定和输出：新增 State authority order、Decision examples 和固定 Output template，减少路由阶段自由发挥。
+- 强化 `specz-clarify` 的失败模式和提问边界：新增 Failure Modes 表，明确哪些事实应先从项目上下文读取，不能升级为阻塞问题。
+- 将 Darwin 评估记录写入 `.agents/skills/darwin-skill/results.tsv`，并生成 Specz 优化结果卡片。
+- 按 Darwin ratchet 规则回滚未严格超过历史高分的 archive 输出契约尝试，只保留 `flow` 与 `clarify` 的有效增益。
 
 ## 1.2.0 - 2026-06-03
 

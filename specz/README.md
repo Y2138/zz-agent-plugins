@@ -1,8 +1,17 @@
 # Specz 插件
 
-当前版本：`1.2.0`
+当前版本：`1.3.0`
 
 Specz 是面向 Codex 与 Claude Code 的高效轻量规范驱动工程 workflow 插件。它只面向非平凡 coding development work：代码/运行时行为、测试、bug、CI、重构、schema、API、迁移、infra 或继续已有 Specz bundle。它用 `spec.md` 作为行为基线，通过 `specz-flow` 自动选择当前 bundle 和下一阶段，在减少用户手动决断和 agent 上下文负担的同时提高执行闭环效率。
+
+## 1.3.0 更新
+
+- 使用 Darwin Skill 完整流程复评并优化 Specz：覆盖测试 prompt 设计、双 judge baseline、bounded optimization、复评和 ratchet 决策。
+- 为六个 Specz skills 增加 `test-prompts.json`，覆盖 happy path、歧义路径和关键失败路径。
+- 强化 `specz-flow` 状态判定：新增状态权威顺序、决策例子和固定输出模板。
+- 强化 `specz-clarify`：新增 Failure Modes 表和“不该问什么”的硬边界。
+- 记录 Darwin 结果到 `results.tsv`，并生成结果卡片。
+- 按 ratchet 规则回滚未严格胜出的 archive 输出契约尝试，只保留已证明增益。
 
 ## 1.2.0 更新
 
