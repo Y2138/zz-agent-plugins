@@ -1,5 +1,5 @@
 {
-  "description": "Codex session-start reminder to consider specz-flow only for non-trivial coding development work, then load the routed stage skill before stage work.",
+  "description": "Codex session-start reminder to use specz-flow as the coding-work entry, then load the routed stage skill before stage work.",
   "hooks": {
     "SessionStart": [
       {
