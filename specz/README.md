@@ -1,8 +1,18 @@
 # Specz 插件
 
-当前版本：`1.3.0`
+当前版本：`1.4.0`
 
 Specz 是面向 Codex 与 Claude Code 的高效轻量规范驱动工程 workflow 插件。它只面向非平凡 coding development work：代码/运行时行为、测试、bug、CI、重构、schema、API、迁移、infra 或继续已有 Specz bundle。它用 `spec.md` 作为行为基线，通过 `specz-flow` 自动选择当前 bundle 和下一阶段，在减少用户手动决断和 agent 上下文负担的同时提高执行闭环效率。
+
+## 1.4.0 更新
+
+- **执行闭环收紧**：`specz-run` 在写 `Status: PASS` 前必须完成 `PASS Audit`，逐条核对 `SPEC-SCENARIO-*` 证据、任务完成度、证据新鲜度和临时件清理；audit 失败按缺口类型分流（实现缺口 / 证据缺口 / scope 矛盾）
+- **子 agent 输出契约**：`specz-run` 要求子 agent 返回固定结构（状态 / 改动文件 / 命令 / 证据 / 疑虑 / 建议下一步）；`DONE` 仅表示声称执行完，不等于 PASS；长报告不得贴回主上下文，后续子 agent 不接收历史任务累计总结
+- **并行安全**：`[P]` 任务必须声明 `Parallel safety`（`Write set` / `Shared state` / `Conflict risk` / `Fallback`）；plan lint 检查 Write set 重叠；`specz-run` 派并行前再做一次 overlap check
+- **澄清提问更准**：需求存在设计分叉时一次只问一个问题，且每个问题必须带推荐答案
+- **归档候选**：`specz-archive` 归档模板新增结构化 `Learning Candidates`（项目记忆候选 / 验证 gotcha / 代码质量教训），默认 `none`，不自动写项目级 memory
+- **计划预检**：plan lint 增加计划内部矛盾检查和“计划要求了 reviewer 会判为缺陷的内容”检查
+- 不新增阶段、不新增 skill、不拥有项目记忆
 
 ## 1.3.0 更新
 
@@ -190,8 +200,15 @@ Specz 读取通用项目记忆，但不拥有项目记忆。
   - Covers: SPEC-SCENARIO-01
   - Design: DESIGN-DECISION-01 | none
   - Files: `path/or/module`
+  - Parallel safety: [required when [P]]
+    - Write set: `files/this/task/writes`
+    - Shared state: none | list
+    - Conflict risk: low | medium | high
+    - Fallback: run after TASK-XX if overlap is found
   - Done when: ...
 ```
+
+`[P]` 任务必须声明 `Parallel safety`，两个 `[P]` 任务的 `Write set` 不得重叠；触碰共享面（schema/迁移/配置/公共 API/持久化/权限）的任务默认不并行，或拆出串行 integration task。
 
 `fix` 和 `verify-repair` 任务需要尽量保留失败信号、根因假设和回归证据；验证失败产生的修复任务使用 `verify-repair`。
 

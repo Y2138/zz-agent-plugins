@@ -2,13 +2,25 @@
 
 本文件根据仓库 `git log`、双端插件 manifest 和 `specz` 目录历史整理，记录从初始版本到当前版本的整体演进路径。
 
-当前最新版本：`1.3.0`
+当前最新版本：`1.4.0`
 
 ## 版本路径
 
-`0.1.0` -> `0.2.0` -> `0.5.0` -> `0.5.1` -> `0.6.0` -> `0.6.1` -> `0.6.2` -> `0.6.3` -> `0.8.0` -> `0.9.0` -> `1.0.0` -> `1.1.0` -> `1.2.0` -> `1.3.0`
+`0.1.0` -> `0.2.0` -> `0.5.0` -> `0.5.1` -> `0.6.0` -> `0.6.1` -> `0.6.2` -> `0.6.3` -> `0.8.0` -> `0.9.0` -> `1.0.0` -> `1.1.0` -> `1.2.0` -> `1.3.0` -> `1.4.0`
 
 > 说明：仓库历史中没有独立的 `0.3.x`、`0.4.x`、`0.7.x` 版本节点；上述跳号按 manifest 中实际出现的版本号保留。
+
+## 1.4.0 - 2026-07-03
+
+来源：选择性吸收外部 workflow 机制（Superpowers subagent-driven-development v6.0、grill-me），按反膨胀原则裁剪后落地。
+
+- `specz-run`：新增 `PASS Audit` 完成度审计门，写 `Status: PASS` 前必须逐条核对 `SPEC-SCENARIO-*` 证据、任务完成度、证据新鲜度和临时件清理；audit 失败按缺口类型分流。
+- `specz-run`：新增 `Subagent Result Contract`，要求子 agent 返回固定结构；`DONE` 不等于 PASS；长报告不得贴回主上下文，后续子 agent 不接收历史任务累计总结。
+- `specz-run`：Gate 增加 `[P]` 任务并行派发前的 `Write set` overlap check。
+- `specz-plan`：`[P]` 任务必须声明 `Parallel safety`（`Write set` / `Shared state` / `Conflict risk` / `Fallback`）；Bundle Lint 检查 Write set 重叠和共享面违规；新增计划内部矛盾和"计划要求了 reviewer 会判为缺陷的内容"两条预检。
+- `specz-clarify`：需求存在设计分叉时一次只问一个问题且必带推荐答案。
+- `specz-archive`：归档模板新增结构化 `Learning Candidates`（项目记忆候选 / 验证 gotcha / 代码质量教训），默认 `none`，不自动写项目级 memory。
+- 不新增阶段、不新增 skill、不拥有项目记忆；未引入 `.specz/run/` 工作区、Resume Capsule、Review Gate 等重机制（推迟或砍掉）。
 
 ## 1.3.0 - 2026-06-03
 

@@ -27,8 +27,9 @@ Project memory is general project context, similar in role to project instructio
 - Ground the archive in actual result and verification evidence, not plan intent alone.
 - Write one file: `specs/archive/YYYY-MM-DD--<summary-name>.md`.
 - Use the user's/project's natural language for archive content.
-- Keep only request intent, delivered result, historical design rationale, final design notes, key code context or design tradeoffs, brief/handoff summary when useful, key traceability, verification summary, and remaining gaps.
+- Keep only request intent, delivered result, historical design rationale, final design notes, key code context or design tradeoffs, brief/handoff summary when useful, key traceability, verification summary, remaining gaps, and learning candidates.
 - Summarize the decisive context and evidence; do not copy quality checklists, full task lists, or full verification plans.
+- Record `Learning Candidates` in the archive template: project memory candidate, verification gotcha, and code quality lesson. Candidates must come from actual execution, verification, or review; write `none` when there is none and do not fabricate. Attach a short source to factual candidates, e.g. `from VERIFY-02 failure`.
 - Delete the original `specs/<summary-name>/` only after the archive is accurate.
 - Stop instead of archiving when final verification is missing, not `PASS`, or contradicts the delivered result.
 

@@ -1,6 +1,6 @@
 {
   "name": "specz",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Efficient, lightweight spec-driven workflow plugin for non-trivial coding development work, with stage-gated handoffs, project-memory context, disciplined clarification, impact-aware planning, traceable tasks, verification evidence, bounded run loops, and archive history.",
   "author": {
     "name": "zane",

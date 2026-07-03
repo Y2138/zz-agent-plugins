@@ -36,7 +36,7 @@ Project memory is general project context, similar in role to project instructio
 - Ask only questions that affect scope, behavior, acceptance, or task size.
 - Before asking, self-check available project context and existing code when it can answer factual questions.
 - Load relevant project memory/instructions when available before asking the user about project facts.
-- Ask at most 1-3 high-value questions at a time, each with a clear reason it blocks scope, behavior, acceptance, or size.
+- Ask at most 1-3 high-value questions at a time, each with a clear reason it blocks scope, behavior, acceptance, or size. When the request has a decision fork (multiple design branches, ambiguous terms, or product/business judgment), ask one question at a time, and each question must carry a recommended answer the user can confirm or correct; only batch questions when they are independent and non-forking.
 - Preserve stable `SPEC-*` IDs when updating.
 - Keep top metadata current.
 - Use related archive records only as low-priority historical context.

@@ -74,6 +74,23 @@ Project memory is general project context, similar in role to project instructio
 - Do not pass verifier conclusions, expected failures, or hidden acceptance answers into the sub-agent prompt.
 - The main context owns routing, gate checks, final verification, and user-facing results.
 
+# Subagent Result Contract
+
+When a sub-agent/sub-run performs implementation, require this result shape back:
+
+- Status: `DONE` | `DONE_WITH_CONCERNS` | `PARTIAL` | `BLOCKED`
+- Tasks attempted / files changed / commands run -> exit code or result summary
+- Evidence produced / risks or doubts / temporary artifacts (`none` | paths or processes)
+- Suggested next action
+
+Main-context handling:
+
+- `DONE` only means the sub-agent claims it finished execution; it is not a Specz PASS. The main context re-reads key outputs or re-runs necessary verification before accepting.
+- `DONE_WITH_CONCERNS`: read the concerns first; correctness or scope concerns must be addressed before verification, observations may be noted.
+- Do not paste a long sub-agent report back into the main context. The sub-agent's final response stays to status, a short commit/file summary, a one-line verification summary, concerns, and a report path when one exists.
+- Do not hand an accumulated history of prior tasks to a later sub-agent; each gets only its current task, the interfaces it touches, global constraints, and relevant file paths.
+- A sub-agent that does not return the contract is treated as incomplete: ask for the missing parts or treat the round as not finished.
+
 # Gate
 
 Run this gate before each execution round and before final pass:
@@ -86,6 +103,7 @@ Run this gate before each execution round and before final pass:
 - For planned bundles, `verification.md` has a matrix entry for each spec scenario.
 - Required environment or credentials are available; otherwise stop as `BLOCKED`.
 - No destructive action is required unless the user explicitly approved it.
+- Before parallel dispatch of `[P]` tasks, check `Write set` overlap; if any two overlap or touch a shared surface, run them sequentially.
 
 # State Recovery
 
@@ -146,6 +164,26 @@ Run this gate before each execution round and before final pass:
   - Files: `path/or/module`
   - Done when: ...
 ```
+
+# PASS Audit
+
+Run this final-consistency audit before writing `Status: PASS`. Do not write PASS until every box is checked.
+
+- [ ] All in-scope `SPEC-SCENARIO-*` have evidence.
+- [ ] All completed `TASK-*` have implementation evidence or verification coverage.
+- [ ] No unchecked in-scope task remains unless explicitly marked `BLOCKED` and out of PASS scope.
+- [ ] `Latest Verification Result` is `PASS` when present.
+- [ ] Evidence is fresh from this run/round, not executor narration or stale output.
+- [ ] Temporary verification files and debug instrumentation are removed, or intentionally retained with a reason.
+- [ ] If a review gate is required, its findings are resolved or explicitly accepted as non-blocking.
+
+On a failed audit, route by the gap type:
+
+- Implementation gap: add or reopen a `[verify-repair]` task.
+- Evidence gap: re-run verification or update `verification.md`.
+- Scope contradiction: stop and report `BLOCKED`.
+
+The PASS Audit is a final consistency check; it does not replace the `verification.md` matrix.
 
 # Result Block
 

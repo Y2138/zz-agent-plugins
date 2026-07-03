@@ -181,6 +181,11 @@ Rules:
   - Covers: SPEC-SCENARIO-01
   - Design: DESIGN-DECISION-01 | none
   - Files: `path/or/module`
+  - Parallel safety: [required when [P]]
+    - Write set: `files/this/task/writes`
+    - Shared state: none | list
+    - Conflict risk: low | medium | high
+    - Fallback: run after TASK-XX if overlap is found
   - Done when: ...
 
 ## Dependencies
@@ -192,7 +197,7 @@ Rules:
 - Each task has `Covers`, `Design`, `Files`, and `Done when`.
 - Each task is concrete enough to execute without another planning pass.
 - Each task has one type tag: `[new]`, `[fix]`, `[refactor]`, `[test]`, or `[verify-repair]`.
-- Mark independent tasks with `[P]`.
+- Mark independent tasks with `[P]`. Each `[P]` task must declare a `Parallel safety` block with a `Write set`; two `[P]` tasks' `Write set`s must not overlap. A `[P]` task writing a shared surface (schema/migration/config/public API/persistence/auth/global UI) must drop `[P]` or split into parallel leaf tasks plus a serial integration task.
 - Include implementation-side test edits only when code must add or update tests.
 - Use `[verify-repair]` only for tasks created from failed verification evidence.
 
@@ -243,6 +248,8 @@ Required checks:
 - If `design.md` exists, design decisions cite or derive from real code context instead of restating `spec.md`.
 - If `design.md` is skipped, `tasks.md` explains why and tasks are still executable.
 - Repeated content is replaced with ID references.
+- The plan has no internal contradictions: a later task consuming an interface or file an earlier task does not produce is flagged before handoff.
+- The plan does not mandate something a review would flag as a defect, such as an assertionless test or verbatim duplication of a logic block.
 
 # Handoff
 
