@@ -6,8 +6,9 @@
 
 - **DESIGN.md 生成**：语义化设计系统文档（7 段结构）
 - **Hi-fi HTML 原型**：React + Babel inline JSX，双击可开
+- **事实与资产门禁**：Fact Ledger + Image Ledger，先验证事实和真图再做高保真
 - **品牌资产采集**：5 步协议（Logo > 产品图 > UI > 色值 > 字体）
-- **设计方向顾问**：12 种设计哲学 × 4 流派，Fallback 推荐差异化方向
+- **设计方向顾问**：12 种设计哲学 × 4 流派 + 方向采样三锚点，Fallback 推荐差异化方向
 - **反 AI slop**：质控清单 + 自检方法
 - **5 维度评审**：哲学一致性 / 视觉层级 / 细节执行 / 功能性 / 创新性
 - **设备框组件**：iOS / Android / macOS / Browser（来自 huashu-design）
@@ -40,7 +41,7 @@ design-md/
 ## 灵感来源
 
 - [Anthropic Claude Design System Prompt](https://github.com/elder-plinius/CL4R1T4S/blob/main/ANTHROPIC/Claude-Design-Sys-Prompt.txt) — Junior Designer 工作流、HTML 设计媒介、反 AI slop
-- [huashu-design](https://github.com/alchaincyf/huashu-design) — 品牌资产协议、设备框组件、设计方向顾问、5 维度评审
+- [huashu-design](https://github.com/alchaincyf/huashu-design) — 品牌资产协议、设备框组件、设计方向顾问、5 维度评审；本 skill 吸收其事实验证、真图优先和差异化方向机制，并保留生产级 Web App 的可落地边界
 - design-md skill — Google DESIGN.md 语义化命名范式（Google Stitch）
 
 ## 设备框组件来源
