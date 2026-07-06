@@ -59,6 +59,20 @@ Project memory is general project context, similar in role to project instructio
 6. 🔴 CHECKPOINT / 🛑 STOP before deletion: verify the archive matches the final result, latest verification evidence, remaining gaps, and source bundle path.
 7. Remove the original bundle directory only after the checkpoint passes.
 
+# Output
+
+Report only:
+
+```text
+Archive: specs/archive/YYYY-MM-DD--<summary-name>.md
+Source bundle: specs/<summary-name>/
+Verification at archive time: PASS
+Removed bundle: yes | no (reason)
+Status: archived | blocked (reason)
+```
+
+If archive was blocked, keep the bundle in place and report the stop condition instead of writing the archive file.
+
 # Exit Gate
 
 - one archive file exists

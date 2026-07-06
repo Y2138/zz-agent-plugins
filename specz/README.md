@@ -1,8 +1,13 @@
 # Specz 插件
 
-当前版本：`1.4.0`
+当前版本：`1.4.1`
 
 Specz 是面向 Codex 与 Claude Code 的高效轻量规范驱动工程 workflow 插件。它只面向非平凡 coding development work：代码/运行时行为、测试、bug、CI、重构、schema、API、迁移、infra 或继续已有 Specz bundle。它用 `spec.md` 作为行为基线，通过 `specz-flow` 自动选择当前 bundle 和下一阶段，在减少用户手动决断和 agent 上下文负担的同时提高执行闭环效率。
+
+## 1.4.1 更新
+
+- **Runtime 中立性修复**：移除 `specz-run` 中硬编码的 `gpt-5.4` 子 agent 模型指定，改为厂商中立措辞——这是双端兼容（Codex + Claude Code）的强制约束，原措辞在 Claude Code（Sonnet/Opus/Haiku）下会派发不存在的模型
+- **Archive 输出契约对齐**：`specz-archive` 新增机器可读 `Output` 块，与 `specz-flow` 的 stage-handoff 契约一致，让归档结果可被下游解析（`Status: archived | blocked`）
 
 ## 1.4.0 更新
 

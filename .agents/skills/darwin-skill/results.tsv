@@ -23,3 +23,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-06-03T19:07:42+08:00	working-tree	specz-flow	85.5	89.5	keep	dim2+dim3+dim5	新增State authority order、Decision examples、Output template; judges=C/D dry_run	dry_run
 2026-06-03T19:07:42+08:00	working-tree	specz-clarify	86.4	89.0	keep	dim3+dim9	新增Failure Modes和不该问什么; judges=C/D dry_run	dry_run
 2026-06-03T19:07:42+08:00	working-tree	specz-archive	86.7	88.3	revert	dim2+dim5	Archive Output Contract未严格超过历史上沿90.1; 已回滚本轮archive增量; judges=C/D dry_run	dry_run
+2026-07-06T00:00:00+08:00	working-tree	specz-run	87.5	90.8	keep	dim9+dim8	移除gpt-5.4模型硬编码恢复双端runtime中立; judge独立子agent dim8=9; runtime_warn=0	full_test
+2026-07-06T00:00:00+08:00	working-tree	specz-archive	84.7	85.2	keep	dim2+dim8	新增机器可读Output块与specz-flow对齐; judge独立子agent dim8=8.5; +0.5属噪声带人审确认; runtime_warn=0	full_test

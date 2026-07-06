@@ -69,7 +69,7 @@ Project memory is general project context, similar in role to project instructio
 # Execution Context
 
 - Use a sub-agent/sub-run for implementation work whenever the platform supports it.
-- Sub-agents must use `gpt-5.4` when model selection is available.
+- Use the strongest available code/reasoning model for sub-agents when model selection is available; model choice is platform-determined and must not be hard-pinned to a single vendor.
 - Pass only the active bundle path, relevant artifacts, and the implementation request to the sub-agent.
 - Do not pass verifier conclusions, expected failures, or hidden acceptance answers into the sub-agent prompt.
 - The main context owns routing, gate checks, final verification, and user-facing results.

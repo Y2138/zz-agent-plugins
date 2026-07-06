@@ -2,13 +2,22 @@
 
 本文件根据仓库 `git log`、双端插件 manifest 和 `specz` 目录历史整理，记录从初始版本到当前版本的整体演进路径。
 
-当前最新版本：`1.4.0`
+当前最新版本：`1.4.1`
 
 ## 版本路径
 
-`0.1.0` -> `0.2.0` -> `0.5.0` -> `0.5.1` -> `0.6.0` -> `0.6.1` -> `0.6.2` -> `0.6.3` -> `0.8.0` -> `0.9.0` -> `1.0.0` -> `1.1.0` -> `1.2.0` -> `1.3.0` -> `1.4.0`
+`0.1.0` -> `0.2.0` -> `0.5.0` -> `0.5.1` -> `0.6.0` -> `0.6.1` -> `0.6.2` -> `0.6.3` -> `0.8.0` -> `0.9.0` -> `1.0.0` -> `1.1.0` -> `1.2.0` -> `1.3.0` -> `1.4.0` -> `1.4.1`
 
 > 说明：仓库历史中没有独立的 `0.3.x`、`0.4.x`、`0.7.x` 版本节点；上述跳号按 manifest 中实际出现的版本号保留。
+
+## 1.4.1 - 2026-07-06
+
+来源：darwin-skill 检测 + 增强轮（精准修复，遵守 HL-4「见好就收」，未动已触顶的 flow/clarify/brief/plan）。
+
+- `specz-run`：移除 `Sub-agents must use gpt-5.4` 的厂商模型硬编码，改为厂商中立措辞（"Use the strongest available code/reasoning model ... must not be hard-pinned to a single vendor"）。原措辞违反 AGENTS.md `Dual Platform Support` 强制约束——`gpt-5.4` 在 Claude Code（Sonnet/Opus/Haiku）下不存在，会导致子 agent 派发失败。
+- `specz-archive`：新增机器可读 `Output` 块（`Archive` / `Source bundle` / `Verification at archive time` / `Removed bundle` / `Status`），与 `specz-flow` 的 stage-handoff Output 契约对齐，让归档结果可被下游解析。被阻塞时保留 bundle 并报告 stop condition。
+
+darwin 复评（独立子 agent full_test）：`specz-run` 87.5 → 90.8（+3.3，dim9 runtime + dim8 双涨）；`specz-archive` 84.7 → 85.2（+0.5，在 rubric 噪声带内，人审确认保留）。
 
 ## 1.4.0 - 2026-07-03
 
