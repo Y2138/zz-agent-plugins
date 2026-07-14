@@ -1,0 +1,30 @@
+{
+  "name": "@y2138/zz-agent-plugins",
+  "version": "1.4.1",
+  "private": true,
+  "type": "module",
+  "description": "Specz workflow package for Pi Coding Agent, Codex, and Claude Code.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Y2138/zz-agent-plugins.git"
+  },
+  "keywords": [
+    "pi-package",
+    "specz",
+    "workflow",
+    "verification",
+    "agent"
+  ],
+  "pi": {
+    "extensions": [
+      "./specz/extensions"
+    ],
+    "skills": [
+      "./specz/skills"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}

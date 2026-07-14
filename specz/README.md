@@ -2,7 +2,7 @@
 
 当前版本：`1.4.1`
 
-Specz 是面向 Codex 与 Claude Code 的高效轻量规范驱动工程 workflow 插件。它只面向非平凡 coding development work：代码/运行时行为、测试、bug、CI、重构、schema、API、迁移、infra 或继续已有 Specz bundle。它用 `spec.md` 作为行为基线，通过 `specz-flow` 自动选择当前 bundle 和下一阶段，在减少用户手动决断和 agent 上下文负担的同时提高执行闭环效率。
+Specz 是面向 Codex、Claude Code 与 Pi Coding Agent 的高效轻量规范驱动工程 workflow 插件。它只面向非平凡 coding development work：代码/运行时行为、测试、bug、CI、重构、schema、API、迁移、infra 或继续已有 Specz bundle。它用 `spec.md` 作为行为基线，通过 `specz-flow` 自动选择当前 bundle 和下一阶段，在减少用户手动决断和 agent 上下文负担的同时提高执行闭环效率。
 
 ## 1.4.1 更新
 
@@ -279,6 +279,45 @@ Claude Code：
 ```
 
 Claude Code 会通过插件内 `hooks/hooks.json` 加载 SessionStart reminder。
+
+Pi Coding Agent：
+
+```bash
+# 直接从代码仓库安装到用户级配置
+pi install git:github.com/Y2138/zz-agent-plugins
+
+# 或从已 clone 的仓库安装 Specz 目录
+pi install /absolute/path/to/zz-agent-plugins/specz
+
+# 项目级安装：在 install 命令末尾添加 -l
+pi install /absolute/path/to/zz-agent-plugins/specz -l
+```
+
+安装命令只向 Pi 的既有 package 列表添加来源，不会覆盖其他 package 或设置。直接安装代码仓库时，根目录 Pi package 会加载 `specz/extensions/` 和现有 `specz/skills/`；安装 `specz/` 子目录时，Pi 使用同名约定目录发现相同资源。
+
+不写入配置的临时试运行：
+
+```bash
+pi -e /absolute/path/to/zz-agent-plugins/specz
+```
+
+验证与重新加载：
+
+```bash
+pi list
+pi config
+```
+
+`pi list` 应显示已安装来源，`pi config` 应能看到一个 Specz extension 与六个 Specz skills。交互会话中输入 `/reload` 可重新加载自动发现的资源；输入 `/skill:specz-flow` 可显式展开入口 skill。Pi extension 只在每次 agent 任务开始前幂等追加 Specz reminder，不注册工具或命令，不拦截工具调用，也不写项目文件。
+
+按原安装来源卸载，不要编辑或覆盖整个 Pi 配置：
+
+```bash
+pi remove git:github.com/Y2138/zz-agent-plugins
+pi remove /absolute/path/to/zz-agent-plugins/specz
+
+# 若使用项目级安装，在 remove 命令末尾同样添加 -l
+```
 
 不支持插件机制的 agent：让 agent 阅读 `AI-AGENT-INTEGRATION.md`，按其所在平台的 skills、hooks 或 agent 指令文件机制自行接入。
 

@@ -1,6 +1,6 @@
 # zz-agent-plugins
 
-双端兼容的插件仓库，支持 Codex 和 Claude Code。
+双端兼容的插件仓库，所有插件支持 Codex 和 Claude Code；Specz 额外提供 Pi Coding Agent 原生 package 与 extension。
 
 ## 仓库结构
 
@@ -8,6 +8,7 @@
 zz-agent-plugins/
 ├── .agents/plugins/marketplace.json    # Codex 插件市场入口
 ├── .claude-plugin/marketplace.json     # Claude Code 插件市场入口
+├── package.json                         # Pi package 入口（当前暴露 Specz）
 ├── specz/                              # Specz 插件目录
 ├── prd-designz/                        # PRD 设计与 UI 原型插件目录
 ├── media-prompt/                       # Media Prompt 插件目录
@@ -35,9 +36,20 @@ zz-agent-plugins/
 /plugin marketplace add https://github.com/Y2138/zz-agent-plugins
 ```
 
+### Pi Coding Agent（Specz）
+
+直接从代码仓库安装：
+
+```bash
+pi install git:github.com/Y2138/zz-agent-plugins
+```
+
+这会向 Pi 的既有 package 列表新增本仓库，不会覆盖其他 package 或设置。项目级安装在命令末尾添加 `-l`。完整的本地安装、临时试运行、验证、重载和卸载说明见 `specz/README.md`。
+
 ## 核心特性
 
 - **双平台支持**: 同时兼容 Codex 和 Claude Code
+- **Pi 原生适配**: Specz 可作为 Pi package 加载，共享同一组 skills，并通过轻量 extension 注入工作流提醒
 - **项目级别安装**: 支持在项目中独立使用
 - **结构化工作流**: 提供规范的规划、执行、验证流程
 - **版本化规范包**: 支持版本化的规范文档管理
