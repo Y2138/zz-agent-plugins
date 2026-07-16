@@ -15,9 +15,9 @@ Specz 是面向 Codex、Claude Code 与 Pi Coding Agent 的高效轻量规范驱
 - **子 agent 输出契约**：`specz-run` 要求子 agent 返回固定结构（状态 / 改动文件 / 命令 / 证据 / 疑虑 / 建议下一步）；`DONE` 仅表示声称执行完，不等于 PASS；长报告不得贴回主上下文，后续子 agent 不接收历史任务累计总结
 - **并行安全**：`[P]` 任务必须声明 `Parallel safety`（`Write set` / `Shared state` / `Conflict risk` / `Fallback`）；plan lint 检查 Write set 重叠；`specz-run` 派并行前再做一次 overlap check
 - **澄清提问更准**：需求存在设计分叉时一次只问一个问题，且每个问题必须带推荐答案
-- **归档候选**：`specz-archive` 归档模板新增结构化 `Learning Candidates`（项目记忆候选 / 验证 gotcha / 代码质量教训），默认 `none`，不自动写项目级 memory
+- **归档候选**：`specz-archive` 归档模板新增结构化 `Learning Candidates`（验证 gotcha / 代码质量教训），默认 `none`
 - **计划预检**：plan lint 增加计划内部矛盾检查和“计划要求了 reviewer 会判为缺陷的内容”检查
-- 不新增阶段、不新增 skill、不拥有项目记忆
+- 不新增阶段、不新增 skill
 
 ## 1.3.0 更新
 
@@ -32,8 +32,6 @@ Specz 是面向 Codex、Claude Code 与 Pi Coding Agent 的高效轻量规范驱
 
 - 新增 **阶段加载交接协议**：`specz-flow` 只负责路由，进入 `specz-clarify`、`specz-plan`、`specz-brief`、`specz-run` 或 `specz-archive` 前必须加载对应阶段 skill。
 - 各阶段 skill 新增 Activation Gate，防止 agent 只凭 `specz-flow` 流程执行阶段职责。
-- 新增通用项目记忆协议：Specz 阶段会读取平台/项目已有记忆和指令上下文，但不把记忆作为 Specz 私有状态。
-- 新增 `PROJECT-MEMORY.md`，定义记忆来源、权威顺序、阶段使用方式、写入规则和失效处理。
 - 更新 hook reminder 和接入说明，强调路由后必须加载阶段 skill。
 - 修正接入说明中的 skill 数量，包含 `specz-brief` 在内共六个 Specz skills。
 
@@ -123,24 +121,6 @@ If unavailable: stop and report missing stage skill
 
 不维护全局 `清单.md`。新会话从 `specs/*/` 的 bundle 文件恢复状态。
 
-## 通用项目记忆
-
-Specz 读取通用项目记忆，但不拥有项目记忆。
-
-项目记忆的职责类似 `AGENTS.md`、`SYSTEM.md`、平台长期记忆或项目 conventions / decisions 文档：它提供长期上下文、术语、历史决策、项目偏好、已知风险和验证习惯。它不是 `specs/*/` bundle，不参与 Specz 状态机。
-
-权威顺序：
-
-1. system / developer / 平台安全约束
-2. 用户当前请求和明确指令
-3. 当前项目指令文件
-4. active Specz bundle
-5. 当前代码、运行结果、测试、日志和实际证据
-6. 通用项目记忆
-7. `specs/archive/` 历史记录
-
-各阶段按需读取记忆来减少重复探索和保持项目一致性，但不能把记忆当作当前事实或验证证据。完整协议见 `PROJECT-MEMORY.md`。
-
 ## spec.md
 
 ```markdown
@@ -170,9 +150,13 @@ Specz 读取通用项目记忆，但不拥有项目记忆。
 
 ## Size Routing
 
-- `small`：局部、低风险、行为明确，可从 `spec.md` 直接执行
-- `standard`：多文件/多模块、需要任务拆分或有中等回归风险
-- `large`：跨系统、契约、持久化、迁移、权限或用户关键路径
+按命中的最高协调复杂度或风险分级，不按文件数或改动行数分级：
+
+- `small`：单一行为目标、低风险、现有模式明确，不需要任务拆分或设计决策，可从 `spec.md` 直接执行；允许同一种修改分布在多个文件中
+- `standard`：需要任务拆分、多个独立模块协调、存在有意义的实现决策，或有中等回归风险
+- `large`：存在高风险的跨系统或契约协调、持久化或迁移、权限、兼容/回滚要求，或影响用户关键路径
+
+例如，给多个遵循相同模式的表单组件增加同一个简单字段仍可判为 `small`；如果同时需要协调 API 契约，通常升级为 `standard`；如果涉及数据迁移、权限或兼容处理，则升级为 `large`。
 
 ## design.md
 
@@ -252,7 +236,6 @@ specs/<summary-name>/brief.md
 - Specz flow 只用于非平凡 coding development work；docs-only、skill/prompt 编辑、纯设计、研究、咨询默认不进入
 - `specz-flow` 只负责路由；阶段工作必须在对应阶段 skill 加载后执行
 - bundle 名和 Specz artifact 内容使用用户/项目的自然语言
-- 各阶段按需读取通用项目记忆和项目指令，但记忆不替代当前代码、active bundle 或验证证据
 - `spec.md` 是行为权威
 - `specz-clarify` 先自查上下文；存在阻塞性歧义时必须先问并等待用户确认
 - `design.md` 按需出现，但出现时必须有 existing-code analysis

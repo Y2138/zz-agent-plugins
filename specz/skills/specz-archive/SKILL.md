@@ -13,15 +13,6 @@ Preserve what actually happened in one low-priority historical record under `spe
 - If only `specz-flow` or `specz-run` route text is loaded, stop and load `specz-archive` before writing an archive or deleting a bundle.
 - If the platform cannot load this skill, stop and report that the archive stage skill is unavailable.
 
-# Project Memory Context
-
-Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not owned by Specz archive records.
-
-- Load relevant platform/project memory and project instructions when available so archive wording stays consistent with project terminology.
-- Do not create, update, or delete project memory from this stage unless the user explicitly asks or the platform's general memory workflow requires it.
-- When a passed bundle contains durable lessons useful beyond this bundle, include a short "Memory candidates" note in the user-facing result or archive only as suggestions for the general project memory system.
-- Active user instructions, system/developer instructions, project instructions, latest verification evidence, delivered code, and the source bundle override memory.
-
 # Must
 
 - Ground the archive in actual result and verification evidence, not plan intent alone.
@@ -29,7 +20,7 @@ Project memory is general project context, similar in role to project instructio
 - Use the user's/project's natural language for archive content.
 - Keep only request intent, delivered result, historical design rationale, final design notes, key code context or design tradeoffs, brief/handoff summary when useful, key traceability, verification summary, remaining gaps, and learning candidates.
 - Summarize the decisive context and evidence; do not copy quality checklists, full task lists, or full verification plans.
-- Record `Learning Candidates` in the archive template: project memory candidate, verification gotcha, and code quality lesson. Candidates must come from actual execution, verification, or review; write `none` when there is none and do not fabricate. Attach a short source to factual candidates, e.g. `from VERIFY-02 failure`.
+- Record `Learning Candidates` in the archive template: verification gotcha and code quality lesson. Candidates must come from actual execution, verification, or review; write `none` when there is none and do not fabricate. Attach a short source to factual candidates, e.g. `from VERIFY-02 failure`.
 - Delete the original `specs/<summary-name>/` only after the archive is accurate.
 - Stop instead of archiving when final verification is missing, not `PASS`, or contradicts the delivered result.
 

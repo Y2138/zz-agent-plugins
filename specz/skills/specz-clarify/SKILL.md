@@ -13,16 +13,6 @@ Create or update `spec.md` as the WHAT/WHY baseline, then decide whether the wor
 - If only `specz-flow` is loaded, stop and load `specz-clarify` before writing or updating `spec.md`.
 - If the platform cannot load this skill, stop and report that the clarification stage skill is unavailable.
 
-# Project Memory Context
-
-Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not a Specz artifact and not a source of current truth.
-
-- Before asking clarification questions, use available platform/project memory and project instructions to understand terminology, known boundaries, prior decisions, and user preferences.
-- Use memory only to reduce unnecessary questions and preserve project consistency.
-- Active user instructions, system/developer instructions, project instructions, current code facts, and the active `spec.md` override memory.
-- If memory is missing or stale, continue from current project context and record non-blocking uncertainty as `ASSUMPTION-*` or blocking uncertainty as `QUESTION-*`.
-- Do not create, update, or delete project memory from this stage.
-
 # Outputs
 
 - Always: `specs/<summary-name>/spec.md`
@@ -35,7 +25,6 @@ Project memory is general project context, similar in role to project instructio
 - Classify task size before handoff.
 - Ask only questions that affect scope, behavior, acceptance, or task size.
 - Before asking, self-check available project context and existing code when it can answer factual questions.
-- Load relevant project memory/instructions when available before asking the user about project facts.
 - Ask at most 1-3 high-value questions at a time, each with a clear reason it blocks scope, behavior, acceptance, or size. When the request has a decision fork (multiple design branches, ambiguous terms, or product/business judgment), ask one question at a time, and each question must carry a recommended answer the user can confirm or correct; only batch questions when they are independent and non-forking.
 - Preserve stable `SPEC-*` IDs when updating.
 - Keep top metadata current.
@@ -60,7 +49,7 @@ Project memory is general project context, similar in role to project instructio
 |---|---|---|
 | Existing `spec.md` has broken required metadata | Repair only the broken metadata before handoff | Do not rewrite unrelated requirements |
 | User does not answer blocking `QUESTION-*` | Stop with the question and why it blocks | Do not convert the blocker into an assumption |
-| Archive memory conflicts with current request | Prefer the current request and current code context | Do not let archive history override behavior |
+| Archive record conflicts with current request | Prefer the current request and current code context | Do not let archive history override behavior |
 | Requested detail is an implementation choice | Leave it for planning or record a non-blocking assumption | Do not ask the user for architecture preferences from clarify |
 | Factual answer is available in existing project context | Read the minimal context and use it | Do not ask the user to restate project facts |
 
@@ -78,7 +67,7 @@ Use a short self-check before writing questions:
 - When the request is ambiguous, propose a default interpretation the user can confirm or correct.
 - When there are blocking questions, ask the user directly and wait before writing `spec.md`.
 - Do not ask implementation-choice questions that belong in planning.
-- Do not ask for facts already available from the active bundle, current code, project instructions, or relevant memory.
+- Do not ask for facts already available from the active bundle, current code, or project instructions.
 - Do not turn a preference, style choice, or implementation detail into a blocking `QUESTION-*`.
 - When updating an existing `spec.md`, make the smallest behavior-focused diff: keep existing IDs, update only related rules, scenarios, acceptance, assumptions, and metadata.
 - Keep scenarios minimally verifiable: each key `SPEC-SCENARIO-*` should make clear who or what acts, what condition triggers the behavior, and what observable result proves correctness.
@@ -86,11 +75,17 @@ Use a short self-check before writing questions:
 
 # Size Routing
 
-Classify the work in `spec.md`:
+Classify by the highest triggered coordination or risk level, not by file count or changed lines:
 
-- `Size: small` when the change is local, low-risk, clearly described, and likely executable from `spec.md` alone.
-- `Size: standard` when the change touches multiple files/modules, needs task breakdown, or has moderate regression risk.
-- `Size: large` when the change crosses systems, contracts, persistence, migrations, permissions, or user-critical flows.
+- `Size: small` when the work has one coherent behavior goal, is low-risk and clearly described, follows an obvious existing pattern, needs no task decomposition or design decision, and is executable from `spec.md` alone. It may span multiple files.
+- `Size: standard` when the work needs task decomposition, coordination between independently changing modules, a meaningful implementation decision, or has moderate regression risk.
+- `Size: large` when the work has high-risk cross-system or contract coordination, persistence or migration concerns, permission changes, compatibility/rollback requirements, or affects a user-critical flow.
+
+Examples:
+
+- Adding the same simple form field across several pattern-following components can remain `small`.
+- Adding a field that coordinates UI state, validation, and an API contract is usually `standard`.
+- Adding a field that requires persistence migration, permission changes, or backward-compatibility handling is `large`.
 
 Handoff:
 

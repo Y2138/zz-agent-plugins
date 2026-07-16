@@ -13,16 +13,6 @@ Implement and prove one active Specz bundle. `specz-run` combines execution, ver
 - If only `specz-flow` is loaded, stop and load `specz-run` before changing product code, updating task state, or running verification.
 - If the platform cannot load this skill, stop and report that the run stage skill is unavailable.
 
-# Project Memory Context
-
-Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not a Specz artifact and not proof of correctness.
-
-- Load relevant platform/project memory and project instructions before execution when available.
-- Use memory for durable conventions, known hazards, preferred verification surfaces, cleanup rules, and project-specific workflow constraints.
-- Do not treat memory as verification evidence. Current code, bundle artifacts, executed checks, runtime observations, and logs are the evidence.
-- Active user instructions, system/developer instructions, project instructions, `spec.md`, `design.md`, `tasks.md`, `verification.md`, and current code facts override memory.
-- Do not create, update, or delete project memory from this stage. If execution reveals durable memory candidates, report them separately instead of silently writing them.
-
 # Inputs
 
 - Required: `spec.md`
@@ -32,7 +22,6 @@ Project memory is general project context, similar in role to project instructio
 
 - Operate on one bundle only.
 - Read `spec.md` first.
-- Load relevant project memory/instructions when available before execution, without using memory as verification evidence.
 - If `tasks.md` exists, execute unchecked `TASK-*` in dependency order.
 - If no `tasks.md` exists, proceed only when `spec.md` has `Size: small`.
 - Treat `design.md` as binding when present.

@@ -50,15 +50,6 @@ Failure modes:
 | Multiple unfinished bundles match equally | Ask one concise question before routing | Do not create a duplicate bundle |
 | Entry Gate fails | Handle directly or ask one concise fit question | Do not scan bundles or create a Specz bundle |
 
-# Project Memory Context
-
-Project memory is a general agent/project responsibility, similar in authority to project instruction files such as `AGENTS.md`, not a Specz-owned bundle artifact.
-
-- Use platform-provided memory and project instruction context when available before choosing or creating a bundle.
-- Treat memory as contextual guidance only; active user instructions, system/developer instructions, project instructions, active bundle artifacts, and current code facts override stale memory.
-- Do not create, update, or delete project memory from `specz-flow`.
-- If relevant memory is unavailable, continue with current project context; do not block routing only because memory is missing.
-
 # Must
 
 - Scan `specs/*/` except `specs/archive/`.
@@ -127,9 +118,9 @@ Decision examples:
 
 This is advisory context only; it must not become a second state machine.
 
-- Local fast path: small, local, low-risk work executable from existing `spec.md`; route directly to `specz-run` and keep the reason to one sentence.
-- Standard plan path: multi-file or moderate-risk work; route through `specz-plan`.
-- High-risk plan path: contracts, permissions, persistence, migrations, compatibility, or user-critical flows; expect `design.md` and stronger verification.
+- Local fast path: one coherent, low-risk change executable from existing `spec.md`; it may span multiple files when the edits follow one obvious pattern and need no task decomposition or design decision.
+- Standard plan path: work that needs task decomposition, coordination between independently changing modules, a meaningful design decision, or has moderate regression risk. Do not select this path from file count alone.
+- High-risk plan path: high-risk or cross-system contracts, permissions, persistence, migrations, compatibility, or user-critical flows; expect `design.md` and stronger verification.
 - Regression repair path: failed verification, tests, CI, review feedback, or production failure; preserve the failure signal and create focused repair work.
 
 # Optional Brief

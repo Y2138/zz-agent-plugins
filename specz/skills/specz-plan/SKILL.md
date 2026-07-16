@@ -13,16 +13,6 @@ Prepare non-small work for execution without over-documenting. `spec.md` remains
 - If only `specz-flow` is loaded, stop and load `specz-plan` before writing `design.md`, `tasks.md`, or `verification.md`.
 - If the platform cannot load this skill, stop and report that the planning stage skill is unavailable.
 
-# Project Memory Context
-
-Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not a Specz artifact and not a substitute for code inspection.
-
-- Load relevant platform/project memory and project instructions before planning when available.
-- Use memory to understand durable conventions, prior decisions, known hazards, verification habits, and user/project preferences.
-- Verify memory-derived technical claims against current code or record them as assumptions/blockers; do not design from memory alone.
-- Active user instructions, system/developer instructions, project instructions, `spec.md`, current code facts, and concrete evidence override memory.
-- Do not create, update, or delete project memory from this stage. If planning uncovers durable memory candidates, mention them in the review summary only when useful.
-
 # Outputs
 
 - Required: `spec.md`, `tasks.md`, `verification.md`
@@ -33,7 +23,6 @@ Project memory is general project context, similar in role to project instructio
 
 - Read `spec.md` first and respect its `Size`.
 - Inspect relevant project context and code before writing tasks or design.
-- Load relevant project memory/instructions when available before context collection.
 - Use clearly relevant archive records only as low-priority historical context.
 - If `design.md` is created, include a concise existing-code analysis table.
 - Use ID references: `SPEC-*`, `DESIGN-*` when design exists, `TASK-*`, `VERIFY-*`.
@@ -67,7 +56,7 @@ Use `design.md` for:
 
 Skip `design.md` for:
 
-- local single-file or obvious pattern-following changes
+- one coherent, low-risk, obvious pattern-following change, even when the same edit spans multiple files
 - text/content tweaks
 - small bug fixes with clear acceptance and low regression risk
 

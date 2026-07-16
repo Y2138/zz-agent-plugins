@@ -15,16 +15,6 @@ This skill is optional. It helps people quickly understand requirements, functio
 - If only `specz-flow` is loaded, stop and load `specz-brief` before writing `brief.md`.
 - If the platform cannot load this skill, stop and report that the brief stage skill is unavailable.
 
-# Project Memory Context
-
-Project memory is general project context, similar in role to project instruction files such as `AGENTS.md`; it is not a Specz artifact and not a source of new requirements.
-
-- Load relevant platform/project memory and project instructions when available to preserve terminology, stakeholder language, and durable project conventions.
-- Use memory only to make the brief clearer and more project-consistent.
-- Do not introduce requirements, acceptance criteria, or implementation decisions from memory unless they are also supported by the active bundle.
-- Active user instructions, system/developer instructions, project instructions, `spec.md`, `design.md`, `tasks.md`, and `verification.md` override memory.
-- Do not create, update, or delete project memory from this stage.
-
 # Inputs
 
 - Required: `spec.md`

@@ -10,7 +10,6 @@
 
 - 发现并调用 `specz-flow`、`specz-clarify`、`specz-plan`、`specz-brief`、`specz-run`、`specz-archive`
 - 在 `specz-flow` 路由后加载并遵循对应阶段 skill，不只凭 flow 文档执行阶段职责
-- 在 Specz 阶段中读取平台/项目已有的通用记忆和项目指令上下文
 - 在新会话或开发任务开始时收到 Specz reminder
 - 若平台不支持 hooks，则从可识别的 agent 指令文件中获得同等约束
 - 不覆盖用户已有 skills、hooks、AGENTS.md、SYSTEM.md 或其他平台指令
@@ -83,20 +82,6 @@ If unavailable: stop and report missing stage skill
 
 阶段职责包括但不限于：写 `spec.md`、写 `design.md` / `tasks.md` / `verification.md`、修改产品代码、执行验证、归档和删除 bundle。
 
-## 通用项目记忆接入
-
-项目记忆不是 Specz 私有状态。它与 `AGENTS.md`、`SYSTEM.md`、平台长期记忆、项目 conventions / decisions 文档一样，属于通用项目上下文。
-
-接入时应确保 agent 在 Specz 阶段能读取已有通用记忆：
-
-1. 优先使用平台原生 memory / project knowledge / instruction 机制
-2. 保留并加载项目已有 `AGENTS.md`、`SYSTEM.md`、`CLAUDE.md` 或等价指令文件
-3. 如果项目已有明确的 memory / knowledge / conventions / decisions 文档，按项目规则读取
-4. 不为 Specz 强制创建私有记忆目录
-5. 不因没有项目记忆而阻塞 Specz；缺失记忆时从当前项目上下文继续
-
-权威顺序和失效处理见 `specz/PROJECT-MEMORY.md`。记忆不能覆盖当前用户请求、项目指令、active bundle、当前代码或验证证据。
-
 ## 安装 Hook Reminder
 
 Specz 的 hook 只做新会话提示，不做文件写入 guard、提交检查或自动执行。
@@ -104,7 +89,7 @@ Specz 的 hook 只做新会话提示，不做文件写入 guard、提交检查�
 标准 reminder 内容为：
 
 ```text
-Specz reminder: Use specz-flow as the entry for coding development work involving code/runtime behavior, tests, bugs, CI, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Keep docs-only, skill/prompt edits, design-only work, critique, research, and consultation outside Specz unless explicitly requested. Let specz-flow decide whether the bundle needs clarify, plan, run, brief, or archive; after it routes, load the required stage skill before stage work. Use project memory and instructions as context; when memory conflicts with current task instructions, active bundle artifacts, code facts, or verification evidence, surface the conflict and ask the user to resolve it.
+Specz reminder: Use specz-flow as the entry for coding development work involving code/runtime behavior, tests, bugs, CI, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Keep docs-only, skill/prompt edits, design-only work, critique, research, and consultation outside Specz unless explicitly requested. Let specz-flow decide whether the bundle needs clarify, plan, run, brief, or archive; after it routes, load the required stage skill before stage work.
 ```
 
 如果当前平台支持会话开始或任务开始 hook：
@@ -134,7 +119,7 @@ Specz reminder: Use specz-flow as the entry for coding development work involvin
 ```markdown
 ## Specz
 
-Use `specz-flow` as the entry for coding development work involving code/runtime behavior, tests, bugs, CI, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Keep docs-only, skill/prompt edits, design-only work, critique, research, and consultation outside Specz unless explicitly requested. Let `specz-flow` decide whether the bundle needs clarify, plan, run, brief, or archive; after it routes, load the required stage skill before stage work. Use project memory and instructions as context; when memory conflicts with current task instructions, active bundle artifacts, code facts, or verification evidence, surface the conflict and ask the user to resolve it.
+Use `specz-flow` as the entry for coding development work involving code/runtime behavior, tests, bugs, CI, refactors, schemas, APIs, migrations, infra, or resuming an existing Specz bundle. Keep docs-only, skill/prompt edits, design-only work, critique, research, and consultation outside Specz unless explicitly requested. Let `specz-flow` decide whether the bundle needs clarify, plan, run, brief, or archive; after it routes, load the required stage skill before stage work.
 ```
 
 如果目标文件已经存在等价 Specz 约束，不要重复添加；如需更新，只替换 Specz 小节。
@@ -159,8 +144,7 @@ Use `specz-flow` as the entry for coding development work involving code/runtime
 3. `specz-flow` 路由后，agent 会加载对应阶段 skill，而不是只凭 flow 继续
 4. 支持 hooks 的平台能在会话开始或任务开始时注入 reminder
 5. 不支持 hooks 的平台，其 `AGENTS.md`、`SYSTEM.md` 或等价指令文件包含 Specz 约束
-6. Specz 阶段能读取平台/项目已有通用记忆和项目指令上下文
-7. 原有非 Specz 配置仍然存在
+6. 原有非 Specz 配置仍然存在
 
 若任一检查失败，只修复对应接入点；不要重装或覆盖整个配置。
 

@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "prompt": "为一个明确的小型 bugfix 创建 spec：点击保存后应该保留当前筛选条件，不改其它行为。",
-    "expected": "写行为导向 spec.md，标记 Size: small，包含 observable scenario 和 acceptance criteria，不写实现细节。"
+    "prompt": "为一个明确的小改动创建 spec：给多个遵循相同模式的媒体表单组件增加同一个简单字段，不改 API、持久化或权限。",
+    "expected": "写行为导向 spec.md，虽然涉及多个文件仍标记 Size: small，包含 observable scenario 和 acceptance criteria，不写实现细节。"
   },
   {
     "id": 2,
