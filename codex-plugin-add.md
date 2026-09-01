@@ -1,71 +1,39 @@
-# Codex Plugin Install Instructions
+# Codex 项目级插件安装说明
 
-Use this document when asking a Codex agent to install the `specz` plugin into a project.
+本说明用于把 `specz` 或 `specx` 合并安装到 Codex 项目，不覆盖目标项目已有插件和 hooks。
 
-## Goal
+## 选择插件
 
-Install `specz` as a project-level plugin for Codex without overwriting unrelated existing plugins.
+- `specz`：高能力模型的轻量状态协议，默认直接执行普通任务。
+- `specx`：轻量模型的完整规范工作流，包含可选 SessionStart reminder。
 
-The installation must:
+## 来源与目标
 
-- copy the repository's `specz` plugin directory into the target project
-- merge this repository's Codex marketplace entry into the target project's marketplace
-- merge the optional Specz session-start hook into the target project's Codex hooks
-- keep the plugin usable as a dual-platform plugin by preserving both `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` inside `specz/`
+来源：
 
-Source files:
+- `<仓库根目录>/.agents/plugins/marketplace.json`
+- `<仓库根目录>/<插件名>/`
 
-- `<repo_root>/.agents/plugins/marketplace.json`
-- `<repo_root>/specz/`
-- `<repo_root>/specz/hooks/codex-hooks.json`
+目标：
 
-Target location:
+- `<项目根目录>/.agents/plugins/marketplace.json`
+- `<项目根目录>/<插件名>/`
+- `<项目根目录>/.codex/hooks.json`，仅安装 `specx` reminder 时使用
 
-- `<project_root>/.agents/plugins/marketplace.json`
-- `<project_root>/specz/`
-- `<project_root>/.codex/hooks.json`
+## 必须行为
 
-## Required Behavior
+1. 读取来源 marketplace，确认存在所选插件且路径有效。
+2. 将整个插件目录复制到目标项目同名一级目录，保留 `.codex-plugin`、`.claude-plugin`、`skills` 和其他已有内容。
+3. 按插件 `name` 合并 marketplace 条目：存在则只替换该条目，不存在则追加；保留无关插件、顺序和顶层元数据。
+4. 使用项目相对路径，例如 `./specz` 或 `./specx`。
+5. 不修改用户级 `~/.agents/plugins/marketplace.json`，不覆盖项目已有 marketplace。
 
-1. **Read the source data first**
-   - Read `<repo_root>/.agents/plugins/marketplace.json`
-   - Confirm that it contains a plugin entry with `name: "specz"`
-   - Read the `specz` plugin directory and preserve its full contents, including:
-     - `<repo_root>/specz/.codex-plugin/plugin.json`
-     - `<repo_root>/specz/.claude-plugin/plugin.json`
-     - `<repo_root>/specz/skills/`
-     - `<repo_root>/specz/hooks/`
+## Specx Reminder
 
-2. **Copy the `specz` plugin directory**
-   - Copy the entire `<repo_root>/specz/` directory to `<project_root>/specz/`
-   - If `<project_root>/specz/` already exists, update it in place so the installed plugin matches the source plugin
-   - Do not drop hidden files or hidden directories during the copy
+只有 `specx` 提供 reminder。用户需要时，将 `<项目根目录>/specx/hooks/codex-hooks.json` 的 `SessionStart` 条目合并到 `<项目根目录>/.codex/hooks.json`：
 
-3. **Merge the Codex marketplace**
-   - Target file: `<project_root>/.agents/plugins/marketplace.json`
-   - If the target marketplace does not exist, create it with the same top-level schema expected by Codex
-   - If the target marketplace already exists, merge plugin entries by plugin `name`
-   - Do not remove, reorder, or overwrite unrelated existing plugins
-   - If a plugin with `name: "specz"` already exists, replace only that plugin entry with the source `specz` entry
-   - Preserve unrelated top-level metadata when possible
-   - Append `specz` only if it is missing
-   - Keep the merged result valid JSON
-   - Keep the installed plugin path project-relative, for example `"./specz"`
+- 不移除或覆盖无关 hooks；
+- 保持命令为 `bash "./specx/hooks/specx-flow-reminder.sh"`；
+- 不添加文件编辑、工具调用或提交守卫。
 
-4. **Merge the Codex hook reminder**
-   - Source file: `<project_root>/specz/hooks/codex-hooks.json`
-   - Target file: `<project_root>/.codex/hooks.json`
-   - If the target hooks file does not exist, create it from the source template
-   - If the target hooks file exists, merge only the `SessionStart` hook entry for Specz
-   - Do not remove or overwrite unrelated hooks
-   - Do not add file-edit, tool-use, or commit guards; this hook is only a lightweight session-start reminder
-   - Keep the command project-relative: `bash "./specz/hooks/specz-flow-reminder.sh"`
-   - Keep the merged result valid JSON
-
-## Install Scope
-
-This installation is only for project-level usage.
-
-- Do not modify `~/.agents/plugins/marketplace.json`
-- Do not suggest replacing the user's existing marketplace with this repository's marketplace
-- Use merge behavior only
+`specz` 不安装 reminder，也不应在每个任务开始前强制影响模型的路径判断。

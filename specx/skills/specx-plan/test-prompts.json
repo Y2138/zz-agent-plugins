@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "为 Size: standard 的支付回调处理 spec 生成最小 planning artifacts。",
+    "expected": "读取 spec.md，收集真实入口、影响面和验证表面，按需写 design.md、tasks.md、verification.md，并直接按 Bundle Self-Check 检查文件；不搜索或调用 specx lint 工具。"
+  },
+  {
+    "id": 2,
+    "prompt": "规划一个 Size: small 的改动：给多个遵循相同模式的表单组件增加同一个低风险字段。",
+    "expected": "不因多文件而升级规模；停止并路由回 specx-run，除非用户明确要求规划或发现隐藏风险。"
+  },
+  {
+    "id": 3,
+    "prompt": "spec 指向外部 API 但代码里找不到入口和契约。",
+    "expected": "记录 BLOCKER-* 或窄假设，不编造路径、契约或测试命令。"
+  }
+]

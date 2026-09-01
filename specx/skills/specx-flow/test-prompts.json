@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "prompt": "继续当前项目里未完成的 Specx 工作，并告诉我下一步该进入哪个阶段。",
+    "expected": "选择唯一 active bundle，报告状态、执行策略、next skill，并输出 required skill-load handoff block。"
+  },
+  {
+    "id": 2,
+    "prompt": "帮我改 README 里的安装说明，不需要改代码。",
+    "expected": "识别为 docs-only/skill 文本工作，拒绝创建或扫描 Specx bundle，直接处理或询问是否显式使用 Specx。"
+  },
+  {
+    "id": 3,
+    "prompt": "有两个 unfinished bundle 都像是在处理同一个登录 bug，继续处理。",
+    "expected": "在路由前停止，询问用户选择哪个 bundle，不创建重复 bundle。"
+  },
+  {
+    "id": 4,
+    "prompt": "tasks.md 还有一个未勾选任务，但 verification.md 的 Latest Verification Result 是 PASS。",
+    "expected": "识别任务状态和验证状态冲突，路由到 specx-run 修复/调和，不归档。"
+  }
+]

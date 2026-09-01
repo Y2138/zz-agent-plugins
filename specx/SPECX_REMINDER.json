@@ -1,0 +1,6 @@
+{
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": "Specx reminder: Use specx-flow as the entry for coding development work involving code/runtime behavior, tests, bugs, CI, refactors, schemas, APIs, migrations, infra, or resuming an existing Specx bundle. Keep docs-only, skill/prompt edits, design-only work, critique, research, and consultation outside Specx unless explicitly requested. Let specx-flow decide whether the bundle needs clarify, plan, run, brief, or archive; after it routes, load the required stage skill before stage work."
+  }
+}

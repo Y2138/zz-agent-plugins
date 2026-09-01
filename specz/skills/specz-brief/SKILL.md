@@ -1,121 +1,86 @@
 ---
-name: "specz-brief"
-description: "Optional Specz brief stage. Use after specz-plan and before specz-run when the user asks for a human-readable brief, review packet, alignment doc, stakeholder summary, or product/engineering/QA handoff for a planned Specz bundle. It turns spec.md, optional design.md, tasks.md, and verification.md into brief.md without replacing execution artifacts."
+name: specz-brief
+description: 将已形成的技术方案生成结构化中文评审文档；用于设计评审、上线方案或产品/研发/测试对齐。不创建 Specz bundle，不替代执行状态，也不实施方案。
 ---
 
-# Purpose
+# Specz Brief
 
-Create a human-readable `brief.md` from one planned Specz bundle for product, engineering, and QA alignment.
+把已形成的方案沉淀为可独立阅读、可核实、可直接评审的中文文档。只约束文档质量，不接管模型的方案推理。
 
-This skill is optional. It helps people quickly understand requirements, functional scope, flows, key design decisions, coverage, boundaries, and risks. It does not approve the plan, replace implementation artifacts, or block `specz-run`.
+## 输入与输出
 
-# 🔴 Activation Gate / 🛑 STOP
+按需读取当前用户要求、已确认决策、活动 bundle 的 `状态.md`、相关代码与配置、接口或数据契约、实施范围、验证计划和发布信息。
 
-- Proceed only when this `specz-brief` skill is loaded as the active stage contract, either because the user invoked it directly or because `specz-flow` routed here.
-- If only `specz-flow` is loaded, stop and load `specz-brief` before writing `brief.md`.
-- If the platform cannot load this skill, stop and report that the brief stage skill is unavailable.
+- 有活动 Specz bundle：写入 `specs/<中文任务名>/评审说明.md`。
+- 无活动 bundle：使用用户指定路径，否则写入 `docs/<中文方案名>-评审说明.md`。
 
-# Inputs
+方案名、输出文件名和正文使用中文。必须写入文件，不能只在聊天中返回草稿。只处理一个方案，不创建 bundle，不修改 `状态.md` 或产品代码。
 
-- Required: `spec.md`
-- Recommended: `tasks.md`, `verification.md`
-- Optional: `design.md`
+## 信息准备
 
-# Output
+写文档前确认至少具备：明确目标、范围边界、具体核心方案、可观察验收信号。
 
-- `specs/<summary-name>/brief.md`
+- 已有上下文足够时不要重复提问。
+- 事实优先从代码、配置和现有文档核实。
+- 会改变评审结论的缺失信息，按主题一次提出少量阻塞问题。
+- 不阻塞成文的未知项写 `待补充`，并在最终反馈中集中列出。
+- 不用通用最佳实践填补事实、方案或发布信息的缺口。
 
-# Must
+内容权威顺序：当前用户目标和已确认决策 > 仓库指令与代码事实 > `状态.md` > 当前方案与验证计划 > 假设。来源冲突且影响范围、行为、兼容性或验收时标记 `【待确认】`，不得擅自选择。
 
-- Operate on one bundle only.
-- Read `spec.md` first; it is the source of product behavior, scope, business rules, scenarios, acceptance, assumptions, and questions.
-- Use `design.md` only for confirmed design decisions, flows, fallback, compatibility, blockers, and code-context facts that affect human understanding.
-- Use `verification.md` for coverage, testing focus, boundary risks, and confidence gaps.
-- Use `tasks.md` only to understand implementation scope and dependencies; do not copy task lists.
-- Write in the user's/project's natural language.
-- Make the document readable by product, engineering, and QA.
-- Mark key conclusions with `★`.
-- Mark unresolved questions, blockers, or assumptions that need human alignment with `【待确认】`.
-- Generate at least one readable flow or representation when it helps people understand the feature.
+## 内容归一
 
-# Must Not
+只记录当前有效方案与最终结论，不记录演进过程、讨论流水或已淘汰方案。备选方案仅在支撑当前评审决策时保留。
 
-- Do not modify product code.
-- Do not modify `spec.md`, `design.md`, `tasks.md`, or `verification.md`.
-- Do not use `brief.md` as execution authority.
-- Do not copy `TASK-*` checklists, `Done when`, or full implementation task lists.
-- Do not copy `design.md` Files / Modules tables, import names, or long code paths into the brief.
-- Do not include large code snippets.
-- Do not invent requirements, acceptance criteria, or implementation decisions not supported by the bundle.
-- Do not run broad code searches unless the bundle artifacts are contradictory and a minimal check is needed to avoid misleading humans.
+### 业务与技术分层
 
-# Checkpoints
+- 业务逻辑只写适用范围、业务条件、用户动作、业务决策、约束、异常和用户可见结果。
+- 多步骤业务流程或业务状态转换存在时，生成业务流程图：从用户或业务触发开始，以可见结果、状态、展示或通知结束。
+- 不在业务描述或业务图中出现表字段、数值枚举、SQL、接口路径、脚本任务、函数类名、消息主题或代码分支；将这些事实移到技术章节。
+- 方案跨组件或层级，包含关键技术分支、异步处理、外部调用、持久化或结果回写时，单独生成一张技术实现主链路图。
+- 技术主链路只展示触发、主要处理阶段、关键分支、外部依赖、持久化或回写和终态，不展开成函数级调用图，也不重复业务流程。
 
-- 🔴 CHECKPOINT / 🛑 STOP before writing: if `spec.md` is missing, stop; do not build a brief from tasks, code, archives, or external notes.
-- 🔴 CHECKPOINT / 🛑 STOP before conclusions: if artifacts conflict in a way that changes scope, behavior, acceptance, design authority, or verification confidence, mark the conflict as `【待确认】` instead of turning it into a `★` conclusion.
-- 🔴 CHECKPOINT / 🛑 STOP before output: run the Self-Check, repair `brief.md` only, and confirm no execution artifacts or product code were modified.
+### 技术事实
 
-# Reference Use
+- 接口方法与路径只能来自接口文档、OpenAPI、路由定义、控制器注解或代码；无法确认时写 `待补充（未确认真实接口地址）`，不得按功能名推断。
+- SQL 集中放在数据库设计中，按 DDL、索引、初始化或回填、检查、回滚排序。是否涉及新增或变更查询、是否需要生产查询效率验证，未知时均写 `待补充`。
+- 普通业务词、模块名和状态值不使用行内代码；只对真实文件、符号、配置键、命令、HTTP 方法与路径等技术标识使用代码格式。
+- 实施前的检查写“计划验证”；只有来源明确证明已经执行且结果可复查时才写“已通过”。
 
-Use these references only when they improve the brief.
+### 交付模块
 
-- Design emphasis: read `references/design-focus.md` when you need to choose how to present backend, frontend, fullstack, or integration concerns for people.
-- Flow or diagram shape: read the relevant `references/diagrams-templates/*.md` file when a diagram or structured representation would be clearer than prose.
+从技术方案归纳 1–10 个可评审的交付模块，每项写成：
 
-Diagram guidance:
+```markdown
+- [ ] 模块名称：交付结果、适用范围与关键验证。
+```
 
-- Use Mermaid `flowchart` for business flows and UI interaction flows.
-- Use Mermaid `sequenceDiagram` for ordered multi-party interactions.
-- Use Mermaid `stateDiagram` for lifecycle states.
-- Use Mermaid `erDiagram` or a table for entity relationships.
-- Use tables for API contracts, fields, rules, coverage, and risks.
-- Use ASCII for static UI layout; do not use Mermaid for UI layout.
-- Prefer no diagram when a short table or bullet flow is clearer.
+合并紧密相关的改动，不逐行复制实施步骤或为底层代码变化单独建项。只有来源明确证明模块已完成时才能使用 `[x]`；方案不足时保留一项 `- [ ] 待补充`，不得虚构模块。
 
-# Workflow
+## 模板与可选模块
 
-1. Resolve the active bundle.
-2. Read `spec.md`; read `design.md`, `tasks.md`, and `verification.md` if present.
-3. Identify the brief focus:
-   - backend: data, permissions, state changes, compatibility, rollback, failure handling
-   - frontend: pages/modules, user path, UI states, form rules, loading/empty/error/disabled behavior
-   - fullstack: shared contract, validation split, error surfacing, end-to-end flow
-   - integration: external systems, auth, request/callback, retry, idempotency, partial failure, reconciliation
-4. Decide which one or two visual representations will make the brief easier to read.
-5. Write `brief.md` using `references/template.md`.
-6. Run the self-check and repair the brief only.
-7. Report the absolute path, sections generated, and count of `【待确认】` items.
+始终读取并使用 [评审文档模板](references/评审文档模板.md)。涉及上线、数据库迁移、配置变更、脚本或任务、灰度、监控告警、生产验证或回滚时，再读取并插入 [上线与回退模块](references/上线与回退模块.md)。
 
-# Missing Artifacts
+保留模板必填章节，删除不适用的可选章节和所有占位符。用 **加粗** 标记关键结论和关键决策；用 `【事实】`、`【已确认】`、`【方案】`、`【假设】`、`【待确认】` 在可能混淆时区分信息性质。
 
-- If `spec.md` is missing, stop. Do not build a brief from tasks, code, or external notes.
-- If `design.md` is missing, still create the brief when `spec.md` is sufficient, but make the key design section a planning summary and mark design gaps as `【待确认】` when they affect alignment.
-- If `verification.md` is missing, still create the brief when useful, but mark testing coverage as `【待确认】尚未形成验证计划`.
-- If bundle artifacts conflict, prefer `spec.md` for behavior, `design.md` for implementation decisions, and `verification.md` for evidence planning. If the conflict changes scope or acceptance, mark it as `【待确认】`.
-- Treat `spec.md` as sufficient when it states the goal, scope, actors, at least one observable behavior, and acceptance signal; otherwise write only a limited brief and mark missing alignment inputs as `【待确认】`.
-- Do not resolve conflicts by averaging artifacts. Keep `spec.md` as behavior authority, summarize confirmed design facts separately, and surface the conflict for human alignment.
+## 工作流
 
-# `brief.md` Contract
+1. 确认评审对象、受众、需要作出的决策和最小设计基线。
+2. 收集并核实最小必要信息，批量处理缺失项。
+3. 区分业务流程、技术主链路和发布流程，归纳交付模块。
+4. 使用基础模板，并按触发条件插入上线与回退模块。
+5. 写入评审文档并完成自检；只修正文档。
+6. 返回绝对路径、`待补充` 和 `【待确认】` 项、未确认接口、生成的图、是否包含上线模块及验证摘要。
 
-Use `references/template.md` as the shape. Adapt section titles to the user's/project's language, but preserve the intent:
+## 自检
 
-- background and goals
-- functional scope
-- overall design conclusions
-- key flows or diagrams
-- key design details
-- coverage and QA focus
-- boundaries and risks
-- open questions
+- 文件存在，不依赖聊天记录也能理解目标、范围、业务变化和技术方案。
+- 文档只记录当前有效方案与结论；关键结论可追溯到用户决策、代码事实或明确标注的方案。
+- 业务流程与技术主链路分离，且仅在触发条件满足时生成对应图。
+- 接口方法与路径均有真实来源或明确标为未确认；SQL 只出现在数据库设计中。
+- 交付模块不超过 10 项，完成状态均有来源证据。
+- 验收行为映射到验证方式和观察信号，计划验证没有写成已通过。
+- 需要上线治理时包含发布顺序、生产验证、监控和回退；否则不保留空上线章节。
+- 全文为中文，无未替换占位符、空章节、装饰性图表或大段内部实现记录。
 
-# Self-Check
-
-- `brief.md` exists in the active bundle.
-- The brief is readable without opening `tasks.md`.
-- Key conclusions use `★`.
-- Open questions use `【待确认】`.
-- No task checklist, `TASK-*` implementation queue, or `Done when` details are copied.
-- No Files / Modules table or long implementation path list is copied.
-- Diagrams or ASCII layouts are used only where they improve readability.
-- Static UI layout, if present, is ASCII rather than Mermaid.
-- Coverage and QA focus come from `verification.md` or are clearly marked as pending.
+用户只要求评审文档时，生成后停止并等待评审；只有用户同时明确要求完成实现时，才交回 Specz 或模型原生执行路径继续推进。

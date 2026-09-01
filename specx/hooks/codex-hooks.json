@@ -1,0 +1,16 @@
+{
+  "description": "Project-level Codex hook template for Specx session-start reminders and routed stage-skill loading.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"./specx/hooks/specx-flow-reminder.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

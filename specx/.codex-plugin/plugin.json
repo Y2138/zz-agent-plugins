@@ -1,0 +1,37 @@
+{
+  "name": "specx",
+  "version": "1.4.1",
+  "description": "A structured spec-driven workflow for lightweight coding models, with explicit stages, task-size routing, traceable artifacts, independent verification, bounded repair loops, and archive history.",
+  "author": {
+    "name": "zane",
+    "url": "https://github.com/Y2138"
+  },
+  "homepage": "https://github.com/Y2138/zz-agent-plugins/tree/main/specx",
+  "repository": "https://github.com/Y2138/zz-agent-plugins",
+  "license": "MIT",
+  "keywords": [
+    "specx",
+    "workflow",
+    "verification",
+    "agent"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Specx",
+    "shortDescription": "Structured, stage-gated spec workflows for lightweight coding models.",
+    "longDescription": "Specx preserves the original structured workflow for models that benefit from explicit stage boundaries and detailed execution contracts. It selects a bundle, routes by task size, clarifies behavior, plans against existing code, executes with traceable tasks, independently verifies results in bounded loops, and archives completed work.",
+    "developerName": "zane",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/specx",
+    "defaultPrompt": [
+      "Use specx-flow only for non-trivial coding development work, not docs-only or skill/prompt edits.",
+      "After specx-flow routes, load the required next stage skill before doing stage work.",
+      "Use specx-flow to resume an active Specx bundle and select the required stage."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

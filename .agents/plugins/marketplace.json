@@ -10,7 +10,7 @@
     {
       "name": "specz",
       "displayName": "Specz",
-      "description": "Efficient, lightweight spec-driven workflow plugin for non-trivial coding development work, with stage-gated handoffs, project-memory context, disciplined clarification, impact-aware planning, traceable tasks, bounded run loops, and archive history.",
+      "description": "A lightweight engineering-state and design-review protocol for capable coding models, with optional checkpoints, governed evidence, and structured human review briefs.",
       "source": {
         "source": "local",
         "path": "./specz"
@@ -22,9 +22,10 @@
       "category": "Productivity",
       "keywords": [
         "specz",
-        "workflow",
+        "checkpoint",
+        "orchestration",
         "verification",
-        "agent"
+        "design-review"
       ]
     },
     {
@@ -66,6 +67,26 @@
         "prototype",
         "design-token",
         "ui"
+      ]
+    },
+    {
+      "name": "specx",
+      "displayName": "Specx",
+      "description": "A structured spec-driven workflow for lightweight coding models, with explicit stages, task-size routing, traceable artifacts, independent verification, bounded repair loops, and archive history.",
+      "source": {
+        "source": "local",
+        "path": "./specx"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "keywords": [
+        "specx",
+        "workflow",
+        "verification",
+        "agent"
       ]
     }
   ]
