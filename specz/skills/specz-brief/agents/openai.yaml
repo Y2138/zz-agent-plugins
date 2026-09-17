@@ -1,4 +1,4 @@
 interface:
   display_name: "Specz Brief"
-  short_description: "生成分离业务与技术主链路、覆盖验证和上线回退的中文评审文档"
-  default_prompt: "使用 $specz-brief 将当前方案生成可直接评审的中文技术文档。"
+  short_description: "用功能与设计单主线生成简洁、可直接讲述的中文评审文档"
+  default_prompt: "使用 $specz-brief 将当前方案整理为无重复、可沿单一主线讲完的中文技术评审文档。"

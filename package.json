@@ -1,6 +1,6 @@
 {
   "name": "@y2138/zz-agent-plugins",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "private": true,
   "type": "module",
   "description": "Specz and Specx workflow package for Pi Coding Agent, Codex, and Claude Code.",

@@ -1,6 +1,6 @@
 {
   "name": "specz",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A lightweight engineering-state and design-review protocol for capable coding models, with optional checkpoints, governed evidence, and structured human review briefs.",
   "author": {
     "name": "zane",
