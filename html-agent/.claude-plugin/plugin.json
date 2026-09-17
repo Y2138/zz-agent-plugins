@@ -1,0 +1,35 @@
+{
+  "name": "html-agent",
+  "version": "0.1.0",
+  "description": "本地多页 HTML 的只读问答助手：按授权根目录查阅资料，提供解释和修改建议，不修改文件。",
+  "author": {
+    "name": "zane",
+    "url": "https://github.com/Y2138"
+  },
+  "homepage": "https://github.com/Y2138/zz-agent-plugins/tree/main/html-agent",
+  "repository": "https://github.com/Y2138/zz-agent-plugins",
+  "license": "MIT",
+  "keywords": [
+    "html",
+    "agent",
+    "read-only",
+    "local",
+    "documents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "HTML Agent",
+    "shortDescription": "在本地 HTML 内只读问答、查阅资料和获取建议。",
+    "longDescription": "指定授权根目录，阅读多个互相跳转的本地 HTML，在页面内提问并按需搜索和读取资料。仅提供建议，不修改原文件。",
+    "developerName": "zane",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/Y2138/zz-agent-plugins/tree/main/html-agent",
+    "defaultPrompt": [
+      "使用 html-agent 为本地 HTML 启动只读问答助手，明确授权根目录，不修改文件。"
+    ],
+    "brandColor": "#315E46"
+  }
+}

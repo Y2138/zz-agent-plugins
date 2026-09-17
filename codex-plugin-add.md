@@ -1,11 +1,13 @@
 # Codex 项目级插件安装说明
 
-本说明用于把 `specz` 或 `specx` 合并安装到 Codex 项目，不覆盖目标项目已有插件和 hooks。
+本说明用于把 `specz`、`specx` 或 `html-agent` 合并安装到 Codex 项目，不覆盖目标项目已有插件和 hooks。
 
 ## 选择插件
 
 - `specz`：高能力模型的轻量状态协议，默认直接执行普通任务。
 - `specx`：轻量模型的完整规范工作流，包含可选 SessionStart reminder。
+
+- `html-agent`：本地多页 HTML 只读问答助手；复制整个插件以保留本地运行时，不安装 hooks。
 
 ## 来源与目标
 
@@ -25,7 +27,7 @@
 1. 读取来源 marketplace，确认存在所选插件且路径有效。
 2. 将整个插件目录复制到目标项目同名一级目录，保留 `.codex-plugin`、`.claude-plugin`、`skills` 和其他已有内容。
 3. 按插件 `name` 合并 marketplace 条目：存在则只替换该条目，不存在则追加；保留无关插件、顺序和顶层元数据。
-4. 使用项目相对路径，例如 `./specz` 或 `./specx`。
+4. 使用项目相对路径，例如 `./specz`、`./specx` 或 `./html-agent`。
 5. 不修改用户级 `~/.agents/plugins/marketplace.json`，不覆盖项目已有 marketplace。
 
 ## Specx Reminder

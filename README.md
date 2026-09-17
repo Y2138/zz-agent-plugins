@@ -12,6 +12,7 @@ zz-agent-plugins/
 ├── specz/                              # 高能力模型的轻量状态协议
 ├── specx/                              # 轻量模型的完整规范工作流
 ├── prd-designz/                        # PRD 设计与 UI 原型插件
+├── html-agent/                        # 本地多页 HTML 只读问答助手
 ├── media-prompt/                       # 媒体提示插件
 ├── codex-plugin-add.md                 # Codex 合并安装说明
 └── README.md
@@ -22,6 +23,7 @@ zz-agent-plugins/
 - **specz**：面向高能力编码模型。普通任务直接执行，只在恢复、协作、审批或审计确有收益时维护单文件状态账本；需要人读评审材料时按固定模板生成《评审说明》。
 - **specx**：面向需要更多流程约束的轻量模型。保留 clarify、plan、run、archive 等完整阶段和结构化 artifacts。
 - **prd-designz**：产品设计与 UI 原型插件，包含新项目设计规格原型、存量项目 UI skill 生成和项目规范原型生成能力。
+- **html-agent**：为授权目录中的多个本地 HTML 提供页面内问答、资料搜索与修改建议，不修改文件。运行方式见 `html-agent/README.md`。
 - **media-prompt**：生成和处理媒体相关提示与内容。
 
 ## 如何选择

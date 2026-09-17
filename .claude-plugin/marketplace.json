@@ -56,6 +56,19 @@
         "verification",
         "agent"
       ]
+    },
+    {
+      "name": "html-agent",
+      "description": "本地多页 HTML 的只读问答助手：按授权根目录查阅资料，提供解释和修改建议，不修改文件。",
+      "source": "./html-agent",
+      "category": "productivity",
+      "keywords": [
+        "html",
+        "agent",
+        "read-only",
+        "local",
+        "documents"
+      ]
     }
   ]
 }

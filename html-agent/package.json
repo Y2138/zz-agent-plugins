@@ -1,0 +1,25 @@
+{
+  "name": "@y2138/html-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "本地多页 HTML 的只读问答助手",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "bin": {
+    "html-agent": "./src/cli.mjs"
+  },
+  "scripts": {
+    "start": "node src/cli.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dompurify": "3.4.15",
+    "marked": "18.0.12",
+    "officeparser": "7.8.0"
+  },
+  "overrides": {
+    "pdfjs-dist": "6.2.108"
+  }
+}
