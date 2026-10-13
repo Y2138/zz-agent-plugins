@@ -1,4 +1,6 @@
 interface:
   display_name: "Specz Brief"
-  short_description: "根据目标与代码事实生成单主线中文设计文档，可用于协作与评审"
-  default_prompt: "使用 $specz-brief 根据当前目标和代码事实形成中文设计文档，沿单一主线说明功能、设计、边界和验证。"
+  short_description: "仅接受 Specz 委派或用户显式调用，生成中文设计文档后返回"
+  default_prompt: "显式使用 $specz-brief 为当前目标生成中文设计文档，沿单一主线说明功能、设计、边界和验证。"
+policy:
+  allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 {
   "name": "specz",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "A lightweight engineering-state and design-review protocol for capable coding models, with optional checkpoints, governed evidence, and structured human review briefs.",
   "author": {
     "name": "zane",
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Specz",
     "shortDescription": "Lightweight state, evidence, and design review for capable coding models.",
-    "longDescription": "Specz lets capable coding models plan and execute natively. It externalizes only engineering state that must survive the current context, and optionally turns a formed design into a structured Chinese review brief with explicit facts, decisions, verification coverage, risks, and open questions. Direct execution remains the default; checkpoints, governed evidence, and review documents are enabled only when requested or valuable.",
+    "longDescription": "Specz governs an engineering task from its current stage: it reconstructs goals, design, execution, approvals, and verification from task facts and durable state. It delegates design-document work to specz-brief when needed and resumes the parent task afterward. Ordinary tasks can execute directly; durable checkpoints and governed evidence are used when recovery, collaboration, approval, or audit requires them.",
     "developerName": "zane",
     "category": "Productivity",
     "capabilities": [
@@ -31,7 +31,7 @@
     "defaultPrompt": [
       "Use specz to decide whether this task needs durable engineering state before implementing it.",
       "Use specz to resume the active checkpoint and execute the next ready task unit.",
-      "Use specz-brief to turn the current design into a structured Chinese review document."
+      "Use specz to delegate design-document work to specz-brief when the active task needs it, then resume the current stage."
     ],
     "brandColor": "#0F766E"
   }

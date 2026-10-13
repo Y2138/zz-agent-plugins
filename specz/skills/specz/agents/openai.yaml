@@ -1,4 +1,4 @@
 interface:
   display_name: "Specz"
-  short_description: "面向高能力模型的轻量工程状态、任务调度和验证证据协议"
-  default_prompt: "使用 $specz 判断任务是否需要持久化状态，并按最小必要协议推进实现与验证。"
+  short_description: "从任务任意阶段定位与恢复工程状态，调度设计、执行和验证"
+  default_prompt: "使用 $specz 判断是否接管本任务，定位当前阶段并恢复下一步，按需委派设计文档子技能。"
